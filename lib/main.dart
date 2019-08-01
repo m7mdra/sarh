@@ -1,30 +1,34 @@
+import 'package:Sarh/page/login/login_page.dart';
+import 'package:Sarh/page/splash/splash_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'i10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Sarh',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        buttonColor: Color(0xff0078ff),
+        buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+        iconTheme: IconThemeData(color: Color(0xff5fabf6)),
+        primaryColor: Color(0xff0078ff),
       ),
-      home: MyHomePage(),
-    );
-  }
-}
+      supportedLocales: [
+        const Locale('ar', ''),
+        const Locale('en', ''),
+      ],      localizationsDelegates: [
+        const AppLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
 
-class MyHomePage extends StatefulWidget {
-
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+      ],
+      home: LoginPage(),
     );
   }
 }

@@ -1,0 +1,38 @@
+{
+  "@@last_modified": "2019-08-01T17:25:07.454273",
+  "Login": "Login",
+  "@Login": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Username or Email": "Username or Email",
+  "@Username or Email": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Password": "Password",
+  "@Password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Sing in": "Sing in",
+  "@Sing in": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Forgot my password": "Forgot my password",
+  "@Forgot my password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "I Dont have an account": "I Dont have an account",
+  "@I Dont have an account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Create new": "Create new",
+  "@Create new": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-01T17:25:07.454273",
+  "@@last_modified": "2019-08-03T09:38:55.059972",
   "Login": "Login",
   "@Login": {
     "type": "text",
@@ -32,6 +32,46 @@
   },
   "Create new": "Create new",
   "@Create new": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Register": "Register",
+  "@Register": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Username": "Username",
+  "@Username": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Email address": "Email address",
+  "@Email address": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Full name": "Full name",
+  "@Full name": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Confirm Password": "Confirm Password",
+  "@Confirm Password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Account type": "Account type",
+  "@Account type": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Sign up": "Sign up",
+  "@Sign up": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "I Already have an account": "I Already have an account",
+  "@I Already have an account": {
     "type": "text",
     "placeholders": {}
   }

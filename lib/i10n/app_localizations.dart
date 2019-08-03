@@ -32,6 +32,16 @@ class AppLocalizations {
   String get iDontHaveAnAccount => Intl.message('I Dont have an account');
 
   String get createNew => Intl.message('Create new');
+  String get register=>Intl.message('Register');
+  String get username=>Intl.message('Username');
+  String get emailAddress=>Intl.message('Email address');
+  String get fullName=>Intl.message('Full name');
+  String get confirmPassword=>Intl.message('Confirm Password');
+  String get accountType=>Intl.message('Account type');
+  String get signupButton=>Intl.message('Sign up');
+  String get iAlreadyHaveAccount=>Intl.message("I Already have an account");
+
+  String get nextButton=>Intl.message('Next');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

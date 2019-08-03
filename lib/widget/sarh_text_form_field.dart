@@ -4,6 +4,7 @@ class SrahTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final String labelText;
   final IconData icon;
+
   //TODO add validator and other [TextFormField] fields
 
   const SrahTextFormField({Key key, this.controller, this.labelText, this.icon})

@@ -1,3 +1,4 @@
+import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/page/splash/splash_page.dart';
 import 'package:flutter/material.dart';

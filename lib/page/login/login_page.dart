@@ -1,4 +1,5 @@
 import 'package:Sarh/page/register/register_page.dart';
+import 'package:Sarh/widget/relative_align.dart';
 import 'package:Sarh/widget/sarh_text_form_field.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -49,9 +50,8 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Align(
-                        //TODO: HANDLE WHEN Layout orientation changes
-                        alignment: Alignment.centerLeft,
+                      RelativeAlign(
+                        alignment: ALIGN.Start,
                         child: Hero(
                           tag: 'screenName',
                           child: Text(
@@ -66,14 +66,14 @@ class _LoginPageState extends State<LoginPage> {
                         height: 8,
                       ),
                       SrahTextFormField(
-                        labelText: 'Username or Email',
+                        labelText: AppLocalizations.of(context).userNameOrEmail,
                         icon: FontAwesomeIcons.user,
                       ),
                       SizedBox(
                         height: 8,
                       ),
                       SrahTextFormField(
-                        labelText: 'Password',
+                        labelText: AppLocalizations.of(context).passwordFieldName,
                         icon: FontAwesomeIcons.lock,
                       ),
                       SizedBox(
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: SizedBox(
                           child: RaisedButton(
                             onPressed: () {},
-                            child: Text('Sign in'),
+                            child: Text(AppLocalizations.of(context).signInButton),
                           ),
                           width: double.infinity,
                           height: 40,
@@ -93,11 +93,11 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         height: 8,
                       ),
-                      Align(
-                        alignment: Alignment.centerLeft,
+                      RelativeAlign(
+                        alignment: ALIGN.Start,
                         child: Text.rich(
                           TextSpan(
-                              text: 'Forgot my password',
+                              text: AppLocalizations.of(context).forgetMyPasswordButton,
                               recognizer: new TapGestureRecognizer()
                                 ..onTap = () => print('Tap Here onTap'),
                               style: TextStyle(
@@ -109,14 +109,14 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         height: 8,
                       ),
-                      Align(
-                        alignment: Alignment.centerLeft,
+                      RelativeAlign(
+                        alignment: ALIGN.Start,
                         child: Text.rich(
                           TextSpan(
-                            text: 'I dont have an account',
+                            text: AppLocalizations.of(context).iDontHaveAnAccount,
                             children: [
                               TextSpan(
-                                  text: ' create new',
+                                  text: ' ${AppLocalizations.of(context).createNew}',
                                   recognizer: new TapGestureRecognizer()
                                     ..onTap = () => Navigator.push(
                                         context,

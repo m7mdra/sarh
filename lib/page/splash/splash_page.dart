@@ -8,6 +8,10 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Center(
+        child: Image.asset('assets/logo/logo.png'),
+      ),
+    );
   }
 }

@@ -34,5 +34,45 @@
   "@Create new": {
     "type": "text",
     "placeholders": {}
-  }
+  },
+  "Register": "انشاء حساب",
+    "@Register": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "Username": "اسم المستخدم",
+    "@Username": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "Email address": "البريد الالكتروني",
+    "@Email address": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "Full name": "الاسم الكامل",
+    "@Full name": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "Confirm Password": "تاكيد كلمة المرور",
+    "@Confirm Password": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "Account type": "نوع الحساب",
+    "@Account type": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "Sign up": "انشاء حساب",
+    "@Sign up": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "I Already have an account": "لدي حساب بالفعل",
+    "@I Already have an account": {
+      "type": "text",
+      "placeholders": {}
+    }
 }

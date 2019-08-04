@@ -86,18 +86,13 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
         child: Stack(
           children: <Widget>[
             Image.asset(
-              'assets/background/background1.png',
+              'assets/background/background.jpg',
               scale: 4,
               fit: BoxFit.cover,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
             ),
-            Opacity(
-              child: Container(
-                color: Colors.blue,
-              ),
-              opacity: 0.5,
-            ),
+           
             buildCenter(),
           ],
         ),

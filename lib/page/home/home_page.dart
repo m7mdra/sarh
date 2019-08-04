@@ -15,11 +15,12 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.only(bottom: 80),
       crossAxisCount: 4,
       itemCount: 100,
-      itemBuilder: (BuildContext context, int index) => Image.network(
-        'https://loremflickr.com/${Random().nextInt(1000)}/${Random().nextInt(1000)}/house,construction',
-        fit: BoxFit.cover,
-        key: UniqueKey(),
-      ),
+      itemBuilder: (BuildContext context, int index) => FadeInImage.assetNetwork(
+        fadeInDuration: Duration(milliseconds: 200),
+          placeholder: 'assets/logo/logo.png',
+          fit: BoxFit.fitWidth,
+          image:
+              'https://loremflickr.com/${Random().nextInt(1000)}/${Random().nextInt(1000)}/house,construction'),
       staggeredTileBuilder: (int index) =>
           new StaggeredTile.count(2, index.isEven ? 2 : 1),
       mainAxisSpacing: 4.0,

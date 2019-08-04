@@ -5,7 +5,6 @@ import 'package:Sarh/widget/sarh_text_form_field.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:clippy_flutter/arc.dart';
 import 'package:Sarh/i10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {

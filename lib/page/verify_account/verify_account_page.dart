@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:Sarh/page/home/main_page.dart';
+import 'package:Sarh/page/account_type/account_type_page.dart';
 import 'package:Sarh/widget/sarh_progress_bar.dart';
-import 'package:Sarh/widget/sarh_text_form_field.dart';
 import 'package:Sarh/widget/verification_widget.dart';
 import 'package:flutter/material.dart';
+
 
 class VerifyAccountPage extends StatefulWidget {
   @override
@@ -71,7 +71,7 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MainPage()));
+                                        builder: (context) => AccountTypePage()));
                               });
                               isLoading = true;
                             });

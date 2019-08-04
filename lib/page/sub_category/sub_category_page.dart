@@ -14,7 +14,7 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey,
+        backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
         title: Text('Category Name'),
         leading: IconButton(
@@ -22,11 +22,16 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
           onPressed: () {},
         ),
       ),
-      body: ListView.builder(
+      body: ListView.separated(
         itemBuilder: (BuildContext context, int index) {
           return SubCategoryItem();
         },
         itemCount: 10,
+        separatorBuilder: (BuildContext context, int index) {
+          return Divider(
+            height: 1,
+          );
+        },
       ),
     );
   }

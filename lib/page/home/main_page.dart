@@ -1,9 +1,10 @@
+import 'package:Sarh/page/chat/chat_list_page.dart';
+import 'package:Sarh/page/quote/request_quote_screen.dart';
 import 'package:Sarh/page/search/search_page.dart';
 import 'package:Sarh/widget/category_ship_widget.dart';
 import 'package:Sarh/widget/fab_bottom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:Sarh/i10n/app_localizations.dart';
 
 import 'categories_page.dart';
 import 'home_page.dart';
@@ -70,7 +71,11 @@ class _MainPageState extends State<MainPage> {
                         backgroundColor: Color(0xf9ac0e3),
                         child: IconButton(
                           icon: Icon(FontAwesomeIcons.commentAlt),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                              return ChatListPage();
+                            }));
+                          },
                         ))
                   ],
                 ),
@@ -112,7 +117,10 @@ class _MainPageState extends State<MainPage> {
         ],
       )),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        heroTag: 'fab',
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestQuoteScreen()));
+        },
         child: Icon(FontAwesomeIcons.plus),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

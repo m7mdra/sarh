@@ -1,10 +1,7 @@
 import 'package:Sarh/page/home/main_page.dart';
-import 'package:Sarh/page/login/login_page.dart';
-import 'package:Sarh/page/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'i10n/app_localizations.dart';
-import 'package:intl/intl.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -29,7 +26,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate
 
       ],
-      home: LoginPage(),
+      home: MainPage(),
     );
   }
 }

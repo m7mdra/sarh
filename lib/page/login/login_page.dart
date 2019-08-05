@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:Sarh/i10n/app_localizations.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -15,6 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +78,8 @@ class _LoginPageState extends State<LoginPage> {
                         height: 8,
                       ),
                       SrahTextFormField(
-                        labelText: AppLocalizations.of(context).passwordFieldName,
+                        labelText:
+                            AppLocalizations.of(context).passwordFieldName,
                         icon: FontAwesomeIcons.lock,
                       ),
                       SizedBox(
@@ -86,8 +89,11 @@ class _LoginPageState extends State<LoginPage> {
                         tag: 'button',
                         child: SizedBox(
                           child: RaisedButton(
-                            onPressed: () {},
-                            child: Text(AppLocalizations.of(context).signInButton),
+                            onPressed: () {
+                             
+                            },
+                            child:
+                                Text(AppLocalizations.of(context).signInButton),
                           ),
                           width: double.infinity,
                           height: 40,
@@ -100,7 +106,8 @@ class _LoginPageState extends State<LoginPage> {
                         alignment: ALIGN.Start,
                         child: Text.rich(
                           TextSpan(
-                              text: AppLocalizations.of(context).forgetMyPasswordButton,
+                              text: AppLocalizations.of(context)
+                                  .forgetMyPasswordButton,
                               recognizer: new TapGestureRecognizer()
                                 ..onTap = () => print('Tap Here onTap'),
                               style: TextStyle(
@@ -116,10 +123,12 @@ class _LoginPageState extends State<LoginPage> {
                         alignment: ALIGN.Start,
                         child: Text.rich(
                           TextSpan(
-                            text: AppLocalizations.of(context).iDontHaveAnAccount,
+                            text:
+                                AppLocalizations.of(context).iDontHaveAnAccount,
                             children: [
                               TextSpan(
-                                  text: ' ${AppLocalizations.of(context).createNew}',
+                                  text:
+                                      ' ${AppLocalizations.of(context).createNew}',
                                   recognizer: new TapGestureRecognizer()
                                     ..onTap = () => Navigator.push(
                                         context,
@@ -139,8 +148,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-
-
           ],
         ),
       ),

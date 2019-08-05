@@ -1,5 +1,5 @@
-
 import 'package:Sarh/i10n/app_localizations.dart';
+import 'package:Sarh/page/intereset_selection/interest_selection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -38,6 +38,9 @@ class _AccountTypePageState extends State<AccountTypePage> {
                 setState(() {});
               },
             ),
+            SizedBox(
+              height: 16,
+            ),
             Text(
               '- Personal Account',
               textAlign: TextAlign.start,
@@ -72,6 +75,11 @@ class _AccountTypePageState extends State<AccountTypePage> {
                     ? null
                     : () {
                         if (_selectedAccount == Account.personal) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      InterestPickSelectionPage()));
                         } else {}
                       },
                 child: Text(AppLocalizations.of(context).nextButton),

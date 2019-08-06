@@ -34,19 +34,6 @@ enum StepState {
   error,
 }
 
-const TextStyle _kStepStyle = TextStyle(
-  fontSize: 12.0,
-  color: Colors.white,
-);
-const Color _kErrorLight = Colors.red;
-final Color _kErrorDark = Colors.red.shade400;
-const Color _kCircleActiveLight = Colors.white;
-const Color _kCircleActiveDark = Colors.black87;
-const Color _kDisabledLight = Colors.black38;
-const Color _kDisabledDark = Colors.white30;
-const double _kStepSize = 24.0;
-const double _kTriangleHeight =
-    _kStepSize * 0.866025; // Triangle height. sqrt(3.0) / 2.0
 
 /// A material step used in [WeeStepper]. The step can have a title and subtitle,
 /// an icon within its circle, some content and a state that governs its
@@ -61,35 +48,16 @@ class WeeStep {
   /// Creates a step for a [WeeStepper].
   ///
   /// The [title], [content], and [state] arguments must not be null.
-  const WeeStep({
-    @required this.title,
-    this.subtitle,
+  const WeeStep(
+    {
+      this.isActive,
     @required this.content,
-    this.state = StepState.indexed,
-    this.isActive = false,
-  })  : assert(title != null),
-        assert(content != null),
-        assert(state != null);
-
-  /// The title of the step that typically describes it.
-  final Widget title;
-
-  /// The subtitle of the step that appears below the title and has a smaller
-  /// font size. It typically gives more details that complement the title.
-  ///
-  /// If null, the subtitle is not shown.
-  final Widget subtitle;
+  });
 
   /// The content of the step that appears below the [title] and [subtitle].
   ///
   /// Below the content, every step has a 'continue' and 'cancel' button.
   final Widget content;
-
-  /// The state of the step which determines the styling of its components
-  /// and whether steps are interactive.
-  final StepState state;
-
-  /// Whether or not the step is active. The flag only influences styling.
   final bool isActive;
 }
 
@@ -124,7 +92,6 @@ class WeeStepper extends StatefulWidget {
     this.onPrevious,
   })  : assert(steps != null),
         assert(currentStep != null),
-        assert(0 <= currentStep && currentStep < steps.length),
         super(key: key);
 
   /// The steps of the stepper whose titles, subtitles, icons always get shown.
@@ -158,175 +125,24 @@ class WeeStepper extends StatefulWidget {
   /// If null, the 'cancel' button will be disabled.
   final VoidCallback onPrevious;
 
-
   @override
   _WeeStepperState createState() => _WeeStepperState();
 }
 
 class _WeeStepperState extends State<WeeStepper> with TickerProviderStateMixin {
-  List<GlobalKey> _keys;
-  final Map<int, StepState> _oldStates = <int, StepState>{};
-
   @override
   void initState() {
     super.initState();
-    _keys = List<GlobalKey>.generate(
-      widget.steps.length,
-      (int i) => GlobalKey(),
-    );
-
-    for (int i = 0; i < widget.steps.length; i += 1)
-      _oldStates[i] = widget.steps[i].state;
-  }
-
-  @override
-  void didUpdateWidget(WeeStepper oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    assert(widget.steps.length == oldWidget.steps.length);
-
-    for (int i = 0; i < oldWidget.steps.length; i += 1)
-      _oldStates[i] = oldWidget.steps[i].state;
-  }
-
-  bool _isFirst(int index) {
-    return index == 0;
   }
 
   bool _isLast(int index) {
     return widget.steps.length - 1 == index;
   }
 
-  bool _isCurrent(int index) {
-    return widget.currentStep == index;
-  }
 
-  bool _isDark() {
-    return Theme.of(context).brightness == Brightness.dark;
-  }
 
-  Widget _buildLine(bool visible) {
-    return Container(
-      width: visible ? 1.0 : 0.0,
-      height: 16.0,
-      color: Colors.grey.shade400,
-    );
-  }
-
-  Widget _buildCircleChild(int index, bool oldState) {
-    final StepState state =
-        oldState ? _oldStates[index] : widget.steps[index].state;
-    final bool isDarkActive = _isDark() && widget.steps[index].isActive;
-    assert(state != null);
-    switch (state) {
-      case StepState.indexed:
-      case StepState.disabled:
-        return Text(
-          '${index + 1}',
-          style: isDarkActive
-              ? _kStepStyle.copyWith(color: Colors.black87)
-              : _kStepStyle,
-        );
-      case StepState.editing:
-        return Icon(
-          Icons.edit,
-          color: isDarkActive ? _kCircleActiveDark : _kCircleActiveLight,
-          size: 18.0,
-        );
-      case StepState.complete:
-        return Icon(
-          Icons.check,
-          color: isDarkActive ? _kCircleActiveDark : _kCircleActiveLight,
-          size: 18.0,
-        );
-      case StepState.error:
-        return const Text('!', style: _kStepStyle);
-    }
-    return null;
-  }
-
-  Color _circleColor(int index) {
-    final ThemeData themeData = Theme.of(context);
-    if (!_isDark()) {
-      return widget.steps[index].isActive
-          ? themeData.primaryColor
-          : Colors.black38;
-    } else {
-      return widget.steps[index].isActive
-          ? themeData.accentColor
-          : themeData.backgroundColor;
-    }
-  }
-
-  Widget _buildCircle(int index, bool oldState) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      width: _kStepSize,
-      height: _kStepSize,
-      child: AnimatedContainer(
-        curve: Curves.fastOutSlowIn,
-        duration: kThemeAnimationDuration,
-        decoration: BoxDecoration(
-          color: _circleColor(index),
-          shape: BoxShape.circle,
-        ),
-        child: Center(
-          child: _buildCircleChild(
-              index, oldState && widget.steps[index].state == StepState.error),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTriangle(int index, bool oldState) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      width: _kStepSize,
-      height: _kStepSize,
-      child: Center(
-        child: SizedBox(
-          width: _kStepSize,
-          height: _kTriangleHeight,
-          // Height of 24dp-long-sided equilateral triangle.
-          child: CustomPaint(
-            painter: _TrianglePainter(
-              color: _isDark() ? _kErrorDark : _kErrorLight,
-            ),
-            child: Align(
-              alignment: const Alignment(0.0, 0.8),
-              // 0.8 looks better than the geometrical 0.33.
-              child: _buildCircleChild(index,
-                  oldState && widget.steps[index].state != StepState.error),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIcon(int index) {
-    if (widget.steps[index].state != _oldStates[index]) {
-      return AnimatedCrossFade(
-        firstChild: _buildCircle(index, true),
-        secondChild: _buildTriangle(index, true),
-        firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
-        secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
-        sizeCurve: Curves.fastOutSlowIn,
-        crossFadeState: widget.steps[index].state == StepState.error
-            ? CrossFadeState.showSecond
-            : CrossFadeState.showFirst,
-        duration: kThemeAnimationDuration,
-      );
-    } else {
-      if (widget.steps[index].state != StepState.error)
-        return _buildCircle(index, false);
-      else
-        return _buildTriangle(index, false);
-    }
-  }
 
   Widget _buildVerticalControls() {
-
-
     Color cancelColor;
 
     switch (Theme.of(context).brightness) {
@@ -340,35 +156,36 @@ class _WeeStepperState extends State<WeeStepper> with TickerProviderStateMixin {
 
     assert(cancelColor != null);
 
-    final ThemeData themeData = Theme.of(context);
-    final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
-
     return Container(
-      margin: const EdgeInsets.only(top: 16.0),
+      margin: const EdgeInsets.only(top: 8.0, bottom: 8),
       child: ConstrainedBox(
         constraints: const BoxConstraints.tightFor(height: 48.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             FlatButton(
-              onPressed: widget.onStepContinue,
-              color: _isDark()
-                  ? themeData.backgroundColor
-                  : themeData.primaryColor,
-              textColor: Colors.white,
+              onPressed: widget.onPrevious,
+              textColor: cancelColor,
               textTheme: ButtonTextTheme.normal,
-              child: Text(localizations.continueButtonLabel),
+              child: Text('Previous'),
             ),
-            Text('${widget.currentStep+1}/${widget.steps.length}'),
-            Container(
-              margin: const EdgeInsetsDirectional.only(start: 8.0),
-              child: FlatButton(
-                onPressed: widget.onPrevious,
-                textColor: cancelColor,
-                textTheme: ButtonTextTheme.normal,
-                child: Text(localizations.cancelButtonLabel),
+            Chip(
+              padding: const EdgeInsetsDirectional.only(
+                  start: 16, end: 16, top: 4, bottom: 4),
+              label: Text.rich(
+                TextSpan(children: [
+                  TextSpan(
+                      text: '${widget.currentStep + 1}', style: counterTheme),
+                  TextSpan(text: '/', style: slashTheme),
+                  TextSpan(text: '${widget.steps.length}', style: counterTheme),
+                ]),
+                textAlign: TextAlign.center,
               ),
+            ),
+            FlatButton(
+              onPressed: widget.onStepContinue,
+              textTheme: ButtonTextTheme.primary,
+              child: Text(widget.currentStep+1==widget.steps.length?'Finish':'Next'),
             ),
           ],
         ),
@@ -376,98 +193,12 @@ class _WeeStepperState extends State<WeeStepper> with TickerProviderStateMixin {
     );
   }
 
-  TextStyle _titleStyle(int index) {
-    final ThemeData themeData = Theme.of(context);
-    final TextTheme textTheme = themeData.textTheme;
-
-    assert(widget.steps[index].state != null);
-    switch (widget.steps[index].state) {
-      case StepState.indexed:
-      case StepState.editing:
-      case StepState.complete:
-        return textTheme.body2;
-      case StepState.disabled:
-        return textTheme.body2
-            .copyWith(color: _isDark() ? _kDisabledDark : _kDisabledLight);
-      case StepState.error:
-        return textTheme.body2
-            .copyWith(color: _isDark() ? _kErrorDark : _kErrorLight);
-    }
-    return null;
-  }
-
-  TextStyle _subtitleStyle(int index) {
-    final ThemeData themeData = Theme.of(context);
-    final TextTheme textTheme = themeData.textTheme;
-
-    assert(widget.steps[index].state != null);
-    switch (widget.steps[index].state) {
-      case StepState.indexed:
-      case StepState.editing:
-      case StepState.complete:
-        return textTheme.caption;
-      case StepState.disabled:
-        return textTheme.caption
-            .copyWith(color: _isDark() ? _kDisabledDark : _kDisabledLight);
-      case StepState.error:
-        return textTheme.caption
-            .copyWith(color: _isDark() ? _kErrorDark : _kErrorLight);
-    }
-    return null;
-  }
-
-  Widget _buildHeaderText(int index) {
-    final List<Widget> children = <Widget>[
-      AnimatedDefaultTextStyle(
-        style: _titleStyle(index),
-        duration: kThemeAnimationDuration,
-        curve: Curves.fastOutSlowIn,
-        child: widget.steps[index].title,
-      ),
-    ];
-
-    if (widget.steps[index].subtitle != null)
-      children.add(
-        Container(
-          margin: const EdgeInsets.only(top: 2.0),
-          child: AnimatedDefaultTextStyle(
-            style: _subtitleStyle(index),
-            duration: kThemeAnimationDuration,
-            curve: Curves.fastOutSlowIn,
-            child: widget.steps[index].subtitle,
-          ),
-        ),
+  get counterTheme => TextStyle(
+        fontWeight: FontWeight.w200,
       );
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: children,
-    );
-  }
-
-  Widget _buildVerticalHeader(int index) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: Row(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              // Line parts are always added in order for the ink splash to
-              // flood the tips of the connector lines.
-              _buildLine(!_isFirst(index)),
-              _buildIcon(index),
-              _buildLine(!_isLast(index)),
-            ],
-          ),
-          Container(
-            margin: const EdgeInsetsDirectional.only(start: 12.0),
-            child: _buildHeaderText(index),
-          ),
-        ],
-      ),
-    );
-  }
+  get slashTheme =>
+      TextStyle(fontWeight: FontWeight.w200, fontStyle: FontStyle.italic);
 
   Widget _buildHorizontal() {
     final List<Widget> children = <Widget>[];
@@ -475,25 +206,9 @@ class _WeeStepperState extends State<WeeStepper> with TickerProviderStateMixin {
     for (int i = 0; i < widget.steps.length; i += 1) {
       children.add(
         InkResponse(
-          onTap: widget.steps[i].state != StepState.disabled
-              ? () {
-                  if (widget.onStepTapped != null) widget.onStepTapped(i);
-                }
-              : null,
-          child: Row(
-            children: <Widget>[
-              Container(
-                height: 72.0,
-                child: Center(
-                  child: _buildIcon(i),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsetsDirectional.only(start: 12.0),
-                child: _buildHeaderText(i),
-              ),
-            ],
-          ),
+          onTap: () {
+            if (widget.onStepTapped != null) widget.onStepTapped(i);
+          },
         ),
       );
 
@@ -546,37 +261,3 @@ class _WeeStepperState extends State<WeeStepper> with TickerProviderStateMixin {
   }
 }
 
-// Paints a triangle whose base is the bottom of the bounding rectangle and its
-// top vertex the middle of its top.
-class _TrianglePainter extends CustomPainter {
-  _TrianglePainter({
-    this.color,
-  });
-
-  final Color color;
-
-  @override
-  bool hitTest(Offset point) => true; // Hitting the rectangle is fine enough.
-
-  @override
-  bool shouldRepaint(_TrianglePainter oldPainter) {
-    return oldPainter.color != color;
-  }
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final double base = size.width;
-    final double halfBase = size.width / 2.0;
-    final double height = size.height;
-    final List<Offset> points = <Offset>[
-      Offset(0.0, height),
-      Offset(base, height),
-      Offset(halfBase, 0.0),
-    ];
-
-    canvas.drawPath(
-      Path()..addPolygon(points, true),
-      Paint()..color = color,
-    );
-  }
-}

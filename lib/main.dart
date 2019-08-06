@@ -3,6 +3,7 @@ import 'package:Sarh/widget/stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'i10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Sarh',
       theme: ThemeData(
+        fontFamily: 'Poppins',
         buttonColor: Color(0xff0078ff),
         buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
         iconTheme: IconThemeData(color: Color(0xff5fabf6)),
@@ -28,60 +30,8 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      home: TestPage(),
+      home: SplashPage(),
     );
   }
 }
 
-class TestPage extends StatefulWidget {
-  @override
-  _TestPageState createState() => _TestPageState();
-}
-
-class _TestPageState extends State<TestPage> {
-  int current=0;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: WeeStepper(
-        steps: [
-
-         WeeStep(
-
-              title: Text('Step one'),
-              content: Text(
-                'Step #1',
-                style: Theme.of(context).textTheme.display4,
-              )),
-          WeeStep(
-              title: Text('Step Two'),
-              content: Text(
-                'Step #2',
-                style: Theme.of(context).textTheme.display4,
-              )),
-
-        ],
-        currentStep: current,
-        onStepContinue: (){
-          if(current==1)
-            return;
-          setState(() {
-            current+=1;
-          });
-        },
-        onPrevious: (){
-          if(current==0)
-            return;
-          setState(() {
-            current-=1;
-          });
-        },
-        onStepTapped: (step){
-          setState(() {
-            this.current=step;
-          });
-        },
-      ),
-    );
-  }
-}

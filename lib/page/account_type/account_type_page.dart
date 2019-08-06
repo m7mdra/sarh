@@ -1,4 +1,5 @@
 import 'package:Sarh/i10n/app_localizations.dart';
+import 'package:Sarh/page/company_profile/add_company_info_page.dart';
 import 'package:Sarh/page/intereset_selection/interest_selection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,7 +24,7 @@ class _AccountTypePageState extends State<AccountTypePage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -39,7 +40,7 @@ class _AccountTypePageState extends State<AccountTypePage> {
               },
             ),
             SizedBox(
-              height: 16,
+              height: 8,
             ),
             Text(
               '- Personal Account',
@@ -80,7 +81,11 @@ class _AccountTypePageState extends State<AccountTypePage> {
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
                                       InterestPickSelectionPage()));
-                        } else {}
+                        } else {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                            return AddCompanyInfoPage();
+                          }));
+                        }
                       },
                 child: Text(AppLocalizations.of(context).nextButton),
               ),

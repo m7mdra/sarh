@@ -1,15 +1,15 @@
 import 'dart:math';
 
+import 'package:Sarh/page/home/main_page.dart';
 import 'package:flutter/material.dart';
 
-class InterestPickSelectionPage extends StatefulWidget {
-  InterestPickSelectionPage({Key key}) : super(key: key);
+class InterestSelectionPage extends StatefulWidget {
+  InterestSelectionPage({Key key}) : super(key: key);
 
-  _InterestPickSelectionPageState createState() =>
-      _InterestPickSelectionPageState();
+  _InterestSelectionPageState createState() => _InterestSelectionPageState();
 }
 
-class _InterestPickSelectionPageState extends State<InterestPickSelectionPage> {
+class _InterestSelectionPageState extends State<InterestSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +52,10 @@ class _InterestPickSelectionPageState extends State<InterestPickSelectionPage> {
                   ),
                   RaisedButton(
                     child: Text('Save'),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => MainPage()));
+                    },
                   ),
                 ],
               ),
@@ -96,8 +99,10 @@ class _SingleSelectionCategoryState extends State<SingleSelectionCategory> {
 class CategoryWidget extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
+
   const CategoryWidget({Key key, this.isSelected, this.onTap})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -166,8 +171,10 @@ class _MultiSelectSubCategoryState extends State<MultiSelectSubCategory> {
 class SubCategoryWidget extends StatelessWidget {
   final bool isSelected;
   final String name;
+
   const SubCategoryWidget({Key key, this.isSelected, this.name})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -186,6 +193,7 @@ class SubCategoryWidget extends StatelessWidget {
 
   BoxDecoration get _selectedBoxDecoration => BoxDecoration(
       color: Colors.black54, borderRadius: BorderRadius.circular(4));
+
   BoxDecoration get _notSelectedBoxDecoration => BoxDecoration(
       border: Border.all(color: Colors.black.withAlpha(40)),
       borderRadius: BorderRadius.circular(4));

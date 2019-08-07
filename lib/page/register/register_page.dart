@@ -1,3 +1,4 @@
+import 'package:Sarh/page/account_type/account_type_page.dart';
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/page/verify_account/verify_account_page.dart';
 import 'package:Sarh/widget/relative_align.dart';
@@ -8,6 +9,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:Sarh/i10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
+  final Account accountType;
+
+  const RegisterPage({Key key, this.accountType}) : super(key: key);
+
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -16,6 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
@@ -51,7 +57,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Hero(
                         tag: 'screenName',
                         child: Text(
-                          AppLocalizations.of(context).register,
+                          widget.accountType == Account.personal
+                              ? 'Register user'
+                              : 'Register Company',
                           style: Theme.of(context).textTheme.title.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -61,7 +69,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     SizedBox(
                       height: 4,
                     ),
-
+                    SrahTextFormField(
+                      labelText: widget.accountType == Account.personal
+                          ? AppLocalizations.of(context).fullName
+                          : 'Company Name',
+                      icon: widget.accountType == Account.personal
+                          ? FontAwesomeIcons.user
+                          : FontAwesomeIcons.building,
+                    ),
                     SizedBox(
                       height: 4,
                     ),
@@ -73,15 +88,27 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: 4,
                     ),
                     SrahTextFormField(
-                      labelText: AppLocalizations.of(context).fullName,
-                      icon: FontAwesomeIcons.user,
+                      labelText: 'Phone number',
+                      icon: FontAwesomeIcons.phone,
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    DropdownButtonFormField(
+                      items: [],
+                      hint: Text('Select city'),
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(FontAwesomeIcons.map),
+                        fillColor: Color(0xffECECEC),
+                        filled: true,
+                        border: InputBorder.none,
+                      ),
                     ),
                     SizedBox(
                       height: 4,
                     ),
                     SrahTextFormField(
-                      labelText:
-                          AppLocalizations.of(context).passwordFieldName,
+                      labelText: AppLocalizations.of(context).passwordFieldName,
                       icon: FontAwesomeIcons.lock,
                     ),
                     SizedBox(
@@ -92,11 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       icon: FontAwesomeIcons.lock,
                     ),
                     SizedBox(
-                      height: 4,
-                    ),
-
-                    SizedBox(
-                      height: 16,
+                      height: 8,
                     ),
                     Hero(
                       tag: 'button',
@@ -106,29 +129,28 @@ class _RegisterPageState extends State<RegisterPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        VerifyAccountPage()));
+                                    builder: (context) => VerifyAccountPage(
+                                          accountType: widget.accountType,
+                                        )));
                           },
-                          child:
-                              Text(AppLocalizations.of(context).nextButton),
+                          child: Text(AppLocalizations.of(context).nextButton),
                         ),
                         width: double.infinity,
                         height: 40,
                       ),
                     ),
                     SizedBox(
-                      height: 16,
+                      height: 8,
                     ),
                     RelativeAlign(
                       alignment: ALIGN.Start,
                       child: Text.rich(
                         TextSpan(
-                          text: AppLocalizations.of(context)
-                              .iAlreadyHaveAccount,
+                          text:
+                              AppLocalizations.of(context).iAlreadyHaveAccount,
                           children: [
                             TextSpan(
-                                text:
-                                    ' ${AppLocalizations.of(context).login}',
+                                text: ' ${AppLocalizations.of(context).login}',
                                 recognizer: new TapGestureRecognizer()
                                   ..onTap = () => Navigator.push(
                                       context,

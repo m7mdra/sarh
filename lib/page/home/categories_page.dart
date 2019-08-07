@@ -16,7 +16,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
         padding: const EdgeInsets.all(16),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: 6 / 5,
+            childAspectRatio: 6 / 5.5,
             mainAxisSpacing: 4,
             crossAxisSpacing: 4),
         children: <Widget>[

@@ -72,7 +72,8 @@ class _MainPageState extends State<MainPage> {
                         child: IconButton(
                           icon: Icon(FontAwesomeIcons.commentAlt),
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
                               return ChatListPage();
                             }));
                           },
@@ -119,8 +120,7 @@ class _MainPageState extends State<MainPage> {
       floatingActionButton: FloatingActionButton(
         heroTag: 'fab',
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestQuoteScreen()));
-        },
+              },
         child: Icon(FontAwesomeIcons.plus),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -136,9 +136,9 @@ class _MainPageState extends State<MainPage> {
         items: [
           FABBottomAppBarItem(iconData: FontAwesomeIcons.home, text: 'Home'),
           FABBottomAppBarItem(
-              iconData: FontAwesomeIcons.th, text: 'Categories'),
+              iconData: FontAwesomeIcons.th, text: 'Category'),
           FABBottomAppBarItem(
-              iconData: FontAwesomeIcons.solidBell, text: 'Notification'),
+              iconData: FontAwesomeIcons.solidBell, text: 'Updates'),
           FABBottomAppBarItem(
               iconData: FontAwesomeIcons.solidStar, text: 'Favorite'),
         ],

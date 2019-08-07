@@ -1,6 +1,7 @@
 import 'package:Sarh/i10n/app_localizations.dart';
 import 'package:Sarh/page/company_profile/add_company_info_page.dart';
 import 'package:Sarh/page/intereset_selection/interest_selection_page.dart';
+import 'package:Sarh/page/register/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -13,9 +14,12 @@ class _AccountTypePageState extends State<AccountTypePage> {
   Color _appbarColor = Colors.white;
   Color _fontColor = Colors.black;
   Account _selectedAccount;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomPadding: true,
       appBar: AppBar(
         backgroundColor: _appbarColor,
         title: Text(
@@ -54,7 +58,7 @@ class _AccountTypePageState extends State<AccountTypePage> {
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur augue lectus, egestas quis commodo a, auctor in eros. Curabitur facilisis egestas erat, mattis sagittis turpis sodales vitae.',
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
-            Divider(),
+            Divider(height: 1,),
             Text(
               '- Service Provider',
               textAlign: TextAlign.start,
@@ -67,25 +71,22 @@ class _AccountTypePageState extends State<AccountTypePage> {
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur augue lectus, egestas quis commodo a, auctor in eros. Curabitur facilisis egestas erat, mattis sagittis turpis sodales vitae.',
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
+
             SizedBox(
               height: 8,
             ),
+
             SizedBox(
               child: RaisedButton(
                 onPressed: _selectedAccount == null
                     ? null
                     : () {
-                        if (_selectedAccount == Account.personal) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      InterestPickSelectionPage()));
-                        } else {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                            return AddCompanyInfoPage();
-                          }));
-                        }
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => RegisterPage(
+                                      accountType: _selectedAccount,
+                                    )));
                       },
                 child: Text(AppLocalizations.of(context).nextButton),
               ),
@@ -112,8 +113,8 @@ class AccountTypeSelectionWidget extends StatefulWidget {
       _AccountTypeSelectionWidgetState();
 }
 
-class _AccountTypeSelectionWidgetState
-    extends State<AccountTypeSelectionWidget> {
+class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
+    with SingleTickerProviderStateMixin {
   Account _selectedAccount;
 
   @override

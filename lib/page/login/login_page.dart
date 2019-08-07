@@ -1,3 +1,5 @@
+import 'package:Sarh/page/account_type/account_type_page.dart';
+import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/page/register/register_page.dart';
 import 'package:Sarh/widget/relative_align.dart';
 import 'package:Sarh/widget/sarh_text_form_field.dart';
@@ -90,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: SizedBox(
                           child: RaisedButton(
                             onPressed: () {
-                             
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage()));
                             },
                             child:
                                 Text(AppLocalizations.of(context).signInButton),
@@ -134,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                RegisterPage())),
+                                                AccountTypePage())),
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                   ))

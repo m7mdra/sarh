@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/widget/media_picker_dialog.dart';
 import 'package:Sarh/widget/stepper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AddCompanyInfoPage extends StatefulWidget {
@@ -13,7 +15,7 @@ class AddCompanyInfoPage extends StatefulWidget {
 const _kFormFieldPadding = 12.0;
 
 class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
-  int current = 0;
+  int _currentStep = 0;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   File _logoImage;
   DateTime _startFromDate;
@@ -76,20 +78,23 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                       ],
                     )),
                   ],
-                  currentStep: current,
+                  currentStep: _currentStep,
                   onStepContinue: () {
-                    setState(() {
-                      current += 1;
-                    });
+                    if (_currentStep != 4)
+                      setState(() {
+                        _currentStep += 1;
+                      });
+                    if(_currentStep==4)
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MainPage()));
                   },
                   onPrevious: () {
                     setState(() {
-                      current -= 1;
+                      if (_currentStep != 0) _currentStep -= 1;
                     });
                   },
                   onStepTapped: (step) {
                     setState(() {
-                      this.current = step;
+                      this._currentStep = step;
                     });
                   },
                 ),
@@ -350,11 +355,11 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
         ),
         _sizedBox,
         TextFormField(
-          keyboardType: TextInputType.phone,
+          keyboardType: TextInputType.text,
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-              labelText: 'Phone number',
-              hintText: 'Enter Phone number',
+              labelText: 'Address',
+              hintText: 'Enter company address',
               hintStyle: _hintTextStyle,
               labelStyle: _lableTextStyle,
               border: OutlineInputBorder()),
@@ -364,8 +369,8 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-              labelText: 'Email address',
-              hintText: 'Enter Email address',
+              labelText: 'ZIP code',
+              hintText: 'Enter ZIP code',
               hintStyle: _hintTextStyle,
               labelStyle: _lableTextStyle,
               border: OutlineInputBorder()),
@@ -381,107 +386,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
               labelStyle: _lableTextStyle,
               border: OutlineInputBorder()),
         ),
-        _sizedBox,
-        GestureDetector(
-          onTap: () {
-            _scaffoldKey.currentState.showBottomSheet(
-              (context) {
-                return Card(
-                  margin: const EdgeInsets.all(8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text('Enter the address'),
-                        _sizedBox,
-                        DropdownButtonFormField(
-                          items: <DropdownMenuItem>[],
-                          decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.all(_kFormFieldPadding),
-                              hintText: 'Choose country',
-                              hintStyle: _hintTextStyle,
-                              labelStyle: _lableTextStyle,
-                              border: OutlineInputBorder()),
-                        ),
-                        _sizedBox,
-                        DropdownButtonFormField(
-                          items: <DropdownMenuItem>[],
-                          decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.all(_kFormFieldPadding),
-                              hintText: 'Select city',
-                              hintStyle: _hintTextStyle,
-                              labelStyle: _lableTextStyle,
-                              border: OutlineInputBorder()),
-                        ),
-                        _sizedBox,
-                        TextFormField(
-                          decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.all(_kFormFieldPadding),
-                              labelText: 'Address',
-                              hintStyle: _hintTextStyle,
-                              labelStyle: _lableTextStyle,
-                              hintText: 'Enter Street/building address',
-                              border: OutlineInputBorder()),
-                        ),
-                        _sizedBox,
-                        TextFormField(
-                          decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.all(_kFormFieldPadding),
-                              labelText: 'ZIP code',
-                              hintStyle: _hintTextStyle,
-                              labelStyle: _lableTextStyle,
-                              hintText: 'Enter Zip code',
-                              border: OutlineInputBorder()),
-                        ),
-                        _sizedBox,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            FlatButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16)),
-                              color: Colors.grey.withAlpha(50),
-                              textColor: Colors.black,
-                              child: Text('Cancel'),
-                            ),
-                            RaisedButton(
-                              elevation: 0,
-                              onPressed: () {},
-                              child: Text('Save'),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16)),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
-              backgroundColor: Colors.transparent,
-            );
-          },
-          child: AbsorbPointer(
-            child: TextFormField(
-              keyboardType: TextInputType.url,
-              readOnly: true,
-              decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-                  labelText: 'Enter full address',
-                  hintStyle: _hintTextStyle,
-                  labelStyle: _lableTextStyle,
-                  border: OutlineInputBorder()),
-            ),
-          ),
-        ),
+
       ],
     );
   }

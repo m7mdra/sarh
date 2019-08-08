@@ -1,3 +1,4 @@
+import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/page/splash/splash_page.dart';
 import 'package:Sarh/widget/stepper.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      home: SplashPage(),
+      home: MainPage(),
     );
   }
 }

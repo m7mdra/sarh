@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            Align(
+            RelativeAlign(
               child: IconButton(
                   icon: Icon(
                     FontAwesomeIcons.angleLeft,
@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     Navigator.pop(context);
                   }),
-              alignment: Alignment.topLeft,
+              alignment: ALIGN.Start,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 32.0),

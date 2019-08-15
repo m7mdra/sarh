@@ -1,48 +1,20 @@
 import 'dart:math' as math;
 
+import 'package:Sarh/page/company_message/company_message_page.dart';
+import 'package:Sarh/page/message/message_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:unicorndial/unicorndial.dart';
 
-class ChatListPage extends StatefulWidget {
-  ChatListPage({Key key}) : super(key: key);
+class MessageListPage extends StatefulWidget {
+  MessageListPage({Key key}) : super(key: key);
 
-  _ChatListPageState createState() => _ChatListPageState();
+  _MessageListPageState createState() => _MessageListPageState();
 }
 
-class _ChatListPageState extends State<ChatListPage> {
-  
+class _MessageListPageState extends State<MessageListPage> {
   @override
   Widget build(BuildContext context) {
-      var childButtons = List<UnicornButton>();
-
-    childButtons.add(UnicornButton(
-        hasLabel: true,
-        labelHasShadow: true,
-        labelText: "New Message",
-        currentButton: FloatingActionButton(
-          mini: true,
-          heroTag: '"',
-          child: Icon(FontAwesomeIcons.envelope),
-          onPressed: () {},
-        )));
-
-    childButtons.add(UnicornButton(
-        currentButton: FloatingActionButton(
-            child: Icon(FontAwesomeIcons.fileInvoiceDollar),
-            heroTag: '',
-            mini: true, onPressed: () {},
-           ),labelText: 'New Quote',
-           hasLabel: true,
-           labelHasShadow: true,));
-
-
     return Scaffold(
-      floatingActionButton: UnicornDialer(
-        childButtons: childButtons,
-        orientation: UnicornOrientation.VERTICAL,
-        parentButton: Icon(Icons.add),
-      ),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -81,7 +53,15 @@ class _ChatListPageState extends State<ChatListPage> {
           Expanded(
             child: ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return ChatListItem();
+                return MessageListItem(
+                  newMessage: index == 0,
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return CompanyMessagePage();
+                    }));
+                  },
+                );
               },
               itemCount: 10,
               shrinkWrap: false,
@@ -93,22 +73,30 @@ class _ChatListPageState extends State<ChatListPage> {
   }
 }
 
-class ChatListItem extends StatelessWidget {
-  const ChatListItem({Key key}) : super(key: key);
+class MessageListItem extends StatelessWidget {
+  final bool newMessage;
+  final VoidCallback onTap;
+
+  const MessageListItem({Key key, this.newMessage, this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {},
+      onTap: onTap,
+      selected: newMessage,
       leading: CircleAvatar(
-        backgroundImage: AssetImage('assets/logo/logo.png'),
+        radius: 25,
+        backgroundImage: AssetImage('assets/background/stock_person.jpg'),
       ),
       dense: true,
       title: Text('Proivder name'),
       contentPadding: const EdgeInsets.only(left: 16, right: 16),
       subtitle: Text(
         'Message message message messageMessage message message message',
-        maxLines: 1,
+        style: TextStyle(
+            fontWeight: newMessage ? FontWeight.bold : FontWeight.normal),
+        maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
       trailing: Column(
@@ -120,10 +108,6 @@ class ChatListItem extends StatelessWidget {
           ),
           SizedBox(
             height: 4,
-          ),
-          CircleAvatar(
-            radius: 10,
-            child: Text('${math.Random().nextInt(10)}'),
           ),
         ],
       ),

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:Sarh/page/account_type/account_type_page.dart';
-import 'package:Sarh/page/company_profile/add_company_info_page.dart';
+import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
 import 'package:Sarh/page/intereset_selection/interest_selection_page.dart';
 import 'package:Sarh/widget/sarh_progress_bar.dart';
 import 'package:Sarh/widget/verification_widget.dart';

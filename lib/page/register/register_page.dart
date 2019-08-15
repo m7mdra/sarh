@@ -26,7 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            Align(
+            RelativeAlign(
               child: IconButton(
                   icon: Icon(
                     FontAwesomeIcons.angleLeft,
@@ -34,7 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   onPressed: () {
                     Navigator.pop(context);
                   }),
-              alignment: Alignment.topLeft,
+              alignment: ALIGN.Start
             ),
             Align(
               alignment: Alignment.topCenter,

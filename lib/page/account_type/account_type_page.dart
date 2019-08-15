@@ -1,5 +1,5 @@
 import 'package:Sarh/i10n/app_localizations.dart';
-import 'package:Sarh/page/company_profile/add_company_info_page.dart';
+import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
 import 'package:Sarh/page/intereset_selection/interest_selection_page.dart';
 import 'package:Sarh/page/register/register_page.dart';
 import 'package:flutter/material.dart';

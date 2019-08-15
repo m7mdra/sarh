@@ -1,5 +1,6 @@
-import 'package:Sarh/page/chat/chat_list_page.dart';
-import 'package:Sarh/page/quote/request_quote_screen.dart';
+import 'package:Sarh/page/company_profile/company_profile_page.dart';
+import 'package:Sarh/page/message_list/message_list_page.dart';
+import 'package:Sarh/page/request_quote/request_quote_screen.dart';
 import 'package:Sarh/page/search/search_page.dart';
 import 'package:Sarh/widget/category_ship_widget.dart';
 import 'package:Sarh/widget/fab_bottom_appbar.dart';
@@ -74,7 +75,7 @@ class _MainPageState extends State<MainPage> {
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (BuildContext context) {
-                              return ChatListPage();
+                              return MessageListPage();
                             }));
                           },
                         ))
@@ -120,7 +121,10 @@ class _MainPageState extends State<MainPage> {
       floatingActionButton: FloatingActionButton(
         heroTag: 'fab',
         onPressed: () {
-              },
+          Navigator.push(context, MaterialPageRoute(builder: (context){
+            return RequestQuoteScreen();
+          }));
+        },
         child: Icon(FontAwesomeIcons.plus),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -135,8 +139,7 @@ class _MainPageState extends State<MainPage> {
         key: _bottomBarKey,
         items: [
           FABBottomAppBarItem(iconData: FontAwesomeIcons.home, text: 'Home'),
-          FABBottomAppBarItem(
-              iconData: FontAwesomeIcons.th, text: 'Category'),
+          FABBottomAppBarItem(iconData: FontAwesomeIcons.th, text: 'Category'),
           FABBottomAppBarItem(
               iconData: FontAwesomeIcons.solidBell, text: 'Updates'),
           FABBottomAppBarItem(
@@ -187,26 +190,35 @@ class UserDrawer extends StatelessWidget {
                 SizedBox(
                   width: 8,
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Username',
-                      style: Theme.of(context)
-                          .textTheme
-                          .title
-                          .copyWith(color: Colors.white),
-                    ),
-                    Text('Mail@Domain.com',
-                        style: Theme.of(context).textTheme.body1.copyWith(
-                              color: Colors.white,
-                            )),
-                    Text('Tap to view your profile',
-                        style: Theme.of(context).textTheme.caption.copyWith(
-                              color: Colors.white,
-                            )),
-                  ],
+                InkWell(
+                  splashColor: Colors.white,
+                  highlightColor: Colors.white,
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return CompanyProfilePage();
+                    }));
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Username',
+                        style: Theme.of(context)
+                            .textTheme
+                            .title
+                            .copyWith(color: Colors.white),
+                      ),
+                      Text('Mail@Domain.com',
+                          style: Theme.of(context).textTheme.body1.copyWith(
+                                color: Colors.white,
+                              )),
+                      Text('Tap to view your profile',
+                          style: Theme.of(context).textTheme.caption.copyWith(
+                                color: Colors.white,
+                              )),
+                    ],
+                  ),
                 ),
               ],
             ),

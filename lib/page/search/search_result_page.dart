@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class SearchResultScreen extends StatefulWidget {
+class SearchResultPage extends StatefulWidget {
   @override
-  _SearchResultScreenState createState() => _SearchResultScreenState();
+  _SearchResultPageState createState() => _SearchResultPageState();
 }
 
-class _SearchResultScreenState extends State<SearchResultScreen> {
+class _SearchResultPageState extends State<SearchResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

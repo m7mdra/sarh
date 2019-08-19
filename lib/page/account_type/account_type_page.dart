@@ -1,7 +1,6 @@
 import 'package:Sarh/i10n/app_localizations.dart';
-import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
-import 'package:Sarh/page/intereset_selection/interest_selection_page.dart';
 import 'package:Sarh/page/register/register_page.dart';
+import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -21,6 +20,7 @@ class _AccountTypePageState extends State<AccountTypePage> {
       resizeToAvoidBottomInset: true,
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
+        leading: BackButtonNoLabel(Colors.white),
         backgroundColor: _appbarColor,
         title: Text(
           'Choose your Account type',

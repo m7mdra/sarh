@@ -1,19 +1,32 @@
+import 'package:Sarh/page/home/home_page.dart';
 import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/page/splash/splash_page.dart';
-import 'package:Sarh/widget/stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'dependency_provider.dart';
 import 'i10n/app_localizations.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  DependencyProvider.build();
+  runApp(MyApp());
+}
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Sarh',
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(builder: (BuildContext context) {
+          return SplashPage();
+        });
+      },
       theme: ThemeData(
         fontFamily: 'Poppins',
         buttonColor: Color(0xff0078ff),
@@ -35,4 +48,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

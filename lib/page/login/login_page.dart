@@ -1,6 +1,6 @@
 import 'package:Sarh/page/account_type/account_type_page.dart';
 import 'package:Sarh/page/home/main_page.dart';
-import 'package:Sarh/page/register/register_page.dart';
+import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/relative_align.dart';
 import 'package:Sarh/widget/sarh_text_form_field.dart';
 import 'package:flutter/gestures.dart';
@@ -27,13 +27,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: <Widget>[
             RelativeAlign(
-              child: IconButton(
-                  icon: Icon(
-                    FontAwesomeIcons.angleLeft,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }),
+              child: BackButtonNoLabel(Theme.of(context).accentColor),
               alignment: ALIGN.Start,
             ),
             Padding(

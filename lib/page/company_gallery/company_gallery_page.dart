@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/relative_align.dart';
 import 'package:Sarh/widget/sliver_header_delegate.dart';
 import 'package:flutter/material.dart';
@@ -19,20 +20,13 @@ class _CompanyGalleryPageState extends State<CompanyGalleryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
               backgroundColor: Colors.white,
               centerTitle: true,
-              leading: IconButton(
-                onPressed: (){
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  FontAwesomeIcons.chevronLeft,
-                  color: Colors.grey,
-                ),
-              ),
+              leading: BackButtonNoLabel(Colors.grey),
               automaticallyImplyLeading: true,
               title: Text(
                 'Company\'s gallery',

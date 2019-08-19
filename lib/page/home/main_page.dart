@@ -1,4 +1,7 @@
+import 'package:Sarh/page/community/community_page.dart';
 import 'package:Sarh/page/company_profile/company_profile_page.dart';
+import 'package:Sarh/page/home/favorites_companies_page.dart';
+import 'package:Sarh/page/home/updates_page.dart';
 import 'package:Sarh/page/message_list/message_list_page.dart';
 import 'package:Sarh/page/request_quote/request_quote_screen.dart';
 import 'package:Sarh/page/search/search_page.dart';
@@ -81,29 +84,6 @@ class _MainPageState extends State<MainPage> {
                         ))
                   ],
                 ),
-                Container(
-                  height: 40,
-                  child: ListView(
-                    children: <Widget>[
-                      CategoryShip(
-                        category: 'Your favorite',
-                      ),
-                      CategoryShip(
-                        category: 'Interior Design',
-                      ),
-                      CategoryShip(
-                        category: 'Plumbing',
-                      ),
-                      CategoryShip(
-                        category: 'Carpentry',
-                      ),
-                      CategoryShip(
-                        category: 'Others',
-                      ),
-                    ],
-                    scrollDirection: Axis.horizontal,
-                  ),
-                )
               ],
             ),
           ),
@@ -113,6 +93,8 @@ class _MainPageState extends State<MainPage> {
               children: <Widget>[
                 HomePage(),
                 CategoriesPage(),
+                UpdatesPage(),
+                FavoriteCompaniesPage()
               ],
             ),
           ),
@@ -121,7 +103,7 @@ class _MainPageState extends State<MainPage> {
       floatingActionButton: FloatingActionButton(
         heroTag: 'fab',
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context){
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
             return RequestQuoteScreen();
           }));
         },
@@ -174,17 +156,20 @@ class UserDrawer extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.white,
-                  child: IconButton(
-                    icon: Icon(
-                      FontAwesomeIcons.user,
-                      size: 30,
+                Hero(
+                  tag: 'profile_image',
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.white,
+                    child: IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.user,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        _scaffoldKey.currentState.openDrawer();
+                      },
                     ),
-                    onPressed: () {
-                      _scaffoldKey.currentState.openDrawer();
-                    },
                   ),
                 ),
                 SizedBox(
@@ -193,11 +178,7 @@ class UserDrawer extends StatelessWidget {
                 InkWell(
                   splashColor: Colors.white,
                   highlightColor: Colors.white,
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return CompanyProfilePage();
-                    }));
-                  },
+                  onTap: () => _navigateToProfile(context),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,10 +216,12 @@ class UserDrawer extends StatelessWidget {
                       color: Colors.white, fontWeight: FontWeight.normal)),
             ),
             ListTile(
+              dense: true,
               leading: Icon(
                 FontAwesomeIcons.users,
                 color: Colors.white,
               ),
+              onTap: () => _navigateToCommunityPage(context),
               title: Text('Community',
                   style: Theme.of(context).textTheme.title.copyWith(
                       color: Colors.white, fontWeight: FontWeight.normal)),
@@ -285,6 +268,21 @@ class UserDrawer extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _navigateToProfile(BuildContext context) {
+    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return CompanyProfilePage();
+    }));
+  }
+
+  void _navigateToCommunityPage(BuildContext context) {
+    Navigator.pop(context);
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return CommunityPage();
+    }));
   }
 }
 

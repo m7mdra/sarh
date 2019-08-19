@@ -112,7 +112,7 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
                   item.text,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: color),
+                  style: TextStyle(color: color,fontSize: selectedIndex==index?15:13),
                 )
               ],
             ),

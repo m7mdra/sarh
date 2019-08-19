@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Sarh/page/home/main_page.dart';
+import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 
 class InterestSelectionPage extends StatefulWidget {
@@ -14,10 +15,12 @@ class _InterestSelectionPageState extends State<InterestSelectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: BackButtonNoLabel(Colors.white),
+        centerTitle: true,
         title: Text(
           'Choose your interests',
           style:
-              Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
+              Theme.of(context).textTheme.title.copyWith(color: Colors.white),
         ),
       ),
       body: Column(
@@ -25,7 +28,7 @@ class _InterestSelectionPageState extends State<InterestSelectionPage> {
         children: <Widget>[
           Container(
             child: SingleSelectionCategory(),
-            height: 170,
+            height: 180,
           ),
           Divider(
             height: 1,
@@ -79,11 +82,14 @@ class _SingleSelectionCategoryState extends State<SingleSelectionCategory> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+
       shrinkWrap: true,
+      controller: ScrollController(),
       padding: const EdgeInsets.all(16),
       itemBuilder: (BuildContext context, int index) {
         return CategoryWidget(
           onTap: () async {
+
             _selectIndex = index;
             setState(() {});
           },
@@ -110,14 +116,14 @@ class CategoryWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Card(
-            elevation: isSelected != null && isSelected ? 16 : 0,
+            elevation: isSelected != null && isSelected ? 16 : 2,
             child: Image.asset(
               'assets/logo/logo.png',
               height: isSelected ? 110 : 90,
               width: isSelected ? 110 : 90,
             ),
           ),
-          Text('Category name')
+          Text('Category')
         ],
       ),
     );
@@ -158,7 +164,7 @@ class _MultiSelectSubCategoryState extends State<MultiSelectSubCategory> {
         runSpacing: 4,
         children: subCategories
             .map((sub) => SubCategoryWidget(
-                  isSelected: Random().nextInt(100) % 2 == 0,
+                  isSelected: Random().nextInt(10) % 2 == 0,
                   name: sub,
                 ))
             .toList(),

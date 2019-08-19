@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class SplashPage extends StatefulWidget {
   @override

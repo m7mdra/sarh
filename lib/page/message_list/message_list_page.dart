@@ -1,9 +1,7 @@
-import 'dart:math' as math;
 
 import 'package:Sarh/page/company_message/company_message_page.dart';
-import 'package:Sarh/page/message/message_page.dart';
+import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MessageListPage extends StatefulWidget {
   MessageListPage({Key key}) : super(key: key);
@@ -25,15 +23,7 @@ class _MessageListPageState extends State<MessageListPage> {
             color: Colors.black54,
           ),
         ),
-        leading: IconButton(
-          color: Colors.black54,
-          icon: Icon(
-            FontAwesomeIcons.chevronLeft,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        leading: BackButtonNoLabel(Colors.grey),
       ),
       body: Column(
         children: <Widget>[

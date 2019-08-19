@@ -21,6 +21,12 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
   Timer _timer;
 
   @override
+  void dispose() {
+    super.dispose();
+    if (_timer.isActive) _timer.cancel();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(

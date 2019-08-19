@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:Sarh/page/search/search_result_screen.dart';
+import 'package:Sarh/page/search/search_result_page.dart';
+import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SubCategoryPage extends StatefulWidget {
   @override
@@ -17,10 +17,7 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
         backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
         title: Text('Category Name'),
-        leading: IconButton(
-          icon: Icon(FontAwesomeIcons.chevronLeft),
-          onPressed: () {},
-        ),
+        leading: BackButtonNoLabel(Colors.white),
       ),
       body: ListView.separated(
         itemBuilder: (BuildContext context, int index) {
@@ -45,7 +42,7 @@ class SubCategoryItem extends StatelessWidget {
       trailing: Text('(${Random().nextInt(100)})'),
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => SearchResultScreen()));
+            MaterialPageRoute(builder: (context) => SearchResultPage()));
       },
     );
   }

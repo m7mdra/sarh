@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -55,15 +56,7 @@ class _MessagePageState extends State<MessagePage> {
             color: Colors.black54,
           ),
         ),
-        leading: IconButton(
-          color: Colors.black54,
-          icon: Icon(
-            FontAwesomeIcons.chevronLeft,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        leading: BackButtonNoLabel(Colors.grey),
       ),
       body: SafeArea(
           child: Column(
@@ -102,7 +95,7 @@ class _MessagePageState extends State<MessagePage> {
                 RaisedButton.icon(
 
                     icon: Icon(FontAwesomeIcons.paperPlane),
-                    label: Text('Submit')),
+                    label: Text('Submit'), onPressed: () {},),
                 FlatButton.icon(
                     onPressed: () {
                       showModalBottomSheet(

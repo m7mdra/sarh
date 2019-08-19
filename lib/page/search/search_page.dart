@@ -1,4 +1,5 @@
-import 'package:Sarh/page/search/search_result_screen.dart';
+import 'package:Sarh/page/search/search_result_page.dart';
+import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -18,15 +19,7 @@ class _SearchPageState extends State<SearchPage> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  CircleAvatar(
-                    backgroundColor: Color(0xf9ac0e3),
-                    child: IconButton(
-                      icon: Icon(FontAwesomeIcons.chevronLeft),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
+                  BackButtonNoLabel(Theme.of(context).accentColor),
                   Expanded(
                       child: TextField(
                     decoration: InputDecoration(
@@ -105,7 +98,7 @@ class SearchSuggestionListTile extends StatelessWidget {
       //TODO: Delegate onTap to construction
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => SearchResultScreen()));
+            MaterialPageRoute(builder: (context) => SearchResultPage()));
       },
       title: Text.rich(TextSpan(text: 'Search in ', children: [
         TextSpan(

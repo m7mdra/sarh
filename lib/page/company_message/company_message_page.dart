@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Sarh/page/create_quote/create_quote_page.dart';
+import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -56,15 +57,7 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
             color: Colors.black54,
           ),
         ),
-        leading: IconButton(
-          color: Colors.black54,
-          icon: Icon(
-            FontAwesomeIcons.chevronLeft,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        leading: BackButtonNoLabel(Colors.grey),
       ),
       body: SafeArea(
           child: Column(
@@ -102,7 +95,7 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
               children: <Widget>[
                 RaisedButton.icon(
                     icon: Icon(FontAwesomeIcons.paperPlane),
-                    label: Text('Send')),
+                    label: Text('Send'), onPressed: () {},),
                 FlatButton.icon(
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context){

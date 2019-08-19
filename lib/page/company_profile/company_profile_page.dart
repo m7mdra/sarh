@@ -1,6 +1,8 @@
 import 'dart:math';
 
-import 'package:Sarh/widget/category_ship_widget.dart';
+import 'package:Sarh/page/edit_company_profile/edit_company_profile_page.dart';
+import 'package:Sarh/page/profile_image_modify/modify_profile_image_page.dart';
+import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -18,7 +20,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            _appbar_and_header(context),
+            _appbarAndHeader(context),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.all(16),
@@ -98,7 +100,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                     ),
                     title: Text('www.takweeneng.com'),
                   ),
-                  _4heightSizedBox(),
+                  _heightSizedBox(),
                   Row(
                     children: <Widget>[
                       SocialMediaTile(
@@ -153,7 +155,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                     'Featured projects',
                     style: Theme.of(context).textTheme.title,
                   ),
-                  _4heightSizedBox(),
+                  _heightSizedBox(),
                   Wrap(
                     alignment: WrapAlignment.center,
                     spacing: 4,
@@ -233,7 +235,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
         color: Colors.black38,
       );
 
-  Card _appbar_and_header(BuildContext context) {
+  Card _appbarAndHeader(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.all(0),
@@ -254,37 +256,50 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    IconButton(
-                        icon: Icon(
-                          FontAwesomeIcons.chevronLeft,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
-                    IconButton(
-                        icon: Icon(
-                          FontAwesomeIcons.ellipsisV,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {})
+                    BackButtonWidget(),
+                    FlatButton.icon(
+                      icon: Icon(
+                        FontAwesomeIcons.userCog,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    EditCompanyProfilePage()));
+                      },
+                      textColor: Colors.white,
+                      label: Text('Profile settings'),
+                    )
                   ],
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     children: <Widget>[
-                      Container(
-                        width: 120,
-                        height: 120,
-                        child: Icon(
-                          Icons.camera_alt,
-                          size: 30,
-                          color: Colors.grey,
-                        ),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ModifyProfileImagePage();
+                          }));
+                        },
+                        child: Hero(
+                          tag: 'profile_image',
+                          child: Container(
+                            width: 120,
+                            height: 120,
+                            child: Icon(
+                              Icons.camera_alt,
+                              size: 30,
+                              color: Colors.grey,
+                            ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                       _widthSizedBox(),
@@ -298,7 +313,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                                 .title
                                 .copyWith(color: Colors.white),
                           ),
-                          _4heightSizedBox(),
+                          _heightSizedBox(),
                           Text.rich(TextSpan(children: [
                             TextSpan(
                                 text: 'Category',
@@ -321,7 +336,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                                     .subtitle
                                     .copyWith(color: Colors.white)),
                           ])),
-                          _4heightSizedBox(),
+                          _heightSizedBox(),
                           Row(
                             children: <Widget>[
                               IgnorePointer(
@@ -372,7 +387,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
     );
   }
 
-  SizedBox _4heightSizedBox() {
+  SizedBox _heightSizedBox() {
     return const SizedBox(
       height: 4,
     );

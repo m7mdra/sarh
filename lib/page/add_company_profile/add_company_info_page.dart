@@ -32,76 +32,75 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            _buildTopArcAndLogo(context),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: WeeStepper(
-                  steps: [
-                    WeeStep(content: _buildCompanyDetailsWidgetStep()),
-                    WeeStep(content: _buildContactInformationStep()),
-                    WeeStep(content: _buildFeatureClientStep(context)),
-                    WeeStep(content: _buildSocialMediaStep()),
-                    WeeStep(
-                        content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('Documents'),
-                        _sizedBox,
-                        Text(
-                          'Upload company trade license',
-                          style: Theme.of(context).textTheme.caption,
+      body: Column(
+        children: <Widget>[
+          _buildTopArcAndLogo(context),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: WeeStepper(
+                steps: [
+                  WeeStep(content: _buildCompanyDetailsWidgetStep()),
+                  WeeStep(content: _buildContactInformationStep()),
+                  WeeStep(content: _buildFeatureClientStep(context)),
+                  WeeStep(content: _buildSocialMediaStep()),
+                  WeeStep(
+                      content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('Documents'),
+                      _sizedBox,
+                      Text(
+                        'Upload company trade license',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      _sizedBox,
+                      Container(
+                        height: 150,
+                        color: Color(0xffF6F6F6),
+                        child: Center(
+                          child: Icon(Icons.camera_alt),
                         ),
-                        _sizedBox,
-                        Container(
-                          height: 150,
-                          color: Color(0xffF6F6F6),
-                          child: Center(
-                            child: Icon(Icons.camera_alt),
-                          ),
-                        ),
-                        _sizedBox,
-                        Text.rich(TextSpan(children: [
-                          TextSpan(
-                              text: 'Note: ',
-                              style: TextStyle(fontWeight: FontWeight.w600)),
-                          TextSpan(
-                              text:
-                                  'The documents required to verify your account.\nyou can '
-                                  'skip this step by '
-                                  'pressing the next button, you can upload '
-                                  'it later from your profile.')
-                        ]))
-                      ],
-                    )),
-                  ],
-                  currentStep: _currentStep,
-                  onStepContinue: () {
-                    if (_currentStep != 4)
-                      setState(() {
-                        _currentStep += 1;
-                      });
-                    if(_currentStep==4)
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MainPage()));
-                  },
-                  onPrevious: () {
+                      ),
+                      _sizedBox,
+                      Text.rich(TextSpan(children: [
+                        TextSpan(
+                            text: 'Note: ',
+                            style: TextStyle(fontWeight: FontWeight.w600)),
+                        TextSpan(
+                            text:
+                                'The documents required to verify your account.\nyou can '
+                                'skip this step by '
+                                'pressing the next button, you can upload '
+                                'it later from your profile.')
+                      ]))
+                    ],
+                  )),
+                ],
+                currentStep: _currentStep,
+                onStepContinue: () {
+                  print('Current step: $_currentStep');
+                  if (_currentStep != 4)
                     setState(() {
-                      if (_currentStep != 0) _currentStep -= 1;
+                      _currentStep += 1;
                     });
-                  },
-                  onStepTapped: (step) {
-                    setState(() {
-                      this._currentStep = step;
-                    });
-                  },
-                ),
+                  if(_currentStep==4)
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MainPage()));
+                },
+                onPrevious: () {
+                  setState(() {
+                    if (_currentStep != 0) _currentStep -= 1;
+                  });
+                },
+                onStepTapped: (step) {
+                  setState(() {
+                    this._currentStep = step;
+                  });
+                },
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -113,13 +112,13 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           bottomLeft: Radius.circular(64), bottomRight: Radius.circular(64)),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 120,
+        height: 150,
         child: Stack(
           fit: StackFit.loose,
           overflow: Overflow.visible,
           children: <Widget>[
             Positioned(
-              top: 35,
+              top: 55,
               left: 16,
               child: Align(
                 alignment: Alignment.bottomLeft,

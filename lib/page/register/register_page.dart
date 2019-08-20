@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:Sarh/page/account_type/account_type_page.dart';
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/page/verify_account/verify_account_page.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:Sarh/i10n/app_localizations.dart';
+import 'package:Sarh/form_commons.dart';
 
 class RegisterPage extends StatefulWidget {
   final Account accountType;
@@ -18,7 +21,9 @@ class RegisterPage extends StatefulWidget {
   _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends State<RegisterPage>  {
+  var _selectCity;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +56,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           tag: 'screenName',
                           child: Text(
                             widget.accountType == Account.personal
-                                ? 'Register user'
-                                : 'Register Company',
+                                ? AppLocalizations.of(context).registerUser
+                                : AppLocalizations.of(context)
+                                    .registerServiceProvider,
                             style: Theme.of(context).textTheme.title.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -65,7 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       SrahTextFormField(
                         labelText: widget.accountType == Account.personal
                             ? AppLocalizations.of(context).fullName
-                            : 'Company Name',
+                            : AppLocalizations.of(context).serviceProviderName,
                         icon: widget.accountType == Account.personal
                             ? FontAwesomeIcons.user
                             : FontAwesomeIcons.building,
@@ -81,15 +87,40 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 4,
                       ),
                       SrahTextFormField(
-                        labelText: 'Phone number',
+                        labelText:
+                            AppLocalizations.of(context).phoneNumberFieldHint,
                         icon: FontAwesomeIcons.phone,
                       ),
                       SizedBox(
                         height: 4,
                       ),
+
                       DropdownButtonFormField(
-                        items: [],
-                        hint: Text('Select city'),
+                        onChanged: (value) {
+                          setState(() {
+                            this._selectCity = value;
+                          });
+                        },
+                        value: _selectCity,
+                        items: [
+                          DropdownMenuItem(
+                            child: Text('ابوظبي'),
+                            value: '1',
+                          ),
+                          DropdownMenuItem(
+                            child: Text('عجمان'),
+                            value: '2',
+                          ),
+                          DropdownMenuItem(
+                            child: Text('الفجيرة'),
+                            value: '3',
+                          ),
+                          DropdownMenuItem(
+                            child: Text('الشارقة'),
+                            value: '4',
+                          ),
+                        ],
+                        hint: Text(AppLocalizations.of(context).cityFieldHint),
                         decoration: InputDecoration(
                           prefixIcon: Icon(FontAwesomeIcons.map),
                           fillColor: Color(0xffECECEC),

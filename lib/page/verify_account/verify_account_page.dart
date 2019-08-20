@@ -6,6 +6,7 @@ import 'package:Sarh/page/intereset_selection/interest_selection_page.dart';
 import 'package:Sarh/widget/sarh_progress_bar.dart';
 import 'package:Sarh/widget/verification_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:Sarh/i10n/app_localizations.dart';
 
 class VerifyAccountPage extends StatefulWidget {
   final Account accountType;
@@ -38,12 +39,13 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Account Verification',
+                  AppLocalizations.of(context).accountVerificationPageTitle,
                   style: Theme.of(context).textTheme.title,
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Please enter the verification code below\n that we have sent to your phone number +971589227074',
+                  AppLocalizations.of(context)
+                      .accountVerificationMessage('0512345678'),
                   textAlign: TextAlign.center,
                   style: Theme.of(context)
                       .textTheme
@@ -64,7 +66,6 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
                   4,
                   onCodeChange: (code) {},
                   onComplete: (bool) {
-                    print("is completed? $bool");
                   },
                 ),
                 SizedBox(height: 8),
@@ -90,12 +91,12 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
                               isLoading = true;
                             });
                           },
-                          child: Text('Verify'),
+                          child: Text(AppLocalizations.of(context).verifyButton),
                         ),
                       ),
                       OutlineButton(
                         onPressed: () {},
-                        child: Text('Send again'),
+                        child: Text(AppLocalizations.of(context).sendAgainButton),
                       ),
                     ],
                   ),

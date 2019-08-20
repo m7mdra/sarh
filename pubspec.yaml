@@ -42,6 +42,7 @@ dev_dependencies:
   get_it: ^1.0.3+2
   shared_preferences: ^0.5.3+4
   cached_network_image: ^1.1.1
+  dropdown_menu: ^1.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -76,6 +77,11 @@ flutter:
          - asset: assets/font/Poppins-Regular.ttf
          - asset: assets/font/Poppins-Light.ttf
          - asset: assets/font/Poppins-Bold.ttf
+
+    - family: Segoe UI
+      fonts:
+         - asset: assets/font/Segoe-UI.ttf
+         - asset: assets/font/Segoe-UI-Bold.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

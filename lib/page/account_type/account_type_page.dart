@@ -3,6 +3,7 @@ import 'package:Sarh/page/register/register_page.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:Sarh/i10n/app_localizations.dart';
 
 class AccountTypePage extends StatefulWidget {
   @override
@@ -11,20 +12,22 @@ class AccountTypePage extends StatefulWidget {
 
 class _AccountTypePageState extends State<AccountTypePage> {
   Color _appbarColor = Colors.white;
-  Color _fontColor = Colors.black;
+  Color _fontColor = Colors.grey;
   Account _selectedAccount;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-        leading: BackButtonNoLabel(Colors.white),
+        centerTitle: true,
+        leading: BackButtonNoLabel(_fontColor),
         backgroundColor: _appbarColor,
         title: Text(
-          'Choose your Account type',
-          style: Theme.of(context).textTheme.body1.copyWith(color: _fontColor),
+          AppLocalizations.of(context).selectAccountType,
+          style: TextStyle(inherit: true, color: _fontColor),
         ),
       ),
       body: Padding(
@@ -34,20 +37,21 @@ class _AccountTypePageState extends State<AccountTypePage> {
           children: <Widget>[
             AccountTypeSelectionWidget(
               onSelectChanged: (account) {
-                _selectedAccount = account;
-                if (account == Account.personal)
-                  _appbarColor = Colors.blue;
-                else
-                  _appbarColor = Colors.lightBlueAccent;
-                _fontColor = Colors.white;
-                setState(() {});
+                setState(() {
+                  _selectedAccount = account;
+                  if (account == Account.personal)
+                    _appbarColor = Colors.blue;
+                  else
+                    _appbarColor = Colors.lightBlueAccent;
+                  _fontColor = Colors.white;
+                });
               },
             ),
             SizedBox(
               height: 8,
             ),
             Text(
-              '- Personal Account',
+              '- ${AppLocalizations.of(context).personalAccountType}',
               textAlign: TextAlign.start,
               style: TextStyle(color: Theme.of(context).primaryColor),
             ),
@@ -58,9 +62,9 @@ class _AccountTypePageState extends State<AccountTypePage> {
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur augue lectus, egestas quis commodo a, auctor in eros. Curabitur facilisis egestas erat, mattis sagittis turpis sodales vitae.',
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
-            Divider(height: 1,),
+            Divider(),
             Text(
-              '- Service Provider',
+              '- ${AppLocalizations.of(context).serviceProviderAccountType}',
               textAlign: TextAlign.start,
               style: TextStyle(color: Theme.of(context).primaryColor),
             ),
@@ -71,11 +75,9 @@ class _AccountTypePageState extends State<AccountTypePage> {
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur augue lectus, egestas quis commodo a, auctor in eros. Curabitur facilisis egestas erat, mattis sagittis turpis sodales vitae.',
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
-
             SizedBox(
               height: 8,
             ),
-
             SizedBox(
               child: RaisedButton(
                 onPressed: _selectedAccount == null
@@ -131,7 +133,7 @@ class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
                 child: Column(
                   children: <Widget>[
                     Card(
-                      elevation: _selectedAccount == Account.personal ? 16 : 0,
+                      elevation: isPersonal ? 16 : 0,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: IconButton(
@@ -149,7 +151,11 @@ class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
                       clipBehavior: Clip.antiAlias,
                       color: Colors.blue,
                     ),
-                    Text('Personal Account')
+                    Text(AppLocalizations.of(context).personalAccountType,
+                        style: Theme.of(context).textTheme.subhead.copyWith(
+                            fontWeight: isPersonal
+                                ? FontWeight.bold
+                                : FontWeight.normal))
                   ],
                 ),
               ),
@@ -157,8 +163,7 @@ class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
                 child: Column(
                   children: <Widget>[
                     Card(
-                      elevation:
-                          _selectedAccount == Account.service_provider ? 16 : 0,
+                      elevation: isServiceProvider ? 16 : 0,
                       child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: IconButton(
@@ -176,7 +181,13 @@ class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
                       clipBehavior: Clip.antiAlias,
                       color: Colors.lightBlueAccent,
                     ),
-                    Text('Service Provider')
+                    Text(
+                      AppLocalizations.of(context).serviceProviderAccountType,
+                      style: Theme.of(context).textTheme.subhead.copyWith(
+                          fontWeight: isServiceProvider
+                              ? FontWeight.bold
+                              : FontWeight.normal),
+                    )
                   ],
                 ),
               ),
@@ -184,4 +195,8 @@ class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
           )),
     );
   }
+
+  bool get isServiceProvider => _selectedAccount == Account.service_provider;
+
+  bool get isPersonal => _selectedAccount == Account.personal;
 }

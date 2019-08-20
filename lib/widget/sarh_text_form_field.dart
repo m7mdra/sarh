@@ -4,10 +4,20 @@ class SrahTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final String labelText;
   final IconData icon;
+  final FormFieldValidator<String> validator;
+  final bool obscureText;
+  final FocusNode focusNode;
 
   //TODO add validator and other [TextFormField] fields
 
-  const SrahTextFormField({Key key, this.controller, this.labelText, this.icon})
+  const SrahTextFormField(
+      {Key key,
+      this.controller,
+      this.labelText,
+      this.icon,
+      this.validator,
+      this.obscureText = false,
+      this.focusNode})
       : super(key: key);
 
   @override
@@ -18,14 +28,24 @@ class _SrahTextFormFieldState extends State<SrahTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: widget.focusNode,
+      validator: widget.validator,
       controller: widget.controller,
-      decoration: InputDecoration.collapsed(hintText: '').copyWith(
+      obscureText: widget.obscureText,
+      decoration: buildInputDecoration().copyWith(
           labelText: widget.labelText,
           prefixIcon: Icon(widget.icon),
           filled: true,
           fillColor: Color(0xffECECEC)),
     );
   }
+
+  InputDecoration buildInputDecoration() =>
+      InputDecoration.collapsed(hintText: '').copyWith(
+          labelText: widget.labelText,
+          prefixIcon: Icon(widget.icon),
+          filled: true,
+          fillColor: Color(0xffECECEC));
 
   @override
   void dispose() {

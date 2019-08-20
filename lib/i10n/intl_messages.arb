@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-03T09:38:55.059972",
+  "@@last_modified": "2019-08-20T15:43:19.019769",
   "Login": "Login",
   "@Login": {
     "type": "text",
@@ -72,6 +72,113 @@
   },
   "I Already have an account": "I Already have an account",
   "@I Already have an account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Next": "Next",
+  "@Next": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Please wait while attempting to log you in.": "Please wait while attempting to log you in.",
+  "@Please wait while attempting to log you in.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "No active internet connection": "No active internet connection",
+  "@No active internet connection": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Retry": "Retry",
+  "@Retry": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Login information is not valid, try again": "Login information is not valid, try again",
+  "@Login information is not valid, try again": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Enter a valid email address": "Enter a valid email address",
+  "@Enter a valid email address": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Enter username or email address first": "Enter username or email address first",
+  "@Enter username or email address first": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Enter Password first": "Enter Password first",
+  "@Enter Password first": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Username or email address": "Username or email address",
+  "@Username or email address": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Select your account type": "Select your account type",
+  "@Select your account type": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Personal account": "Personal account",
+  "@Personal account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Service Provider": "Service Provider",
+  "@Service Provider": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Register a user": "Register a user",
+  "@Register a user": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Register a service provider": "Register a service provider",
+  "@Register a service provider": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Phone number": "Phone number",
+  "@Phone number": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Select a city": "Select a city",
+  "@Select a city": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Service provider Name": "Service provider Name",
+  "@Service provider Name": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Account Verification": "Account Verification",
+  "@Account Verification": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "accountVerificationMessage": "Please enter the verification code below that we have sent to your phone number {phoneNumber}",
+  "@accountVerificationMessage": {
+    "type": "text",
+    "placeholders": {
+      "phoneNumber": {}
+    }
+  },
+  "Send again": "Send again",
+  "@Send again": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Verify": "Verify",
+  "@Verify": {
     "type": "text",
     "placeholders": {}
   }

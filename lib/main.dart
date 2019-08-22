@@ -1,6 +1,7 @@
 import 'package:Sarh/page/home/home_page.dart';
 import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/page/login/login_page.dart';
+import 'package:Sarh/page/register/register_page.dart';
 import 'package:Sarh/page/splash/splash_page.dart';
 import 'package:Sarh/page/verify_account/verify_account_page.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ class _MyAppState extends State<MyApp> {
         return Theme(
             data: ThemeData(
               buttonColor: Color(0xff0078ff),
+              errorColor: Color(0xffDB0000),
               buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
               iconTheme: IconThemeData(color: Color(0xff5fabf6)),
               primaryColor: Color(0xff0078ff),
@@ -52,7 +54,7 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      home: SplashPage(),
+      home: RegisterPage(),
     );
   }
 }

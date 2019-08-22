@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-20T15:43:19.019769",
+  "@@last_modified": "2019-08-22T14:59:58.537661",
   "Login": "Login",
   "@Login": {
     "type": "text",
@@ -179,6 +179,41 @@
   },
   "Verify": "Verify",
   "@Verify": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Name field is empty": "Name field is empty",
+  "@Name field is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Email field is empty": "Email field is empty",
+  "@Email field is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Phone number field is empty": "Phone number field is empty",
+  "@Phone number field is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Phone number invalid": "Phone number invalid",
+  "@Phone number invalid": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "password field is empty": "password field is empty",
+  "@password field is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "City is not selected": "City is not selected",
+  "@City is not selected": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Please fill the fields": "Please fill the fields",
+  "@Please fill the fields": {
     "type": "text",
     "placeholders": {}
   }

@@ -48,7 +48,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                       content: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Documents'),
+                      Text('Documents',style: Theme.of(context).textTheme.title,),
                       _sizedBox,
                       Text(
                         'Upload company trade license',
@@ -84,8 +84,9 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                     setState(() {
                       _currentStep += 1;
                     });
-                  if(_currentStep==4)
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MainPage()));
+                  if (_currentStep == 4)
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => MainPage()));
                 },
                 onPrevious: () {
                   setState(() {
@@ -173,7 +174,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Social Media Accounts'),
+        Text('Social Media Accounts',style: Theme.of(context).textTheme.title,),
         _sizedBox,
         TextFormField(
           decoration: InputDecoration(
@@ -236,7 +237,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   Column _buildFeatureClientStep(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text('Featured clients'),
+        Text('Featured clients',style: Theme.of(context).textTheme.title,),
         _sizedBox,
         ListView.builder(
           primary: false,
@@ -263,7 +264,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text('Enter the client details'),
+                          Text('Enter the client details',),
                           _sizedBox,
                           TextFormField(
                             decoration: InputDecoration(
@@ -340,7 +341,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Contact information.'),
+        Text('Contact information.',style: Theme.of(context).textTheme.title,),
         _sizedBox,
         TextFormField(
           keyboardType: TextInputType.phone,
@@ -385,19 +386,22 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
               labelStyle: _lableTextStyle,
               border: OutlineInputBorder()),
         ),
-
       ],
     );
   }
+
+  var _numberOfEmployees = 5.0;
+  var _numberOfClients = 0.0;
 
   Column _buildCompanyDetailsWidgetStep() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Company details.'),
+        Text('Company details.',style: Theme.of(context).textTheme.title,),
         _sizedBox,
         Form(
             child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             GestureDetector(
               onTap: () async {
@@ -428,50 +432,6 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
               ),
             ),
             _sizedBox,
-            DropdownButtonFormField(
-              items: <DropdownMenuItem>[
-                DropdownMenuItem(child: Text('More than 10')),
-                DropdownMenuItem(child: Text('More than 50')),
-                DropdownMenuItem(child: Text('More than 100')),
-                DropdownMenuItem(child: Text('More than 1000')),
-              ],
-              decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-                  hintText: 'Number of Employees',
-                  hintStyle: _hintTextStyle,
-                  labelStyle: _lableTextStyle,
-                  border: OutlineInputBorder()),
-            ),
-            _sizedBox,
-            DropdownButtonFormField(
-              items: <DropdownMenuItem>[
-                DropdownMenuItem(child: Text('More than 10')),
-                DropdownMenuItem(child: Text('More than 50')),
-                DropdownMenuItem(child: Text('More than 100')),
-              ],
-              decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-                  hintStyle: _hintTextStyle,
-                  labelStyle: _lableTextStyle,
-                  hintText: 'Number of Total Clients',
-                  border: OutlineInputBorder()),
-            ),
-            _sizedBox,
-            DropdownButtonFormField(
-              hint: Text('Total Project'),
-              items: <DropdownMenuItem>[
-                DropdownMenuItem(child: Text('More than 10')),
-                DropdownMenuItem(child: Text('More than 50')),
-                DropdownMenuItem(child: Text('More than 100')),
-              ],
-              decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-                  labelText: 'Total Project',
-                  hintStyle: _hintTextStyle,
-                  labelStyle: _lableTextStyle,
-                  border: OutlineInputBorder()),
-            ),
-            _sizedBox,
             TextFormField(
               maxLength: 400,
               maxLines: 2,
@@ -484,6 +444,47 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                   hintText: 'In less than 400 Characters describe the company',
                   border: OutlineInputBorder()),
             ),
+            _sizedBox,
+
+            Text.rich(TextSpan(children: [
+              TextSpan(text: 'Number of Employees: ',style: Theme.of(context).textTheme.subtitle),
+              TextSpan(text: '\n'),
+              TextSpan(text: 'More than '),
+              TextSpan(
+                  text: ' ${_numberOfEmployees.round()} employee',
+                  style: TextStyle(fontWeight: FontWeight.bold))
+            ])),
+            Slider(
+                min: 5,
+                max: 1000,
+                divisions: 100,
+                value: _numberOfEmployees,
+                label: "${_numberOfEmployees.round()}+ employees",
+                onChanged: (value) {
+                  setState(() {
+                    this._numberOfEmployees = value;
+                  });
+                }),
+            _sizedBox,
+            Text.rich(TextSpan(children: [
+              TextSpan(text: 'Number of Client: '),
+              TextSpan(
+                  text: ' ${_numberOfClients.round()} Clients',
+                  style: TextStyle(fontWeight: FontWeight.bold))
+            ])),
+            Slider(
+                min: 0,
+                max: 100,
+                divisions: 100,
+                value: _numberOfClients,
+                label: "${_numberOfClients.round()}+ Clients",
+                onChanged: (value) {
+                  setState(() {
+                    this._numberOfClients = value;
+                  });
+                }),
+            _sizedBox,
+
           ],
         ))
       ],
@@ -495,6 +496,6 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   TextStyle get _lableTextStyle => TextStyle(fontSize: 14);
 
   SizedBox get _sizedBox => SizedBox(
-        height: 8,
+        height: 4,
       );
 }

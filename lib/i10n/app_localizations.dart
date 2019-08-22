@@ -102,6 +102,13 @@ class AppLocalizations {
   String get sendAgainButton => Intl.message('Send again');
 
   String get verifyButton => Intl.message('Verify');
+  String get nameFieldIsEmpty=>Intl.message('Name field is empty');
+  String get emailFieldEmpty=>Intl.message('Email field is empty');
+  String get phoneNumberFieldEmpty=>Intl.message('Phone number field is empty');
+  String get phoneNumberFieldInvalid=>Intl.message('Phone number invalid');
+  String get passwordFieldEmpty=>Intl.message('password field is empty');
+  String get cityFieldEmpty=>Intl.message('City is not selected');
+  String get pleaseFillAllTheFields=>Intl.message('Please fill the fields');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-typedef ValueChanged<String> OnChange(String value);
-typedef ValueChanged<String> OnCodeChange(String value);
-typedef ValueChanged OnComplete(bool completed);
+typedef VoidCallback OnChange(String value);
+typedef VoidCallback OnCodeChange(String value);
+typedef VoidCallback OnComplete(bool completed);
 
 class VerificationCodeWidget extends StatefulWidget {
   final int count;
@@ -14,11 +15,11 @@ class VerificationCodeWidget extends StatefulWidget {
 
   const VerificationCodeWidget(this.count,
       {Key key,
-        this.onCodeChange,
-        this.onComplete,
-        this.cellsInputDecoration,
-        this.cellsTextStyle,
-        this.obscureText})
+      this.onCodeChange,
+      this.onComplete,
+      this.cellsInputDecoration,
+      this.cellsTextStyle,
+      this.obscureText})
       : super(key: key);
 
   @override
@@ -36,6 +37,19 @@ class VerificationCodeWidgetState extends State<VerificationCodeWidget> {
     FocusScope.of(context).requestFocus(_nodes[0]);
   }
 
+  String get codes {
+    try {
+      return _textEditingControllers
+          .map((controller) => controller.text)
+          .where((code) => code.isNotEmpty)
+          .reduce((first, second) {
+        return first + second;
+      });
+    } catch (_) {
+      return '';
+    }
+  }
+
   void _generate() {
     for (var i = 0; i < _count; i++) {
       var controller = TextEditingController();
@@ -46,26 +60,24 @@ class VerificationCodeWidgetState extends State<VerificationCodeWidget> {
         key: UniqueKey(),
         cellSize: Size(50, 50),
         focusNode: node,
+
         textEditingController: controller,
+        // ignore: missing_return
         onChange: (value) {
           widget.onCodeChange(_textEditingControllers
               .map((controller) => controller.text)
+              .where((code) => code.isNotEmpty)
               .reduce((first, second) {
             return first + second;
           }));
           if (value.isEmpty) {
-            if (_nodes[i - 1] != null) {
-              var node = _nodes[i - 1];
-              FocusScope.of(context).requestFocus(node);
-            }
+            var node = _nodes[i - 1];
+
+            FocusScope.of(context).requestFocus(node);
           } else {
-            if (_nodes[i + 1] != null) {
-              var node = _nodes[i + 1];
-              FocusScope.of(context).requestFocus(node);
-            }
+            var node = _nodes[i + 1];
+            FocusScope.of(context).requestFocus(node);
           }
-          print("$i + 1 == $_count - 1");
-          widget.onComplete(i + 1 == _count - 1);
         },
       ));
     }
@@ -105,7 +117,7 @@ class CodeDigitWidget extends StatelessWidget {
   final _defaultInputBorder = const InputDecoration(
       counterText: '',
       border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(0))));
+          borderRadius: BorderRadius.all(Radius.circular(4))));
 
   const CodeDigitWidget({
     Key key,
@@ -124,8 +136,13 @@ class CodeDigitWidget extends StatelessWidget {
     return Container(
       width: cellSize.width ?? 50,
       height: cellSize.height ?? 50,
+      alignment: Alignment.center,
       margin: EdgeInsets.all(marginBetweenCells ?? 4),
       child: TextField(
+        inputFormatters: [
+          WhitelistingTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(1)
+        ],
         textAlign: TextAlign.center,
         key: key,
         focusNode: focusNode,

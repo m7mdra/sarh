@@ -106,13 +106,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.13"
-  dropdown_menu:
+  equatable:
     dependency: "direct dev"
     description:
-      name: dropdown_menu
+      name: equatable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.1"
+    version: "0.4.0"
   flutter:
     dependency: "direct main"
     description: flutter

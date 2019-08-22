@@ -26,9 +26,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "Account Verification" : MessageLookupByLibrary.simpleMessage("Account Verification"),
     "Account type" : MessageLookupByLibrary.simpleMessage("Account type"),
+    "City is not selected" : MessageLookupByLibrary.simpleMessage("City is not selected"),
     "Confirm Password" : MessageLookupByLibrary.simpleMessage("Confirm Password"),
     "Create new" : MessageLookupByLibrary.simpleMessage("Create new"),
     "Email address" : MessageLookupByLibrary.simpleMessage("Email address"),
+    "Email field is empty" : MessageLookupByLibrary.simpleMessage("Email field is empty"),
     "Enter Password first" : MessageLookupByLibrary.simpleMessage("Enter Password first"),
     "Enter a valid email address" : MessageLookupByLibrary.simpleMessage("Enter a valid email address"),
     "Enter username or email address first" : MessageLookupByLibrary.simpleMessage("Enter username or email address first"),
@@ -38,11 +40,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "I Dont have an account" : MessageLookupByLibrary.simpleMessage("I Dont have an account"),
     "Login" : MessageLookupByLibrary.simpleMessage("Login"),
     "Login information is not valid, try again" : MessageLookupByLibrary.simpleMessage("Login information is not valid, try again"),
+    "Name field is empty" : MessageLookupByLibrary.simpleMessage("Name field is empty"),
     "Next" : MessageLookupByLibrary.simpleMessage("Next"),
     "No active internet connection" : MessageLookupByLibrary.simpleMessage("No active internet connection"),
     "Password" : MessageLookupByLibrary.simpleMessage("Password"),
     "Personal account" : MessageLookupByLibrary.simpleMessage("Personal account"),
     "Phone number" : MessageLookupByLibrary.simpleMessage("Phone number"),
+    "Phone number field is empty" : MessageLookupByLibrary.simpleMessage("Phone number field is empty"),
+    "Phone number invalid" : MessageLookupByLibrary.simpleMessage("Phone number invalid"),
+    "Please fill the fields" : MessageLookupByLibrary.simpleMessage("Please fill the fields"),
     "Please wait while attempting to log you in." : MessageLookupByLibrary.simpleMessage("Please wait while attempting to log you in."),
     "Register" : MessageLookupByLibrary.simpleMessage("Register"),
     "Register a service provider" : MessageLookupByLibrary.simpleMessage("Register a service provider"),
@@ -59,6 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Username or Email" : MessageLookupByLibrary.simpleMessage("Username or Email"),
     "Username or email address" : MessageLookupByLibrary.simpleMessage("Username or email address"),
     "Verify" : MessageLookupByLibrary.simpleMessage("Verify"),
-    "accountVerificationMessage" : m0
+    "accountVerificationMessage" : m0,
+    "password field is empty" : MessageLookupByLibrary.simpleMessage("password field is empty")
   };
 }

@@ -26,9 +26,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "Account Verification" : MessageLookupByLibrary.simpleMessage("التحقق من الحساب"),
     "Account type" : MessageLookupByLibrary.simpleMessage("نوع الحساب"),
+    "City is not selected" : MessageLookupByLibrary.simpleMessage("لم تتم اختيار المدينة"),
     "Confirm Password" : MessageLookupByLibrary.simpleMessage("تاكيد كلمة المرور"),
     "Create new" : MessageLookupByLibrary.simpleMessage("انشاء حساب"),
     "Email address" : MessageLookupByLibrary.simpleMessage("البريد الالكتروني"),
+    "Email field is empty" : MessageLookupByLibrary.simpleMessage("حقل البريد الالكتروني خالي"),
     "Enter Password first" : MessageLookupByLibrary.simpleMessage("ادخل كلمة المرور"),
     "Enter a valid email address" : MessageLookupByLibrary.simpleMessage("ادخل بريد الكتروني صالح"),
     "Enter username or email address first" : MessageLookupByLibrary.simpleMessage("قم بكتابة اسم المستخدم او البريد الالكتروني اولا"),
@@ -38,11 +40,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "I Dont have an account" : MessageLookupByLibrary.simpleMessage("ليس لدي حساب"),
     "Login" : MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "Login information is not valid, try again" : MessageLookupByLibrary.simpleMessage("معلومات تسجيل الدخول ليست صحيحه, حاول مرة اخرى"),
+    "Name field is empty" : MessageLookupByLibrary.simpleMessage("حقل الاسم خالي"),
     "Next" : MessageLookupByLibrary.simpleMessage("التالي"),
     "No active internet connection" : MessageLookupByLibrary.simpleMessage("لا يوجد اتصال انترنت نشط"),
     "Password" : MessageLookupByLibrary.simpleMessage("كلمة المرور"),
     "Personal account" : MessageLookupByLibrary.simpleMessage("حساب شخصي"),
     "Phone number" : MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
+    "Phone number field is empty" : MessageLookupByLibrary.simpleMessage("حقل رقم الهاتف خالي"),
+    "Phone number invalid" : MessageLookupByLibrary.simpleMessage("حقل رقم الهاتف غير صالح"),
+    "Please fill the fields" : MessageLookupByLibrary.simpleMessage("الرجاء ملء جميع الحقول"),
     "Please wait while attempting to log you in." : MessageLookupByLibrary.simpleMessage("الرجاء الانتظار بينما يتم تسجيل دخولك"),
     "Register" : MessageLookupByLibrary.simpleMessage("انشاء حساب"),
     "Register a service provider" : MessageLookupByLibrary.simpleMessage("تسجيل مزود خدمة"),
@@ -59,6 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Username or Email" : MessageLookupByLibrary.simpleMessage("البريد الالكتروني او اسم المتسخدم"),
     "Username or email address" : MessageLookupByLibrary.simpleMessage("اسم المستخدم او البريد الالكتروني"),
     "Verify" : MessageLookupByLibrary.simpleMessage("تحقق"),
-    "accountVerificationMessage" : m0
+    "accountVerificationMessage" : m0,
+    "password field is empty" : MessageLookupByLibrary.simpleMessage("حقل كلمة المرور خالي")
   };
 }

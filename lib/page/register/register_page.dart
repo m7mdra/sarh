@@ -143,6 +143,7 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                       ),
                       _sizedBox,
                       TextFormField(
+                        keyboardType: TextInputType.emailAddress,
                         focusNode: _emailFocusNode,
                         controller: _emailTextEditingController,
                         textInputAction: TextInputAction.next,
@@ -164,6 +165,7 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                       ),
                       _sizedBox,
                       TextFormField(
+                        keyboardType: TextInputType.phone,
                         focusNode: _phoneFocusNode,
                         inputFormatters: [LengthLimitingTextInputFormatter(10)],
                         controller: _phoneTextEditingController,
@@ -252,14 +254,10 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                           child: RaisedButton(
                             onPressed: () {
                               if (form.validate())
-                                showDialog(
-                                    context: (context),
-                                    builder: (context) {
-                                      return ProgressDialog(
-                                        message:
-                                            'Please wait while creating your account',
-                                      );
-                                    });
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return VerifyAccountPage();
+                                }));
                             },
                             child:
                                 Text(AppLocalizations.of(context).nextButton),

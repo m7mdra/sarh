@@ -33,6 +33,12 @@ class _MyAppState extends State<MyApp> {
       builder: (context, navigator) {
         return Theme(
             data: ThemeData(
+
+              backgroundColor: Colors.white,
+              appBarTheme: AppBarTheme(
+                  brightness: Brightness.dark,
+                  color: Color(0xff0078ff),
+                  iconTheme: IconThemeData(color: Colors.white)),
               buttonColor: Color(0xff0078ff),
               errorColor: Color(0xffDB0000),
               buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
@@ -54,7 +60,7 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      home: RegisterPage(),
+      home: SplashPage(),
     );
   }
 }

@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-22T14:59:58.537661",
+  "@@last_modified": "2019-08-24T15:03:55.393274",
   "Login": "Login",
   "@Login": {
     "type": "text",
@@ -214,6 +214,141 @@
   },
   "Please fill the fields": "Please fill the fields",
   "@Please fill the fields": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attach Image": "Attach Image",
+  "@Attach Image": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attach Video": "Attach Video",
+  "@Attach Video": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attach Document": "Attach Document",
+  "@Attach Document": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "PDF format only allowed": "PDF format only allowed",
+  "@PDF format only allowed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Select method to pick image": "Select method to pick image",
+  "@Select method to pick image": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Camera": "Camera",
+  "@Camera": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Gallery": "Gallery",
+  "@Gallery": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Request Quotations": "Request Quotations",
+  "@Request Quotations": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Choose the activity": "Choose the activity",
+  "@Choose the activity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Choose activity": "Choose activity",
+  "@Choose activity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Choose request method": "Choose request method",
+  "@Choose request method": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Request method": "Request method",
+  "@Request method": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Quotation subject": "Quotation subject",
+  "@Quotation subject": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enter the quotation subject": "enter the quotation subject",
+  "@enter the quotation subject": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Quotation details": "Quotation details",
+  "@Quotation details": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Explain what you need from the service provider": "Explain what you need from the service provider",
+  "@Explain what you need from the service provider": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attachments": "Attachments",
+  "@Attachments": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Submit": "Submit",
+  "@Submit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attach file": "Attach file",
+  "@Attach file": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Favorite": "Favorite",
+  "@Favorite": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Will be sent to your favorite service providers": "Will be sent to your favorite service providers",
+  "@Will be sent to your favorite service providers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Random": "Random",
+  "@Random": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Will be sent randomly to service to service providers in this activity": "Will be sent randomly to service to service providers in this activity",
+  "@Will be sent randomly to service to service providers in this activity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Recommendation": "Recommendation",
+  "@Recommendation": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Will be sent to high rated service providers": "Will be sent to high rated service providers",
+  "@Will be sent to high rated service providers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Activity is empty": "Activity is empty",
+  "@Activity is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Quotation subject is empty": "Quotation subject is empty",
+  "@Quotation subject is empty": {
     "type": "text",
     "placeholders": {}
   }

@@ -2,6 +2,7 @@ import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/sliver_header_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SearchResultPage extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class SearchResultPage extends StatefulWidget {
 
 class _SearchResultPageState extends State<SearchResultPage> {
   bool _showGrid = false;
+  var _selectedSort = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +20,11 @@ class _SearchResultPageState extends State<SearchResultPage> {
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              backgroundColor: Colors.white,
               centerTitle: true,
-              leading: BackButtonNoLabel(Colors.grey),
+              leading: BackButtonNoLabel(Colors.white),
               automaticallyImplyLeading: true,
               title: Text(
-                'All Results 52',
-                style: TextStyle(color: Colors.grey),
+                'Results for M',
               ),
             ),
             SliverPersistentHeader(
@@ -34,52 +34,119 @@ class _SearchResultPageState extends State<SearchResultPage> {
                   maxHeight: 50,
                   minHeight: 50,
                   child: Container(
-                    color: Theme.of(context).accentColor,
+                    color: Colors.white,
                     child: Row(
                       children: <Widget>[
                         Expanded(
                           child: FlatButton.icon(
-                            splashColor: Colors.white.withAlpha(60),
                             onPressed: () {},
                             icon: Icon(
                               FontAwesomeIcons.filter,
-                              color: Colors.white,
                             ),
                             label: Text(
                               'Filter',
-                              style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
                         Expanded(
                           child: FlatButton.icon(
-                            splashColor: Colors.white.withAlpha(60),
                             onPressed: () {
                               setState(() {
                                 _showGrid = !_showGrid;
                               });
                             },
                             icon: Icon(
-                              FontAwesomeIcons.th,
-                              color: Colors.white,
+                             _showGrid? FontAwesomeIcons.list:FontAwesomeIcons.th,
                             ),
                             label: Text(
                               'View',
-                              style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
                         Expanded(
                           child: FlatButton.icon(
-                            splashColor: Colors.white.withAlpha(60),
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    contentPadding: const EdgeInsets.all(0),
+                                    actions: <Widget>[
+                                      FlatButton(onPressed: (){
+                                        Navigator.pop(context);
+                                      }, child: Text(MaterialLocalizations.of(context).cancelButtonLabel))
+                                    ],
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        title: Text('Sort Service providers'),
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+
+
+                                            ListTile(
+                                              selected: _selectedSort == 1,
+                                              leading: Icon(FontAwesomeIcons
+                                                  .sortAlphaDown),
+                                              title: Text(
+                                                  'Alphabetically Asending'),
+                                              onTap: () {
+                                                _selectedSort = 1;
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            Divider(
+                                              height: 1,
+                                            ),
+                                            ListTile(
+                                              selected: _selectedSort == 2,
+                                              leading: Icon(FontAwesomeIcons
+                                                  .sortAlphaUp),
+                                              title: Text(
+                                                  'Alphabetically Descending'),
+                                              onTap: () {
+                                                _selectedSort = 2;
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            Divider(
+                                              height: 1,
+                                            ),
+                                            ListTile(
+                                              selected: _selectedSort == 3,
+                                              leading: Icon(FontAwesomeIcons
+                                                  .sortAmountDown),
+                                              title: Text('Rating Asending'),
+                                              onTap: () {
+                                                _selectedSort = 3;
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            Divider(
+                                              height: 1,
+                                            ),
+                                            ListTile(
+                                              selected: _selectedSort == 4,
+                                              leading: Icon(FontAwesomeIcons
+                                                  .sortAmountUp),
+                                              title:
+                                                  Text('Rating Descending'),
+                                              onTap: () {
+                                                _selectedSort = 4;
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ));
+                            },
                             icon: Icon(
                               FontAwesomeIcons.sort,
-                              color: Colors.white,
                             ),
                             label: Text(
                               'Sort',
-                              style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
@@ -87,6 +154,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                     ),
                   ),
                 )),
+            SliverToBoxAdapter(child: Divider(height: 1,),),
             SliverPadding(
               padding: const EdgeInsets.all(16),
               sliver: _showGrid

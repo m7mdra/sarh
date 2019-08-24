@@ -49,15 +49,13 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
-        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Mohamed Sed',
           style: TextStyle(
-            color: Colors.black54,
           ),
         ),
-        leading: BackButtonNoLabel(Colors.grey),
+        leading: BackButtonNoLabel(Colors.white),
       ),
       body: SafeArea(
           child: Column(

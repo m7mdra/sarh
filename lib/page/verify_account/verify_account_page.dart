@@ -110,7 +110,7 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
                               backgroundColor: Colors.red,
                               behavior: SnackBarBehavior.floating,
                             ));
-                          }
+                          } else {}
                         },
                         child: Text(AppLocalizations.of(context).verifyButton),
                       ),

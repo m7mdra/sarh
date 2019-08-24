@@ -41,11 +41,23 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIBackgroundModes</key>
+    <array>
+       <string>fetch</string>
+       <string>remote-notification</string>
+    </array>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSAllowsArbitraryLoads</key>
+      <true/>
+    </dict>
 	<key>NSCameraUsageDescription</key>
     	<string>Used to capture image for sarh</string>
     	<key>NSMicrophoneUsageDescription</key>
     	<string>Used to capture audio for camera</string>
     	<key>NSPhotoLibraryUsageDescription</key>
     	<string>Used to pick image for sarh</string>
+
+
 </dict>
 </plist>

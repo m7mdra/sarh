@@ -8,7 +8,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is AttemptLogin) {
-      yield NetworkError();
+      yield LoadingState();
+      await Future.delayed(Duration(seconds: 3));
+      yield SuccessState();
     }
   }
 }

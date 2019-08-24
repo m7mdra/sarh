@@ -1,220 +1,355 @@
 {
-	"@@last_modified": "2019-08-01T17:19:26.129752",
-	"Login": "تسجيل الدخول",
-	"@Login": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Username or Email": "البريد الالكتروني او اسم المتسخدم",
-	"@Username or Email": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Password": "كلمة المرور",
-	"@Password": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Sing in": "تسجيل الدخول",
-	"@Sing in": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Forgot my password": "نسيت كلمة المرور",
-	"@Forgot my password": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"I Dont have an account": "ليس لدي حساب",
-	"@I Dont have an account": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Create new": "انشاء حساب",
-	"@Create new": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Register": "انشاء حساب",
-	"@Register": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Username": "اسم المستخدم",
-	"@Username": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Email address": "البريد الالكتروني",
-	"@Email address": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Full name": "الاسم الكامل",
-	"@Full name": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Confirm Password": "تاكيد كلمة المرور",
-	"@Confirm Password": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Account type": "نوع الحساب",
-	"@Account type": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Sign up": "انشاء حساب",
-	"@Sign up": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"I Already have an account": "لدي حساب بالفعل",
-	"@I Already have an account": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Next": "التالي",
-	"@Next": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Please wait while attempting to log you in.": "الرجاء الانتظار بينما يتم تسجيل دخولك",
-	"@Please wait while attempting to log you in.": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"No active internet connection": "لا يوجد اتصال انترنت نشط",
-	"@No active internet connection": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Retry": "اعادة المحاولة",
-	"@Retry": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Login information is not valid, try again": "معلومات تسجيل الدخول ليست صحيحه, حاول مرة اخرى",
-	"@Login information is not valid, try again": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Enter a valid email address": "ادخل بريد الكتروني صالح",
-	"@Enter a valid email address": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Enter username or email address first": "قم بكتابة اسم المستخدم او البريد الالكتروني اولا",
-	"@Enter username or email address first": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Enter Password first": "ادخل كلمة المرور",
-	"@Enter Password first": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Username or email address": "اسم المستخدم او البريد الالكتروني",
-	"@Username or email address": {
-		"type": "text",
-		"placeholders": {}
-	},
-       "Select your account type": "اختر نوع الحساب",
-       "@Select your account type": {
-         "type": "text",
-         "placeholders": {}
-       },
-       "Personal account": "حساب شخصي",
-       "@Personal account": {
-         "type": "text",
-         "placeholders": {}
-       },
-       "Service Provider": "مزود خدمة",
-       "@Service Provider": {
-         "type": "text",
-         "placeholders": {}
-       },
-
-         "Register a user": "تسجيل حساب شخصي",
-         "@Register a user": {
-           "type": "text",
-           "placeholders": {}
-         },
-         "Register a service provider": "تسجيل مزود خدمة",
-         "@Register a service provider": {
-           "type": "text",
-           "placeholders": {}
-         },
-         "Phone number": "رقم الهاتف",
-         "@Phone number": {
-           "type": "text",
-           "placeholders": {}
-         },
-         "Select a city": "اختر مدينة",
-         "@Select a city": {
-           "type": "text",
-           "placeholders": {}
-         },
-            "Service provider Name": "اسم مزود الخدمة",
-            "@Service provider Name": {
-              "type": "text",
-              "placeholders": {}
-            },"Account Verification": "التحقق من الحساب",
-                "@Account Verification": {
-                  "type": "text",
-                  "placeholders": {}
-                },
-                "accountVerificationMessage": "قم بادخال رمز التحقق بالاسفل الذي تم ارساله الى الرقم {phoneNumber}",
-                "@accountVerificationMessage": {
-                  "type": "text",
-                  "placeholders": {
-                    "phoneNumber": {}
-                  }
-                },
-                "Send again": "اعادة الارسال",
-                "@Send again": {
-                  "type": "text",
-                  "placeholders": {}
-                },
-                "Verify": "تحقق",
-                "@Verify": {
-                  "type": "text",
-                  "placeholders": {}
-                },
-                   "Name field is empty": "حقل الاسم خالي",
-                   "@Name field is empty": {
-                     "type": "text",
-                     "placeholders": {}
-                   },
-                   "Email field is empty": "حقل البريد الالكتروني خالي",
-                   "@Email field is empty": {
-                     "type": "text",
-                     "placeholders": {}
-                   },
-                   "Phone number field is empty": "حقل رقم الهاتف خالي",
-                   "@Phone number field is empty": {
-                     "type": "text",
-                     "placeholders": {}
-                   },
-                   "Phone number invalid": "حقل رقم الهاتف غير صالح",
-                   "@Phone number invalid": {
-                     "type": "text",
-                     "placeholders": {}
-                   },
-                   "password field is empty": "حقل كلمة المرور خالي",
-                   "@password field is empty": {
-                     "type": "text",
-                     "placeholders": {}
-                   },
-                   "City is not selected": "لم تتم اختيار المدينة",
-                   "@City is not selected": {
-                     "type": "text",
-                     "placeholders": {}
-                   },
-                      "Please fill the fields": "الرجاء ملء جميع الحقول",
-                      "@Please fill the fields": {
-                        "type": "text",
-                        "placeholders": {}
-                      }
+  "@@last_modified": "2019-08-01T17:19:26.129752",
+  "Login": "تسجيل الدخول",
+  "@Login": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Username or Email": "البريد الالكتروني او اسم المتسخدم",
+  "@Username or Email": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Password": "كلمة المرور",
+  "@Password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Sing in": "تسجيل الدخول",
+  "@Sing in": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Forgot my password": "نسيت كلمة المرور",
+  "@Forgot my password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "I Dont have an account": "ليس لدي حساب",
+  "@I Dont have an account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Create new": "انشاء حساب",
+  "@Create new": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Register": "انشاء حساب",
+  "@Register": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Username": "اسم المستخدم",
+  "@Username": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Email address": "البريد الالكتروني",
+  "@Email address": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Full name": "الاسم الكامل",
+  "@Full name": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Confirm Password": "تاكيد كلمة المرور",
+  "@Confirm Password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Account type": "نوع الحساب",
+  "@Account type": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Sign up": "انشاء حساب",
+  "@Sign up": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "I Already have an account": "لدي حساب بالفعل",
+  "@I Already have an account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Next": "التالي",
+  "@Next": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Please wait while attempting to log you in.": "الرجاء الانتظار بينما يتم تسجيل دخولك",
+  "@Please wait while attempting to log you in.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "No active internet connection": "لا يوجد اتصال انترنت نشط",
+  "@No active internet connection": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Retry": "اعادة المحاولة",
+  "@Retry": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Login information is not valid, try again": "معلومات تسجيل الدخول ليست صحيحه, حاول مرة اخرى",
+  "@Login information is not valid, try again": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Enter a valid email address": "ادخل بريد الكتروني صالح",
+  "@Enter a valid email address": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Enter username or email address first": "قم بكتابة اسم المستخدم او البريد الالكتروني اولا",
+  "@Enter username or email address first": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Enter Password first": "ادخل كلمة المرور",
+  "@Enter Password first": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Username or email address": "اسم المستخدم او البريد الالكتروني",
+  "@Username or email address": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Select your account type": "اختر نوع الحساب",
+  "@Select your account type": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Personal account": "حساب شخصي",
+  "@Personal account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Service Provider": "مزود خدمة",
+  "@Service Provider": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Register a user": "تسجيل حساب شخصي",
+  "@Register a user": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Register a service provider": "تسجيل مزود خدمة",
+  "@Register a service provider": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Phone number": "رقم الهاتف",
+  "@Phone number": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Select a city": "اختر مدينة",
+  "@Select a city": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Service provider Name": "اسم مزود الخدمة",
+  "@Service provider Name": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Account Verification": "التحقق من الحساب",
+  "@Account Verification": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "accountVerificationMessage": "قم بادخال رمز التحقق بالاسفل الذي تم ارساله الى الرقم {phoneNumber}",
+  "@accountVerificationMessage": {
+    "type": "text",
+    "placeholders": {
+      "phoneNumber": {}
+    }
+  },
+  "Send again": "اعادة الارسال",
+  "@Send again": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Verify": "تحقق",
+  "@Verify": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Name field is empty": "حقل الاسم خالي",
+  "@Name field is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Email field is empty": "حقل البريد الالكتروني خالي",
+  "@Email field is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Phone number field is empty": "حقل رقم الهاتف خالي",
+  "@Phone number field is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Phone number invalid": "حقل رقم الهاتف غير صالح",
+  "@Phone number invalid": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "password field is empty": "حقل كلمة المرور خالي",
+  "@password field is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "City is not selected": "لم تتم اختيار المدينة",
+  "@City is not selected": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Please fill the fields": "الرجاء ملء جميع الحقول",
+  "@Please fill the fields": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attach Image": "ارفاق صورة",
+  "@Attach Image": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attach Video": "ارفاق فيديو",
+  "@Attach Video": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attach Document": "ارفاق مستند",
+  "@Attach Document": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "PDF format only allowed": "الصيغة المسموح بها هي PDF فقط",
+  "@PDF format only allowed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Select method to pick image": "اختر طريقة لاختيار الصورة",
+  "@Select method to pick image": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Camera": "كاميرا",
+  "@Camera": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Gallery": "معرض الصور",
+  "@Gallery": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Request Quotations": "طلب تسعيرة",
+  "@Request Quotations": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Choose the activity": "اختر النشاط",
+  "@Choose the activity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Choose activity": "اختر نشاط",
+  "@Choose activity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Choose request method": "اختر نظام الطلب",
+  "@Choose request method": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Request method": "نظام الطلب",
+  "@Request method": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Quotation subject": "موضوع التسعيرة",
+  "@Quotation subject": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enter the quotation subject": "ادخل موضوع التسعيرة ",
+  "@enter the quotation subject": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Quotation details": "تفاصيل التسعيرة",
+  "@Quotation details": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Explain what you need from the service provider": "قم بتوضيح ماذا تحتاج من مقدم الخدمة",
+  "@Explain what you need from the service provider": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attachments": "المرفقات",
+  "@Attachments": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Submit": "ارسال",
+  "@Submit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attach file": "ارفاق ملف",
+  "@Attach file": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Favorite": "المفضلة",
+  "@Favorite": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Will be sent to your favorite service providers": "ستيم الارسال الى مزوري الخدمة المفضلين",
+  "@Will be sent to your favorite service providers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Random": "عشوائي",
+  "@Random": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Will be sent randomly to service to service providers in this activity": "سيتم الارسال عشوائيا الى مزودي خدمة في هذا النشاط",
+  "@Will be sent randomly to service to service providers in this activity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Recommendation": "تزكية",
+  "@Recommendation": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Will be sent to high rated service providers": "سيتم الارسال الى مزودي الخدمة الاعلى تقييماً",
+  "@Will be sent to high rated service providers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Activity is empty": "النشاط خالي",
+  "@Activity is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Quotation subject is empty": "موضوع التسعيرة خالي",
+  "@Quotation subject is empty": {
+    "type": "text",
+    "placeholders": {}
+  }
 }

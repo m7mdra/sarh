@@ -10,7 +10,7 @@ import 'package:Sarh/widget/fab_bottom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'categories_page.dart';
+import 'activities_page.dart';
 import 'home_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -121,7 +121,7 @@ class _MainPageState extends State<MainPage> {
         key: _bottomBarKey,
         items: [
           FABBottomAppBarItem(iconData: FontAwesomeIcons.home, text: 'Home'),
-          FABBottomAppBarItem(iconData: FontAwesomeIcons.th, text: 'Category'),
+          FABBottomAppBarItem(iconData: FontAwesomeIcons.th, text: 'Acitivty'),
           FABBottomAppBarItem(
               iconData: FontAwesomeIcons.solidBell, text: 'Updates'),
           FABBottomAppBarItem(

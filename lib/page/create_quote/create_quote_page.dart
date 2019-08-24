@@ -1,4 +1,7 @@
+import 'package:Sarh/i10n/app_localizations.dart';
+import 'package:Sarh/widget/attachment_widget.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
+import 'package:Sarh/widget/file_picker_sheet_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -8,12 +11,13 @@ class CreateQuotePage extends StatefulWidget {
 }
 
 class _CreateQuotePageState extends State<CreateQuotePage> {
+  List<AttachmentFile> attachments = []..addAll([null, null, null, null]);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
-        backgroundColor: Colors.white,
         centerTitle: true,
         title: Column(
           mainAxisSize: MainAxisSize.min,
@@ -21,18 +25,17 @@ class _CreateQuotePageState extends State<CreateQuotePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Create qoutation',
+              'Qoutation creation',
               style: TextStyle(
-                color: Colors.black54,
               ),
             ),
             Text(
               'for Mohamed sed',
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.caption.copyWith(color:Colors.white),
             )
           ],
         ),
-        leading: BackButtonNoLabel(Colors.grey),
+        leading: BackButtonNoLabel(Colors.white),
       ),
       body: SafeArea(
           child: Form(
@@ -57,40 +60,32 @@ class _CreateQuotePageState extends State<CreateQuotePage> {
               TextFormField(
                 maxLines: 5,
                 decoration: InputDecoration(
-                    hintText:
-                        'Details/description',
+                    hintText: 'Details/description',
                     border: OutlineInputBorder(),
                     contentPadding: const EdgeInsets.all(12)),
               ),
               _sizedBox(),
+              Text(
+                AppLocalizations.of(context).attachments,
+                style: Theme.of(context).textTheme.subhead,
+              ),
               Container(
-                height: 90,
+                height: 120,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    return Stack(
-                      children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.all(4),
-                          width: 90,
-                          height: 90,
-                          decoration: BoxDecoration(
-                              color: Colors.black38,
-                              borderRadius: BorderRadius.circular(4)),
-                        ),
-                        Container(
-                          child: Icon(
-                            FontAwesomeIcons.solidTimesCircle,
-                          ),
-                          padding: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                              color: Colors.white, shape: BoxShape.circle),
-                        ),
-                      ],
+                    return AttachmentWidget(
+                      attachments[index],
+                      key: ObjectKey('Media$index'),
+                      onRemove: () {
+                        setState(() {
+                          attachments.removeAt(index);
+                        });
+                      },
                     );
                   },
                   shrinkWrap: true,
-                  itemCount: 5,
+                  itemCount: attachments.length,
                 ),
               ),
               _sizedBox(),
@@ -100,67 +95,25 @@ class _CreateQuotePageState extends State<CreateQuotePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     RaisedButton.icon(
-                        icon: Icon(FontAwesomeIcons.paperPlane),
-                        label: Text('Submit'), onPressed: () {},),
-                    FlatButton.icon(
                         onPressed: () {
-                          showModalBottomSheet(
-                              context: (context),
-                              builder: (context) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Card(
-                                          margin: const EdgeInsets.all(0),
-                                          child: Column(
-                                            children: <Widget>[
-                                              ListTile(
-                                                leading: Icon(
-                                                  FontAwesomeIcons.image,
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                ),
-                                                title: Text('Attach photo'),
-                                              ),
-                                              ListTile(
-                                                leading: Icon(
-                                                  FontAwesomeIcons.video,
-                                                  color: Colors.green,
-                                                ),
-                                                title: Text('Attach Video'),
-                                              ),
-                                              ListTile(
-                                                leading: Icon(
-                                                  FontAwesomeIcons.image,
-                                                  color: Colors.redAccent,
-                                                ),
-                                                title: Text('Attach document'),
-                                              ),
-                                            ],
-                                          )),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: RaisedButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Cancel'),
-                                          color: Colors.white,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
-                              backgroundColor: Colors.transparent,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)));
                         },
-                        icon: Icon(FontAwesomeIcons.paperclip),
-                        label: Text('Attatch file'))
+                        icon: Icon(FontAwesomeIcons.paperPlane),
+                        label:
+                        Text(AppLocalizations.of(context).submitButton)),
+                    FlatButton.icon(
+                        onPressed: () async {
+                          var file = await showFilePickDialog<AttachmentFile>(
+                              context: context);
+                          if (file != null)
+                            setState(() {
+                              attachments.removeWhere(
+                                      (attachment) => attachment == null);
+                              attachments.add(file);
+                            });
+                        },
+                        icon: Icon(Icons.attach_file),
+                        label: Text(
+                            AppLocalizations.of(context).attachFileButton))
                   ],
                 ),
               )

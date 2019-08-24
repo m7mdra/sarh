@@ -85,6 +85,11 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                               message: AppLocalizations.of(context)
                                   .loginLoadingDialogMessage,
                             ));
+                  if (state is SuccessState)
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => MainPage()));
                   if (state is NetworkError)
                     scaffold
                       ..hideCurrentSnackBar(
@@ -126,6 +131,7 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                       ),
                       buildSizedBox(),
                       TextFormField(
+                        keyboardType: TextInputType.emailAddress,
                         controller: _idTextEditingController,
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () {
@@ -143,7 +149,9 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                           return null;
                         },
                         decoration: buildInputDecoration(
-                            AppLocalizations.of(context).userIdentifierFieldHint, FontAwesomeIcons.user),
+                            AppLocalizations.of(context)
+                                .userIdentifierFieldHint,
+                            FontAwesomeIcons.user),
                       ),
                       buildSizedBox(),
                       TextFormField(

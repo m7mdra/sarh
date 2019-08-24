@@ -102,13 +102,82 @@ class AppLocalizations {
   String get sendAgainButton => Intl.message('Send again');
 
   String get verifyButton => Intl.message('Verify');
-  String get nameFieldIsEmpty=>Intl.message('Name field is empty');
-  String get emailFieldEmpty=>Intl.message('Email field is empty');
-  String get phoneNumberFieldEmpty=>Intl.message('Phone number field is empty');
-  String get phoneNumberFieldInvalid=>Intl.message('Phone number invalid');
-  String get passwordFieldEmpty=>Intl.message('password field is empty');
-  String get cityFieldEmpty=>Intl.message('City is not selected');
-  String get pleaseFillAllTheFields=>Intl.message('Please fill the fields');
+
+  String get nameFieldIsEmpty => Intl.message('Name field is empty');
+
+  String get emailFieldEmpty => Intl.message('Email field is empty');
+
+  String get phoneNumberFieldEmpty =>
+      Intl.message('Phone number field is empty');
+
+  String get phoneNumberFieldInvalid => Intl.message('Phone number invalid');
+
+  String get passwordFieldEmpty => Intl.message('password field is empty');
+
+  String get cityFieldEmpty => Intl.message('City is not selected');
+
+  String get pleaseFillAllTheFields => Intl.message('Please fill the fields');
+
+  String get attachImage => Intl.message('Attach Image');
+
+  String get attachVideo => Intl.message('Attach Video');
+
+  String get attachDocument => Intl.message('Attach Document');
+
+  String get attachDocumentOnlyPdf => Intl.message('PDF format only allowed');
+
+  String get imagePickerDialogTitle =>
+      Intl.message('Select method to pick image');
+
+  String get camera => Intl.message('Camera');
+
+  String get gallery => Intl.message('Gallery');
+
+  String get requestQuotations => Intl.message('Request Quotations');
+
+  String get activity => Intl.message('Choose the activity');
+
+  String get activityHint => Intl.message('Choose activity');
+
+  String get requestMethod => Intl.message('Choose request method');
+
+  String get requestMethodHint => Intl.message('Request method');
+
+  String get quotationSubject => Intl.message('Quotation subject');
+
+  String get quotationSubjectHint =>
+      Intl.message('enter the quotation subject');
+
+  String get quotationDetails => Intl.message('Quotation details');
+
+  String get quotationDetailsHint =>
+      Intl.message('Explain what you need from the service provider');
+
+  String get attachments => Intl.message('Attachments');
+
+  String get submitButton => Intl.message('Submit');
+
+  String get attachFileButton => Intl.message('Attach file');
+
+  String get favoriteRequestMethod => Intl.message('Favorite');
+
+  String get favoriteRequestMethodHint =>
+      Intl.message('Will be sent to your favorite service providers');
+
+  String get randomRequestMethod => Intl.message('Random');
+
+  String get randomRequestMethodHint => Intl.message(
+      'Will be sent randomly to service to service providers in this activity');
+
+  String get recommendationRequestMethod => Intl.message('Recommendation');
+
+  String get recommendationRequestMethodHint =>
+      Intl.message('Will be sent to high rated service providers');
+
+  String get activityFieldEmptyError => Intl.message('Activity is empty');
+
+  String get quotationSubjectFieldEmptyError =>
+      Intl.message('Quotation subject is empty');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

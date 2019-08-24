@@ -48,7 +48,6 @@ class _MessagePageState extends State<MessagePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
-        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Takween enginering',
@@ -56,7 +55,7 @@ class _MessagePageState extends State<MessagePage> {
             color: Colors.black54,
           ),
         ),
-        leading: BackButtonNoLabel(Colors.grey),
+        leading: BackButtonNoLabel(Colors.white),
       ),
       body: SafeArea(
           child: Column(

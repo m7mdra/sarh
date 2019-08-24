@@ -43,7 +43,7 @@ class _EditCompanyProfilePageState extends State<EditCompanyProfilePage> {
             onTap: () {},
             leading: Icon(FontAwesomeIcons.userShield,
                 color: Theme.of(context).accentColor),
-            title: Text('Authorization'),
+            title: Text('Authorizated From'),
           ),
           _divder,
           ListTile(

@@ -1,221 +1,355 @@
 {
-	"@@last_modified": "2019-08-01T17:19:26.129752",
-	"Login": "Login",
-	"@Login": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Username or Email": "Username or Email",
-	"@Username or Email": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Password": "Password",
-	"@Password": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Sing in": "Sing in",
-	"@Sing in": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Forgot my password": "Forgot my password",
-	"@Forgot my password": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"I Dont have an account": "I Dont have an account",
-	"@I Dont have an account": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Create new": "Create new",
-	"@Create new": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Register": "Register",
-	"@Register": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Username": "Username",
-	"@Username": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Email address": "Email address",
-	"@Email address": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Full name": "Full name",
-	"@Full name": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Confirm Password": "Confirm Password",
-	"@Confirm Password": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Account type": "Account type",
-	"@Account type": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Sign up": "Sign up",
-	"@Sign up": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"I Already have an account": "I Already have an account",
-	"@I Already have an account": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Next": "Next",
-	"@Next": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Please wait while attempting to log you in.": "Please wait while attempting to log you in.",
-	"@Please wait while attempting to log you in.": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"No active internet connection": "No active internet connection",
-	"@No active internet connection": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Retry": "Retry",
-	"@Retry": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Login information is not valid, try again": "Login information is not valid, try again",
-	"@Login information is not valid, try again": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Enter a valid email address": "Enter a valid email address",
-	"@Enter a valid email address": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Enter username or email address first": "Enter username or email address first",
-	"@Enter username or email address first": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Enter Password first": "Enter Password first",
-	"@Enter Password first": {
-		"type": "text",
-		"placeholders": {}
-	},
-	"Username or email address": "Username or email address",
-	"@Username or email address": {
-		"type": "text",
-		"placeholders": {}
-	},
-       "Select your account type": "Select your account type",
-       "@Select your account type": {
-         "type": "text",
-         "placeholders": {}
-       },
-       "Personal account": "Personal account",
-       "@Personal account": {
-         "type": "text",
-         "placeholders": {}
-       },
-       "Service Provider": "Service Provider",
-       "@Service Provider": {
-         "type": "text",
-         "placeholders": {}
-       },
-
-         "Register a user": "Register a user",
-         "@Register a user": {
-           "type": "text",
-           "placeholders": {}
-         },
-         "Register a service provider": "Register a service provider",
-         "@Register a service provider": {
-           "type": "text",
-           "placeholders": {}
-         },
-         "Phone number": "Phone number",
-         "@Phone number": {
-           "type": "text",
-           "placeholders": {}
-         },
-         "Select a city": "Select a city",
-         "@Select a city": {
-           "type": "text",
-           "placeholders": {}
-         },
-
-           "Service provider Name": "Service provider Name",
-           "@Service provider Name": {
-             "type": "text",
-             "placeholders": {}
-           },"Account Verification": "Account Verification",
-               "@Account Verification": {
-                 "type": "text",
-                 "placeholders": {}
-               },
-               "accountVerificationMessage": "Please enter the verification code below that we have sent to your phone number {phoneNumber}",
-               "@accountVerificationMessage": {
-                 "type": "text",
-                 "placeholders": {
-                   "phoneNumber": {}
-                 }
-               },
-               "Send again": "Send again",
-               "@Send again": {
-                 "type": "text",
-                 "placeholders": {}
-               },
-               "Verify": "Verify",
-               "@Verify": {
-                 "type": "text",
-                 "placeholders": {}
-               },
-                  "Name field is empty": "Name field is empty",
-                  "@Name field is empty": {
-                    "type": "text",
-                    "placeholders": {}
-                  },
-                  "Email field is empty": "Email field is empty",
-                  "@Email field is empty": {
-                    "type": "text",
-                    "placeholders": {}
-                  },
-                  "Phone number field is empty": "Phone number field is empty",
-                  "@Phone number field is empty": {
-                    "type": "text",
-                    "placeholders": {}
-                  },
-                  "Phone number invalid": "Phone number invalid",
-                  "@Phone number invalid": {
-                    "type": "text",
-                    "placeholders": {}
-                  },
-                  "password field is empty": "password field is empty",
-                  "@password field is empty": {
-                    "type": "text",
-                    "placeholders": {}
-                  },
-                  "City is not selected": "City is not selected",
-                  "@City is not selected": {
-                    "type": "text",
-                    "placeholders": {}
-                  },
-                     "Please fill the fields": "Please fill the fields",
-                     "@Please fill the fields": {
-                       "type": "text",
-                       "placeholders": {}
-                     }
+  "@@last_modified": "2019-08-01T17:19:26.129752",
+  "Login": "Login",
+  "@Login": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Username or Email": "Username or Email",
+  "@Username or Email": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Password": "Password",
+  "@Password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Sing in": "Sing in",
+  "@Sing in": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Forgot my password": "Forgot my password",
+  "@Forgot my password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "I Dont have an account": "I Dont have an account",
+  "@I Dont have an account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Create new": "Create new",
+  "@Create new": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Register": "Register",
+  "@Register": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Username": "Username",
+  "@Username": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Email address": "Email address",
+  "@Email address": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Full name": "Full name",
+  "@Full name": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Confirm Password": "Confirm Password",
+  "@Confirm Password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Account type": "Account type",
+  "@Account type": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Sign up": "Sign up",
+  "@Sign up": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "I Already have an account": "I Already have an account",
+  "@I Already have an account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Next": "Next",
+  "@Next": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Please wait while attempting to log you in.": "Please wait while attempting to log you in.",
+  "@Please wait while attempting to log you in.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "No active internet connection": "No active internet connection",
+  "@No active internet connection": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Retry": "Retry",
+  "@Retry": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Login information is not valid, try again": "Login information is not valid, try again",
+  "@Login information is not valid, try again": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Enter a valid email address": "Enter a valid email address",
+  "@Enter a valid email address": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Enter username or email address first": "Enter username or email address first",
+  "@Enter username or email address first": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Enter Password first": "Enter Password first",
+  "@Enter Password first": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Username or email address": "Username or email address",
+  "@Username or email address": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Select your account type": "Select your account type",
+  "@Select your account type": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Personal account": "Personal account",
+  "@Personal account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Service Provider": "Service Provider",
+  "@Service Provider": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Register a user": "Register a user",
+  "@Register a user": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Register a service provider": "Register a service provider",
+  "@Register a service provider": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Phone number": "Phone number",
+  "@Phone number": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Select a city": "Select a city",
+  "@Select a city": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Service provider Name": "Service provider Name",
+  "@Service provider Name": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Account Verification": "Account Verification",
+  "@Account Verification": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "accountVerificationMessage": "Please enter the verification code below that we have sent to your phone number {phoneNumber}",
+  "@accountVerificationMessage": {
+    "type": "text",
+    "placeholders": {
+      "phoneNumber": {}
+    }
+  },
+  "Send again": "Send again",
+  "@Send again": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Verify": "Verify",
+  "@Verify": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Name field is empty": "Name field is empty",
+  "@Name field is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Email field is empty": "Email field is empty",
+  "@Email field is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Phone number field is empty": "Phone number field is empty",
+  "@Phone number field is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Phone number invalid": "Phone number invalid",
+  "@Phone number invalid": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "password field is empty": "password field is empty",
+  "@password field is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "City is not selected": "City is not selected",
+  "@City is not selected": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Please fill the fields": "Please fill the fields",
+  "@Please fill the fields": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attach Image": "Attach Image",
+  "@Attach Image": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attach Video": "Attach Video",
+  "@Attach Video": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attach Document": "Attach Document",
+  "@Attach Document": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "PDF format only allowed": "PDF format only allowed",
+  "@PDF format only allowed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Select method to pick image": "Select method to pick image",
+  "@Select method to pick image": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Camera": "Camera",
+  "@Camera": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Gallery": "Gallery",
+  "@Gallery": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Request Quotations": "Request Quotations",
+  "@Request Quotations": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Choose the activity": "Choose the activity",
+  "@Choose the activity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Choose activity": "Choose activity",
+  "@Choose activity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Choose request method": "Choose request method",
+  "@Choose request method": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Request method": "Request method",
+  "@Request method": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Quotation subject": "Quotation subject",
+  "@Quotation subject": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enter the quotation subject": "enter the quotation subject",
+  "@enter the quotation subject": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Quotation details": "Quotation details",
+  "@Quotation details": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Explain what you need from the service provider": "Explain what you need from the service provider",
+  "@Explain what you need from the service provider": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attachments": "Attachments",
+  "@Attachments": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Submit": "Submit",
+  "@Submit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Attach file": "Attach file",
+  "@Attach file": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Favorite": "Favorite",
+  "@Favorite": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Will be sent to your favorite service providers": "Will be sent to your favorite service providers",
+  "@Will be sent to your favorite service providers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Random": "Random",
+  "@Random": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Will be sent randomly to service to service providers in this activity": "Will be sent randomly to service to service providers in this activity",
+  "@Will be sent randomly to service to service providers in this activity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Recommendation": "Recommendation",
+  "@Recommendation": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Will be sent to high rated service providers": "Will be sent to high rated service providers",
+  "@Will be sent to high rated service providers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Activity is empty": "Activity is empty",
+  "@Activity is empty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Quotation subject is empty": "Quotation subject is empty",
+  "@Quotation subject is empty": {
+    "type": "text",
+    "placeholders": {}
+  }
 }

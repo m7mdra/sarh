@@ -20,28 +20,28 @@ class _CategoriesPageState extends State<CategoriesPage> {
             crossAxisSpacing: 4,
             childAspectRatio: 1),
         children: <Widget>[
-          CategoryWidget(),
-          CategoryWidget(),
-          CategoryWidget(),
-          CategoryWidget(),
-          CategoryWidget(),
-          CategoryWidget(),
-          CategoryWidget(),
-          CategoryWidget(),
-          CategoryWidget(),
+          ActivityWidget(),
+          ActivityWidget(),
+          ActivityWidget(),
+          ActivityWidget(),
+          ActivityWidget(),
+          ActivityWidget(),
+          ActivityWidget(),
+          ActivityWidget(),
+          ActivityWidget(),
         ],
       ),
     );
   }
 }
 
-class CategoryWidget extends StatelessWidget {
+class ActivityWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => SubCategoryPage()));
+            MaterialPageRoute(builder: (context) => SubActivitypage()));
       },
       child: Container(
         decoration: BoxDecoration(

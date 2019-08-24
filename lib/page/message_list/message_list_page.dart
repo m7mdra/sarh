@@ -15,15 +15,13 @@ class _MessageListPageState extends State<MessageListPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Messages',
           style: TextStyle(
-            color: Colors.black54,
           ),
         ),
-        leading: BackButtonNoLabel(Colors.grey),
+        leading: BackButtonNoLabel(Colors.white),
       ),
       body: Column(
         children: <Widget>[

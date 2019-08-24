@@ -24,13 +24,11 @@ class _CompanyGalleryPageState extends State<CompanyGalleryPage> {
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              backgroundColor: Colors.white,
               centerTitle: true,
-              leading: BackButtonNoLabel(Colors.grey),
+              leading: BackButtonNoLabel(Colors.white),
               automaticallyImplyLeading: true,
               title: Text(
                 'Company\'s gallery',
-                style: TextStyle(color: Colors.grey),
               ),
             ),
             SliverPersistentHeader(

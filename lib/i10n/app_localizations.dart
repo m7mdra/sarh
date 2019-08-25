@@ -178,6 +178,7 @@ class AppLocalizations {
 
   String get quotationSubjectFieldEmptyError =>
       Intl.message('Quotation subject is empty');
+  String get newPost=>Intl.message('New post');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

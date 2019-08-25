@@ -36,12 +36,12 @@ class _CommunityPageState extends State<CommunityPage> {
                   minHeight: 70,
                   child: Material(
                     elevation: 2,
+
                     child: Container(
                       padding: const EdgeInsets.all(8),
-                      color: Colors.white,
                       child: Row(
                         children: <Widget>[
-                          BackButtonNoLabel(Colors.grey),
+                          BackButtonNoLabel(Colors.white),
                           Expanded(
                               child: TextField(
                             onTap: () {},

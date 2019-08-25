@@ -1,4 +1,4 @@
-import 'package:Sarh/widget/sarh_progress_bar.dart';
+import 'package:Sarh/widget/ui_state/sarh_progress_bar.dart';
 import 'package:flutter/material.dart';
 
 class ProgressDialog extends StatelessWidget {

@@ -1,6 +1,8 @@
+import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/account_type/account_type_page.dart';
 import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/page/login/bloc/login_event_state.dart';
+import 'package:Sarh/page/verify_account/verify_account_page.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/progress_dialog.dart';
 import 'package:Sarh/widget/relative_align.dart';
@@ -33,16 +35,17 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
     _passwordFocusNode = FocusNode();
     _idTextEditingController = TextEditingController();
     _passwordTextEditingController = TextEditingController();
-    _loginBloc = LoginBloc();
+    _loginBloc =
+        LoginBloc(DependencyProvider.provide(), DependencyProvider.provide());
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+     super.dispose();
     _passwordFocusNode.dispose();
     _passwordTextEditingController.dispose();
     _idTextEditingController.dispose();
+    _loginBloc.dispose();
   }
 
   ScaffoldState get scaffold => _scaffoldKey.currentState;
@@ -56,10 +59,7 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            RelativeAlign(
-              child: BackButtonNoLabel(Theme.of(context).accentColor),
-              alignment: ALIGN.Start,
-            ),
+
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: Align(
@@ -78,38 +78,72 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
               child: BlocListener(
                 bloc: _loginBloc,
                 listener: (context, state) {
-                  if (state is LoadingState)
+                  print(state);
+                  if (state is LoadingState) {
                     showDialog(
                         context: context,
-                        builder: (context) => ProgressDialog(
-                              message: AppLocalizations.of(context)
+                        builder: (context) =>
+                            ProgressDialog(
+                              message: AppLocalizations
+                                  .of(context)
                                   .loginLoadingDialogMessage,
                             ));
-                  if (state is SuccessState)
+                  }
+                  if (state is SuccessState) {
+                    Navigator.pop(context);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (BuildContext context) => MainPage()));
-                  if (state is NetworkError)
+                  }
+                  if (state is AccountNotVerified) {
+                    Navigator.pop(context);
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VerifyAccountPage()));
+                  }
+                  if (state is NetworkError) {
+                    Navigator.pop(context);
+
                     scaffold
                       ..hideCurrentSnackBar(
                           reason: SnackBarClosedReason.dismiss)
                       ..showSnackBar(SnackBar(
                         behavior: SnackBarBehavior.floating,
                         content:
-                            Text(AppLocalizations.of(context).noNetworkError),
+                        Text(AppLocalizations
+                            .of(context)
+                            .noNetworkError),
                         action: SnackBarAction(
-                            label: AppLocalizations.of(context).retryButton,
+                            label: AppLocalizations
+                                .of(context)
+                                .retryButton,
                             onPressed: () {
                               attemptLogin();
                             }),
                       ));
-                  if (state is InvalidUsernameOrPassword)
+                  }
+                  if (state is InvalidUsernameOrPassword) {
+                    Navigator.pop(context);
+
                     scaffold.showSnackBar(SnackBar(
                         backgroundColor: Colors.redAccent,
                         behavior: SnackBarBehavior.floating,
-                        content: Text(AppLocalizations.of(context)
+                        content: Text(AppLocalizations
+                            .of(context)
                             .invalidLoginCredentials)));
+                  }
+                  if (state is LoginError) {
+                    Navigator.pop(context);
+                    scaffold.showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text(
+                        'Unable to login right now, try later.',
+                      ),
+                    ));
+                  }
                 },
                 child: Form(
                   key: _formKey,
@@ -122,10 +156,16 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                         child: Hero(
                           tag: 'screenName',
                           child: Text(
-                            '${AppLocalizations.of(context).login}   ',
-                            style: Theme.of(context).textTheme.title.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            '${AppLocalizations
+                                .of(context)
+                                .login}   ',
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .title
+                                .copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -141,15 +181,18 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                         validator: (value) {
                           if (value.contains('@') &&
                               !isValidEmailAddress(value))
-                            return AppLocalizations.of(context)
+                            return AppLocalizations
+                                .of(context)
                                 .invalidEmailValidationError;
                           else if (value.isEmpty)
-                            return AppLocalizations.of(context)
+                            return AppLocalizations
+                                .of(context)
                                 .emptyEmailValidationError;
                           return null;
                         },
                         decoration: buildInputDecoration(
-                            AppLocalizations.of(context)
+                            AppLocalizations
+                                .of(context)
                                 .userIdentifierFieldHint,
                             FontAwesomeIcons.user),
                       ),
@@ -164,13 +207,16 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                         },
                         validator: (value) {
                           if (value.isEmpty)
-                            return AppLocalizations.of(context)
+                            return AppLocalizations
+                                .of(context)
                                 .emptyPasswordValidationError;
                           else
                             return null;
                         },
                         decoration: buildInputDecoration(
-                            AppLocalizations.of(context).passwordFieldName,
+                            AppLocalizations
+                                .of(context)
+                                .passwordFieldName,
                             FontAwesomeIcons.lock),
                       ),
                       SizedBox(
@@ -184,7 +230,9 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                               if (isFormValid()) attemptLogin();
                             },
                             child:
-                                Text(AppLocalizations.of(context).signInButton),
+                            Text(AppLocalizations
+                                .of(context)
+                                .signInButton),
                           ),
                           width: double.infinity,
                           height: 40,
@@ -195,12 +243,15 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                         alignment: ALIGN.Start,
                         child: Text.rich(
                           TextSpan(
-                              text: AppLocalizations.of(context)
+                              text: AppLocalizations
+                                  .of(context)
                                   .forgetMyPasswordButton,
                               recognizer: new TapGestureRecognizer()
                                 ..onTap = () => print('Tap Here onTap'),
                               style: TextStyle(
-                                color: Theme.of(context).primaryColor,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColor,
                               )),
                           textAlign: TextAlign.start,
                         ),
@@ -211,19 +262,26 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                         child: Text.rich(
                           TextSpan(
                             text:
-                                AppLocalizations.of(context).iDontHaveAnAccount,
+                            AppLocalizations
+                                .of(context)
+                                .iDontHaveAnAccount,
                             children: [
                               TextSpan(
                                   text:
-                                      ' ${AppLocalizations.of(context).createNew}',
+                                  ' ${AppLocalizations
+                                      .of(context)
+                                      .createNew}',
                                   recognizer: new TapGestureRecognizer()
-                                    ..onTap = () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                AccountTypePage())),
+                                    ..onTap = () =>
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AccountTypePage())),
                                   style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
+                                    color: Theme
+                                        .of(context)
+                                        .primaryColor,
                                   ))
                             ],
                           ),
@@ -242,7 +300,8 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
   }
 
   void attemptLogin() {
-    _loginBloc.dispatch(AttemptLogin("mm", "123"));
+    _loginBloc.dispatch(AttemptLogin(_idTextEditingController.text.trim(),
+        _passwordTextEditingController.text.trim()));
   }
 
   SizedBox buildSizedBox() {

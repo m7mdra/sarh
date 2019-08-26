@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:Sarh/page/verify_account/bloc/ticker.dart';
-import 'package:Sarh/page/verify_account/bloc/timer_event.dart';
-import 'package:Sarh/page/verify_account/bloc/timer_state.dart';
+import 'package:Sarh/page/verify_account/bloc/timer/ticker.dart';
+import 'package:Sarh/page/verify_account/bloc/timer/timer_event.dart';
+import 'package:Sarh/page/verify_account/bloc/timer/timer_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 

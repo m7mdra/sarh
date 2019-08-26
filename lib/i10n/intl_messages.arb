@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-24T15:03:55.393274",
+  "@@last_modified": "2019-08-26T16:06:49.097448",
   "Login": "Login",
   "@Login": {
     "type": "text",
@@ -351,5 +351,47 @@
   "@Quotation subject is empty": {
     "type": "text",
     "placeholders": {}
+  },
+  "New post": "New post",
+  "@New post": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Please wait while we verfiy your account.": "Please wait while we verfiy your account.",
+  "@Please wait while we verfiy your account.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Resending verification code.": "Resending verification code.",
+  "@Resending verification code.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Failed to verfiy account.": "Failed to verfiy account.",
+  "@Failed to verfiy account.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Invalid Verification code, try again or request new code.": "Invalid Verification code, try again or request new code.",
+  "@Invalid Verification code, try again or request new code.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Verification code was request successfully": "Verification code was request successfully",
+  "@Verification code was request successfully": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Request timed out.": "Request timed out.",
+  "@Request timed out.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "seconds": "{howMany,plural, =0{{howMany} Second}=1{{howMany} Second}few{{howMany} Seconds}many{{howMany} Seconds}other{{howMany} Seconds}}",
+  "@seconds": {
+    "type": "text",
+    "placeholders": {
+      "howMany": {}
+    }
   }
 }

@@ -24,32 +24,38 @@ class AuthenticationResponse {
     return data;
   }
 
-  User get user => data.user;
+  User get user => data.userInfo;
 
-  Company get company => data.company;
+  String get token => data.token;
+
+  Company get company => data.companyInfo;
 }
 
 class Data {
   String token;
-  User user;
-  Company company;
+  User userInfo;
+  Company companyInfo;
 
-  Data({this.token, this.user, this.company});
+  Data({this.token, this.userInfo, this.companyInfo});
 
   Data.fromJson(Map<String, dynamic> json) {
     token = json['token'];
-    user =
+    userInfo =
         json['userInfo'] != null ? new User.fromJson(json['userInfo']) : null;
-    company = json['companyInfo'];
+    companyInfo = json['companyInfo'] != null
+        ? new Company.fromJson(json['companyInfo'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['token'] = this.token;
-    if (this.user != null) {
-      data['userInfo'] = this.user.toJson();
+    if (this.userInfo != null) {
+      data['userInfo'] = this.userInfo.toJson();
     }
-    data['companyInfo'] = this.company;
+    if (this.companyInfo != null) {
+      data['companyInfo'] = this.companyInfo.toJson();
+    }
     return data;
   }
 }

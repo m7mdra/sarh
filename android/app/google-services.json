@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "500086390489",
+    "firebase_url": "https://sarh-a4654.firebaseio.com",
+    "project_id": "sarh-a4654",
+    "storage_bucket": "sarh-a4654.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500086390489:android:564dc8210995fff6",
+        "android_client_info": {
+          "package_name": "sarh.app.sarh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "500086390489-pmqekfqgm33bbg8nsvp5ksvviqjdblr1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlMydHYMdrNfcKjNrFVW1tAuxJHyp0Ghw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "500086390489-pmqekfqgm33bbg8nsvp5ksvviqjdblr1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

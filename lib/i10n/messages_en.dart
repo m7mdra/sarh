@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m0(phoneNumber) => "Please enter the verification code below that we have sent to your phone number ${phoneNumber}";
 
+  static m1(howMany) => "${Intl.plural(howMany, zero: '${howMany} Second', one: '${howMany} Second', few: '${howMany} Seconds', many: '${howMany} Seconds', other: '${howMany} Seconds')}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "Account Verification" : MessageLookupByLibrary.simpleMessage("Account Verification"),
@@ -45,12 +47,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Enter a valid email address" : MessageLookupByLibrary.simpleMessage("Enter a valid email address"),
     "Enter username or email address first" : MessageLookupByLibrary.simpleMessage("Enter username or email address first"),
     "Explain what you need from the service provider" : MessageLookupByLibrary.simpleMessage("Explain what you need from the service provider"),
+    "Failed to verfiy account." : MessageLookupByLibrary.simpleMessage("Failed to verfiy account."),
     "Favorite" : MessageLookupByLibrary.simpleMessage("Favorite"),
     "Forgot my password" : MessageLookupByLibrary.simpleMessage("Forgot my password"),
     "Full name" : MessageLookupByLibrary.simpleMessage("Full name"),
     "Gallery" : MessageLookupByLibrary.simpleMessage("Gallery"),
     "I Already have an account" : MessageLookupByLibrary.simpleMessage("I Already have an account"),
     "I Dont have an account" : MessageLookupByLibrary.simpleMessage("I Dont have an account"),
+    "Invalid Verification code, try again or request new code." : MessageLookupByLibrary.simpleMessage("Invalid Verification code, try again or request new code."),
     "Login" : MessageLookupByLibrary.simpleMessage("Login"),
     "Login information is not valid, try again" : MessageLookupByLibrary.simpleMessage("Login information is not valid, try again"),
     "Name field is empty" : MessageLookupByLibrary.simpleMessage("Name field is empty"),
@@ -64,6 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Phone number invalid" : MessageLookupByLibrary.simpleMessage("Phone number invalid"),
     "Please fill the fields" : MessageLookupByLibrary.simpleMessage("Please fill the fields"),
     "Please wait while attempting to log you in." : MessageLookupByLibrary.simpleMessage("Please wait while attempting to log you in."),
+    "Please wait while we verfiy your account." : MessageLookupByLibrary.simpleMessage("Please wait while we verfiy your account."),
     "Quotation details" : MessageLookupByLibrary.simpleMessage("Quotation details"),
     "Quotation subject" : MessageLookupByLibrary.simpleMessage("Quotation subject"),
     "Quotation subject is empty" : MessageLookupByLibrary.simpleMessage("Quotation subject is empty"),
@@ -74,6 +79,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Register a user" : MessageLookupByLibrary.simpleMessage("Register a user"),
     "Request Quotations" : MessageLookupByLibrary.simpleMessage("Request Quotations"),
     "Request method" : MessageLookupByLibrary.simpleMessage("Request method"),
+    "Request timed out." : MessageLookupByLibrary.simpleMessage("Request timed out."),
+    "Resending verification code." : MessageLookupByLibrary.simpleMessage("Resending verification code."),
     "Retry" : MessageLookupByLibrary.simpleMessage("Retry"),
     "Select a city" : MessageLookupByLibrary.simpleMessage("Select a city"),
     "Select method to pick image" : MessageLookupByLibrary.simpleMessage("Select method to pick image"),
@@ -87,12 +94,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Username" : MessageLookupByLibrary.simpleMessage("Username"),
     "Username or Email" : MessageLookupByLibrary.simpleMessage("Username or Email"),
     "Username or email address" : MessageLookupByLibrary.simpleMessage("Username or email address"),
+    "Verification code was request successfully" : MessageLookupByLibrary.simpleMessage("Verification code was request successfully"),
     "Verify" : MessageLookupByLibrary.simpleMessage("Verify"),
     "Will be sent randomly to service to service providers in this activity" : MessageLookupByLibrary.simpleMessage("Will be sent randomly to service to service providers in this activity"),
     "Will be sent to high rated service providers" : MessageLookupByLibrary.simpleMessage("Will be sent to high rated service providers"),
     "Will be sent to your favorite service providers" : MessageLookupByLibrary.simpleMessage("Will be sent to your favorite service providers"),
     "accountVerificationMessage" : m0,
     "enter the quotation subject" : MessageLookupByLibrary.simpleMessage("enter the quotation subject"),
-    "password field is empty" : MessageLookupByLibrary.simpleMessage("password field is empty")
+    "password field is empty" : MessageLookupByLibrary.simpleMessage("password field is empty"),
+    "seconds" : m1
   };
 }

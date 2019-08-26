@@ -4,15 +4,16 @@ class Either<First, Second> {
 
   Either._(this.first, this.second);
 
-  factory Either.withSuccess(Second second) {
-    return Either._(null, second);
+  factory Either.withSuccess(First first) {
+    return Either._(first, null);
   }
 
-  factory Either.withError(First first) {
-    return Either._(first, null);
+  factory Either.withError(Second second) {
+    return Either._(null, second);
   }
 
   bool get hasSecond => second != null;
 
   bool get hasFirst => first != null && second == null;
+
 }

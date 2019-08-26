@@ -351,5 +351,42 @@
   "@Quotation subject is empty": {
     "type": "text",
     "placeholders": {}
+  },
+  "Please wait while we verfiy your account.": "الرجاء الانتظار بينما يتم التحقق من الحساب",
+  "@Please wait while we verfiy your account.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Resending verification code.": "جاري اعادة ارسال رمز التحقق",
+  "@Resending verification code.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Failed to verfiy account.": "فشل محاولة التحقق من الحساب",
+  "@Failed to verfiy account.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Invalid Verification code, try again or request new code.": "رمز التحقق غير صحيح, حاول مجددا او قم بطلب رمز جديد",
+  "@Invalid Verification code, try again or request new code.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Verification code was request successfully": "تم ارسال رمز التحقق بنجاح",
+  "@Verification code was request successfully": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Request timed out.": "الطلب منتهي المدة.",
+  "@Request timed out.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "seconds": "{howMany,plural, =0{{howMany} ثانيه}=1{{howMany} ثانيه}few{{howMany} ثواني}many{{howMany} ثانية}other{{howMany} Seconds}}",
+  "@seconds": {
+    "type": "text",
+    "placeholders": {
+      "howMany": {}
+    }
   }
 }

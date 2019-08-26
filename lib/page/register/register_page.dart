@@ -1,7 +1,12 @@
 import 'dart:isolate';
 
+import 'package:Sarh/data/model/city.dart';
+import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/account_type/account_type_page.dart';
 import 'package:Sarh/page/login/login_page.dart';
+import 'package:Sarh/page/register/bloc/register_bloc.dart';
+import 'package:Sarh/page/register/bloc/register_bloc_event.dart';
+import 'package:Sarh/page/register/bloc/register_bloc_state.dart';
 import 'package:Sarh/page/verify_account/verify_account_page.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/progress_dialog.dart';
@@ -13,11 +18,11 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:Sarh/i10n/app_localizations.dart';
 import 'package:Sarh/form_commons.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../email_validator.dart';
 
 class RegisterPage extends StatefulWidget {
-  final Account accountType;
+  final AccountType accountType;
 
   const RegisterPage({Key key, this.accountType}) : super(key: key);
 
@@ -26,7 +31,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> with EmailValidator {
-  var _selectCity;
+  City _selectCity;
   TextEditingController _nameTextEditingController;
   TextEditingController _emailTextEditingController;
   TextEditingController _phoneTextEditingController;
@@ -36,9 +41,10 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
   FocusNode _emailFocusNode;
   FocusNode _phoneFocusNode;
   FocusNode _passwordFocusNode;
-  FocusNode _confirmpPasswordFocusNode;
+  FocusNode _confirmPasswordFocusNode;
   GlobalKey<FormState> _formKey = GlobalKey();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  RegisterBloc _registerBloc;
 
   ScaffoldState get scaffold => _scaffoldKey.currentState;
 
@@ -47,6 +53,9 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
   @override
   void initState() {
     super.initState();
+    _registerBloc = RegisterBloc(DependencyProvider.provide(),
+        DependencyProvider.provide(), DependencyProvider.provide());
+    _registerBloc.dispatch(LoadCities());
     _nameTextEditingController = TextEditingController();
     _emailTextEditingController = TextEditingController();
     _phoneTextEditingController = TextEditingController();
@@ -56,12 +65,13 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
     _emailFocusNode = FocusNode();
     _phoneFocusNode = FocusNode();
     _passwordFocusNode = FocusNode();
-    _confirmpPasswordFocusNode = FocusNode();
+    _confirmPasswordFocusNode = FocusNode();
   }
 
   @override
   void dispose() {
     super.dispose();
+    _registerBloc.dispose();
     _nameTextEditingController.dispose();
     _emailTextEditingController.dispose();
     _phoneTextEditingController.dispose();
@@ -71,7 +81,7 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
     _emailFocusNode.dispose();
     _phoneFocusNode.dispose();
     _passwordFocusNode.dispose();
-    _confirmpPasswordFocusNode.dispose();
+    _confirmPasswordFocusNode.dispose();
   }
 
   @override
@@ -82,9 +92,7 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              RelativeAlign(
-                  child: BackButtonNoLabel(Theme.of(context).accentColor),
-                  alignment: ALIGN.Start),
+            SizedBox(height: 50,),
               Align(
                 alignment: Alignment.topCenter,
                 child: Hero(
@@ -107,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                         child: Hero(
                           tag: 'screenName',
                           child: Text(
-                            widget.accountType == Account.personal
+                            widget.accountType == AccountType.personal
                                 ? AppLocalizations.of(context).registerUser
                                 : AppLocalizations.of(context)
                                     .registerServiceProvider,
@@ -133,11 +141,11 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                             return null;
                         },
                         decoration: buildInputDecoration(
-                            widget.accountType == Account.personal
+                            widget.accountType == AccountType.personal
                                 ? AppLocalizations.of(context).fullName
                                 : AppLocalizations.of(context)
                                     .serviceProviderName,
-                            widget.accountType == Account.personal
+                            widget.accountType == AccountType.personal
                                 ? FontAwesomeIcons.user
                                 : FontAwesomeIcons.building),
                       ),
@@ -206,44 +214,44 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                             FontAwesomeIcons.lock),
                       ),
                       _sizedBox,
-                      DropdownButtonFormField(
-                        onChanged: (value) {
-                          setState(() {
-                            this._selectCity = value;
-                          });
+                      BlocBuilder(
+                        bloc: _registerBloc,
+                        condition: (previous, current) {
+                          return current is CitiesLoaded;
                         },
-                        validator: (city) {
-                          if (city == null)
-                            return AppLocalizations.of(context).cityFieldEmpty;
-                          else
-                            return null;
+                        builder: (BuildContext context, state) {
+                          if (state is CitiesLoaded)
+                            return DropdownButtonFormField<City>(
+                              onChanged: (value) {
+                                setState(() {
+                                  this._selectCity = value;
+                                });
+                              },
+                              validator: (city) {
+                                if (city == null)
+                                  return AppLocalizations.of(context)
+                                      .cityFieldEmpty;
+                                else
+                                  return null;
+                              },
+                              value: _selectCity,
+                              items: state.cities.map((city) {
+                                    return DropdownMenuItem(
+                                        value: city,
+                                        child: Text(
+                                            '${city.name} - ${city.arName}'));
+                                  }).toList() ??
+                                  [],
+                              hint: Text(
+                                  AppLocalizations.of(context).cityFieldHint),
+                              decoration: dropDownDecoration,
+                            );
+                          return DropdownButtonFormField(
+                              items: [],
+                              hint: Text(
+                                  AppLocalizations.of(context).cityFieldHint),
+                              decoration: dropDownDecoration);
                         },
-                        value: _selectCity,
-                        items: [
-                          DropdownMenuItem(
-                            child: Text('ابوظبي'),
-                            value: '1',
-                          ),
-                          DropdownMenuItem(
-                            child: Text('عجمان'),
-                            value: '2',
-                          ),
-                          DropdownMenuItem(
-                            child: Text('الفجيرة'),
-                            value: '3',
-                          ),
-                          DropdownMenuItem(
-                            child: Text('الشارقة'),
-                            value: '4',
-                          ),
-                        ],
-                        hint: Text(AppLocalizations.of(context).cityFieldHint),
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(FontAwesomeIcons.map),
-                          fillColor: Color(0xffECECEC),
-                          filled: true,
-                          border: InputBorder.none,
-                        ),
                       ),
                       SizedBox(
                         height: 8,
@@ -300,6 +308,15 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
           ),
         ),
       ),
+    );
+  }
+
+  InputDecoration get dropDownDecoration {
+    return InputDecoration(
+      prefixIcon: Icon(FontAwesomeIcons.map),
+      fillColor: Color(0xffECECEC),
+      filled: true,
+      border: InputBorder.none,
     );
   }
 

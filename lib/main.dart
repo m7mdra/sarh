@@ -1,5 +1,7 @@
 import 'package:Sarh/page/home/main_page.dart';
+import 'package:Sarh/page/register/register_page.dart';
 import 'package:Sarh/page/splash/splash_page.dart';
+import 'package:Sarh/page/verify_account/verify_account_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'dependency_provider.dart';
@@ -56,7 +58,7 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      home: SplashPage(),
+      home: RegisterPage(),
     );
   }
 }

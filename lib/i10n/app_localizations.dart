@@ -178,7 +178,33 @@ class AppLocalizations {
 
   String get quotationSubjectFieldEmptyError =>
       Intl.message('Quotation subject is empty');
-  String get newPost=>Intl.message('New post');
+
+  String get newPost => Intl.message('New post');
+
+  String get verifyAccountProgressDialogTitle =>
+      Intl.message('Please wait while we verfiy your account.');
+
+  String get resendCodeProgressDialogTitle =>
+      Intl.message('Resending verification code.');
+
+  String get verifyFailed => Intl.message('Failed to verfiy account.');
+
+  String get invalidVerificationCode =>
+      Intl.message('Invalid Verification code, try again or request new code.');
+
+  String get verificationCodeRequest =>
+      Intl.message('Verification code was request successfully');
+
+  String get requestTimeout => Intl.message('Request timed out.');
+
+  String seconds(int howMany) => Intl.plural(howMany,
+      zero: '$howMany Second',
+      one: '$howMany Second',
+      few: '$howMany Seconds',
+      many: '$howMany Seconds',
+      other: '$howMany Seconds',
+      args: [howMany],
+      name: 'seconds');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

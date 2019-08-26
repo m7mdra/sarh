@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m0(phoneNumber) => "قم بادخال رمز التحقق بالاسفل الذي تم ارساله الى الرقم ${phoneNumber}";
 
+  static m1(howMany) => "${Intl.plural(howMany, zero: '${howMany} ثانيه', one: '${howMany} ثانيه', few: '${howMany} ثواني', many: '${howMany} ثانية', other: '${howMany} Seconds')}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "Account Verification" : MessageLookupByLibrary.simpleMessage("التحقق من الحساب"),
@@ -45,12 +47,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Enter a valid email address" : MessageLookupByLibrary.simpleMessage("ادخل بريد الكتروني صالح"),
     "Enter username or email address first" : MessageLookupByLibrary.simpleMessage("قم بكتابة اسم المستخدم او البريد الالكتروني اولا"),
     "Explain what you need from the service provider" : MessageLookupByLibrary.simpleMessage("قم بتوضيح ماذا تحتاج من مقدم الخدمة"),
+    "Failed to verfiy account." : MessageLookupByLibrary.simpleMessage("فشل محاولة التحقق من الحساب"),
     "Favorite" : MessageLookupByLibrary.simpleMessage("المفضلة"),
     "Forgot my password" : MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور"),
     "Full name" : MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
     "Gallery" : MessageLookupByLibrary.simpleMessage("معرض الصور"),
     "I Already have an account" : MessageLookupByLibrary.simpleMessage("لدي حساب بالفعل"),
     "I Dont have an account" : MessageLookupByLibrary.simpleMessage("ليس لدي حساب"),
+    "Invalid Verification code, try again or request new code." : MessageLookupByLibrary.simpleMessage("رمز التحقق غير صحيح, حاول مجددا او قم بطلب رمز جديد"),
     "Login" : MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "Login information is not valid, try again" : MessageLookupByLibrary.simpleMessage("معلومات تسجيل الدخول ليست صحيحه, حاول مرة اخرى"),
     "Name field is empty" : MessageLookupByLibrary.simpleMessage("حقل الاسم خالي"),
@@ -64,6 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Phone number invalid" : MessageLookupByLibrary.simpleMessage("حقل رقم الهاتف غير صالح"),
     "Please fill the fields" : MessageLookupByLibrary.simpleMessage("الرجاء ملء جميع الحقول"),
     "Please wait while attempting to log you in." : MessageLookupByLibrary.simpleMessage("الرجاء الانتظار بينما يتم تسجيل دخولك"),
+    "Please wait while we verfiy your account." : MessageLookupByLibrary.simpleMessage("الرجاء الانتظار بينما يتم التحقق من الحساب"),
     "Quotation details" : MessageLookupByLibrary.simpleMessage("تفاصيل التسعيرة"),
     "Quotation subject" : MessageLookupByLibrary.simpleMessage("موضوع التسعيرة"),
     "Quotation subject is empty" : MessageLookupByLibrary.simpleMessage("موضوع التسعيرة خالي"),
@@ -74,6 +79,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Register a user" : MessageLookupByLibrary.simpleMessage("تسجيل حساب شخصي"),
     "Request Quotations" : MessageLookupByLibrary.simpleMessage("طلب تسعيرة"),
     "Request method" : MessageLookupByLibrary.simpleMessage("نظام الطلب"),
+    "Request timed out." : MessageLookupByLibrary.simpleMessage("الطلب منتهي المدة."),
+    "Resending verification code." : MessageLookupByLibrary.simpleMessage("جاري اعادة ارسال رمز التحقق"),
     "Retry" : MessageLookupByLibrary.simpleMessage("اعادة المحاولة"),
     "Select a city" : MessageLookupByLibrary.simpleMessage("اختر مدينة"),
     "Select method to pick image" : MessageLookupByLibrary.simpleMessage("اختر طريقة لاختيار الصورة"),
@@ -87,12 +94,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Username" : MessageLookupByLibrary.simpleMessage("اسم المستخدم"),
     "Username or Email" : MessageLookupByLibrary.simpleMessage("البريد الالكتروني او اسم المتسخدم"),
     "Username or email address" : MessageLookupByLibrary.simpleMessage("اسم المستخدم او البريد الالكتروني"),
+    "Verification code was request successfully" : MessageLookupByLibrary.simpleMessage("تم ارسال رمز التحقق بنجاح"),
     "Verify" : MessageLookupByLibrary.simpleMessage("تحقق"),
     "Will be sent randomly to service to service providers in this activity" : MessageLookupByLibrary.simpleMessage("سيتم الارسال عشوائيا الى مزودي خدمة في هذا النشاط"),
     "Will be sent to high rated service providers" : MessageLookupByLibrary.simpleMessage("سيتم الارسال الى مزودي الخدمة الاعلى تقييماً"),
     "Will be sent to your favorite service providers" : MessageLookupByLibrary.simpleMessage("ستيم الارسال الى مزوري الخدمة المفضلين"),
     "accountVerificationMessage" : m0,
     "enter the quotation subject" : MessageLookupByLibrary.simpleMessage("ادخل موضوع التسعيرة "),
-    "password field is empty" : MessageLookupByLibrary.simpleMessage("حقل كلمة المرور خالي")
+    "password field is empty" : MessageLookupByLibrary.simpleMessage("حقل كلمة المرور خالي"),
+    "seconds" : m1
   };
 }

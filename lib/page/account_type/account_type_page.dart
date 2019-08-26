@@ -13,7 +13,7 @@ class AccountTypePage extends StatefulWidget {
 class _AccountTypePageState extends State<AccountTypePage> {
   Color _appbarColor = Colors.white;
   Color _fontColor = Colors.grey;
-  Account _selectedAccount;
+  AccountType _selectedAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _AccountTypePageState extends State<AccountTypePage> {
               onSelectChanged: (account) {
                 setState(() {
                   _selectedAccount = account;
-                  if (account == Account.personal)
+                  if (account == AccountType.personal)
                     _appbarColor = Colors.blue;
                   else
                     _appbarColor = Colors.lightBlueAccent;
@@ -102,10 +102,10 @@ class _AccountTypePageState extends State<AccountTypePage> {
   }
 }
 
-enum Account { personal, service_provider }
+enum AccountType { personal, service_provider }
 
 class AccountTypeSelectionWidget extends StatefulWidget {
-  final ValueChanged<Account> onSelectChanged;
+  final ValueChanged<AccountType> onSelectChanged;
 
   const AccountTypeSelectionWidget({Key key, this.onSelectChanged})
       : super(key: key);
@@ -117,7 +117,7 @@ class AccountTypeSelectionWidget extends StatefulWidget {
 
 class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
     with SingleTickerProviderStateMixin {
-  Account _selectedAccount;
+  AccountType _selectedAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -142,8 +142,8 @@ class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
                           color: Colors.white,
                           onPressed: () {
                             setState(() {
-                              _selectedAccount = Account.personal;
-                              widget.onSelectChanged(Account.personal);
+                              _selectedAccount = AccountType.personal;
+                              widget.onSelectChanged(AccountType.personal);
                             });
                           },
                         ),
@@ -172,9 +172,9 @@ class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
                             color: Colors.white,
                             onPressed: () {
                               setState(() {
-                                _selectedAccount = Account.service_provider;
+                                _selectedAccount = AccountType.service_provider;
                                 widget
-                                    .onSelectChanged(Account.service_provider);
+                                    .onSelectChanged(AccountType.service_provider);
                               });
                             },
                           )),
@@ -196,7 +196,7 @@ class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
     );
   }
 
-  bool get isServiceProvider => _selectedAccount == Account.service_provider;
+  bool get isServiceProvider => _selectedAccount == AccountType.service_provider;
 
-  bool get isPersonal => _selectedAccount == Account.personal;
+  bool get isPersonal => _selectedAccount == AccountType.personal;
 }

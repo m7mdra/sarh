@@ -8,7 +8,18 @@ class LoadingState extends LoginState {}
 
 class NetworkError extends LoginState {}
 
+class Timeout extends LoginState {}
+
+class LoginError extends LoginState {
+  final String message;
+
+  LoginError(this.message);
+}
+
+class AccountNotVerified extends LoginState {}
+
 class InvalidUsernameOrPassword extends LoginState {}
+
 
 class SuccessState extends LoginState {}
 

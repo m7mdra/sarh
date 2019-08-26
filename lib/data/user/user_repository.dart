@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:Sarh/data/either.dart';
+import 'package:Sarh/data/exceptions/timeout_exception.dart';
+import 'package:Sarh/data/exceptions/unable_to_connect_exception.dart';
 import 'package:dio/dio.dart';
 import 'model/authentication_response_error.dart';
 import 'model/authentication_response.dart';
@@ -11,15 +13,31 @@ class UserRepository {
 
   UserRepository(this._client);
 
-  Future<Either<AuthenticationResponse, AuthenticationResponseError>> login(
-      String username, String password) async {
+  Future<AuthenticationResponse> login(String username, String password) async {
     try {
       var response = await _client.post('account/login',
           data: {'username': username, 'password': password});
-      return Either.withError(AuthenticationResponse.fromJson(response.data));
+      return AuthenticationResponse.fromJson(response.data);
     } on DioError catch (error) {
-      return Either.withSuccess(
-          AuthenticationResponseError.fromJson(error.response.data));
+      switch (error.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+        case DioErrorType.SEND_TIMEOUT:
+        case DioErrorType.RECEIVE_TIMEOUT:
+          throw TimeoutException();
+          break;
+        case DioErrorType.RESPONSE:
+          if (error.response.statusCode == HTTP_UNAUTHORIZED)
+            throw SessionExpiredException();
+          else
+            throw error;
+          break;
+        case DioErrorType.CANCEL:
+          throw error;
+          break;
+        case DioErrorType.DEFAULT:
+          throw UnableToConnectException();
+          break;
+      }
     } catch (error) {
       throw error;
     }
@@ -31,10 +49,25 @@ class UserRepository {
           .post('customer/verificationcode', data: {'verificationCode': code});
       return AuthenticationResponse.fromJson(response.data);
     } on DioError catch (error) {
-      if (error.response.statusCode == HTTP_UNAUTHORIZED)
-        throw SessionExpired();
-      else
-        throw error;
+      switch (error.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+        case DioErrorType.SEND_TIMEOUT:
+        case DioErrorType.RECEIVE_TIMEOUT:
+          throw TimeoutException();
+          break;
+        case DioErrorType.RESPONSE:
+          if (error.response.statusCode == HTTP_UNAUTHORIZED)
+            throw SessionExpiredException();
+          else
+            throw error;
+          break;
+        case DioErrorType.CANCEL:
+          throw error;
+          break;
+        case DioErrorType.DEFAULT:
+          throw UnableToConnectException();
+          break;
+      }
     }
   }
 
@@ -57,9 +90,9 @@ class UserRepository {
         'c_password': password,
         'firebaseToken': messagingToken
       });
-      return Either.withError(AuthenticationResponse.fromJson(response.data));
+      return Either.withSuccess(AuthenticationResponse.fromJson(response.data));
     } on DioError catch (error) {
-      return Either.withSuccess(
+      return Either.withError(
           AuthenticationResponseError.fromJson(error.response.data));
     } catch (error) {
       throw error;
@@ -72,7 +105,7 @@ class UserRepository {
       return AuthenticationResponse.fromJson(response.data);
     } on DioError catch (error) {
       if (error.response.statusCode == HTTP_UNAUTHORIZED)
-        throw SessionExpired();
+        throw SessionExpiredException();
       else
         throw error;
     } catch (error) {
@@ -88,7 +121,7 @@ class UserRepository {
       return AuthenticationResponse.fromJson(response.data);
     } on DioError catch (error) {
       if (error.response.statusCode == HTTP_UNAUTHORIZED)
-        throw SessionExpired();
+        throw SessionExpiredException();
       else
         throw error;
     } catch (error) {

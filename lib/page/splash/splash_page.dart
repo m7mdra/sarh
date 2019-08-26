@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   Animation<double> _logoTranslateAnimation;
   AnimationController _slogunOpacityController;
   Animation<double> _slogunOpacityAnimation;
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
@@ -22,9 +24,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     animate();
   }
 
-
-
   void animate() {
+    initNotificationAndListen();
+
     _logoScaleController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500))
           ..addListener(() => setState(() {}));
@@ -63,6 +65,26 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     _logoScaleController.forward();
   }
 
+  void initNotificationAndListen() {
+    firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, alert: true, badge: true));
+
+    firebaseMessaging.setAutoInitEnabled(true);
+    firebaseMessaging.configure(
+      onLaunch: (Map<String, dynamic> message) {
+        print("onLaunch: $message");
+        return Future.value(false);
+      },
+      onMessage: (Map<String, dynamic> message) {
+        return Future.value(false);
+      },
+      onResume: (Map<String, dynamic> message) {
+        print("onResume: $message");
+        return Future.value(false);
+      },
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -91,7 +113,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
             ),
-           
             buildCenter(),
           ],
         ),

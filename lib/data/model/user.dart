@@ -13,14 +13,14 @@ class User {
 
   User(
       {this.id,
-        this.username,
-        this.fullName,
-        this.phone,
-        this.accountType,
-        this.city,
-        this.image,
-        this.isVerified,
-        this.firebaseToken});
+      this.username,
+      this.fullName,
+      this.phone,
+      this.accountType,
+      this.city,
+      this.image,
+      this.isVerified,
+      this.firebaseToken});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -49,4 +49,8 @@ class User {
     data['firebaseToken'] = this.firebaseToken;
     return data;
   }
+
+  bool get isCompany => accountType == 2;
+
+  bool get isAccountVerified => isVerified == 1;
 }

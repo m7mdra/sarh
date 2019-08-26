@@ -8,7 +8,7 @@ abstract class TimerEvent extends Equatable {
 class Start extends TimerEvent {
   final int duration;
 
-  Start({ this.duration=5}) : super([duration]);
+  Start({ this.duration=60}) : super([duration]);
 
   @override
   String toString() => "Start { duration: $duration }";

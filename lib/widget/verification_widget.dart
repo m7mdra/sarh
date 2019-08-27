@@ -58,7 +58,7 @@ class VerificationCodeWidgetState extends State<VerificationCodeWidget> {
       _textEditingControllers.add(controller);
       _digitWidgets.add(CodeDigitWidget(
         key: UniqueKey(),
-        cellSize: Size(50, 50),
+        cellSize: Size(45, 45),
         focusNode: node,
 
         textEditingController: controller,
@@ -134,8 +134,8 @@ class CodeDigitWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: cellSize.width ?? 50,
-      height: cellSize.height ?? 50,
+      width: cellSize.width ?? 45,
+      height: cellSize.height ?? 45,
       alignment: Alignment.center,
       margin: EdgeInsets.all(marginBetweenCells ?? 4),
       child: TextField(

@@ -1,3 +1,4 @@
+
 import 'package:Sarh/data/model/city.dart';
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/account_type/account_type_page.dart';
@@ -105,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                               widget.accountType == AccountType.personal
                                   ? AppLocalizations
                                   .of(context)
-                                  .personalAccountType :
+                                  .personalAccountType:
                               AppLocalizations
                                   .of(context)
                                   .serviceProviderAccountType)
@@ -135,9 +136,7 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: Text(AppLocalizations
-                          .of(context)
-                          .errorDialogTitle),
+                      title: Text(AppLocalizations.of(context).errorDialogTitle),
                       content: Text(state.error),
                       actions: <Widget>[
                         FlatButton(
@@ -396,22 +395,7 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                           child: SizedBox(
                             child: RaisedButton(
                               onPressed: () async {
-//                                if (form.validate()) await _attemptRegister();
-                                showDialog(
-                                    context: context, builder: (context) =>
-                                    ProgressDialog(
-                                        message: AppLocalizations.of(context)
-                                            .creatingAccountProgressTitle(
-                                            widget.accountType ==
-                                                AccountType.personal
-                                                ? AppLocalizations
-                                                .of(context)
-                                                .personalAccountType :
-                                            AppLocalizations
-                                                .of(context)
-                                                .serviceProviderAccountType)
-                                    ));
-
+                                if (form.validate()) await _attemptRegister();
                               },
                               child:
                               Text(AppLocalizations

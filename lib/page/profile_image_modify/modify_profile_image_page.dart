@@ -1,7 +1,11 @@
+import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/profile_image_modify/bloc/modify_profile_image_event.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/media_picker_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'bloc/modify_profile_image_bloc.dart';
 
 class ModifyProfileImagePage extends StatefulWidget {
   @override
@@ -9,6 +13,17 @@ class ModifyProfileImagePage extends StatefulWidget {
 }
 
 class _ModifyProfileImagePageState extends State<ModifyProfileImagePage> {
+  ModifyProfileImageBloc _bloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _bloc = ModifyProfileImageBloc(
+        DependencyProvider.provide(), DependencyProvider.provide());
+    _bloc.dispatch(Load());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,10 +57,11 @@ class _ModifyProfileImagePageState extends State<ModifyProfileImagePage> {
                 height: 16,
               ),
               RaisedButton.icon(
-                onPressed: () {
-                  showDialog(
+                onPressed: () async {
+                  var file = await showDialog(
                       context: context,
                       builder: (context) => MediaPickDialog());
+                  if (file != null) _bloc.dispatch(Modify(file));
                 },
                 label: Text('Update image'),
                 icon: Icon(FontAwesomeIcons.image),

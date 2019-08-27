@@ -388,6 +388,18 @@
     "placeholders": {
       "howMany": {}
     }
+  },
+  "creatingAccountProgressTitle": "Creating new '{accountType}' account",
+  "@creatingAccountProgressTitle": {
+    "type": "text",
+    "placeholders": {
+      "accountType": {}
+    }
+  },
+  "Error occurred": "Error occurred",
+  "@Error occurred": {
+    "type": "text",
+    "placeholders": {}
   }
 
 }

@@ -23,8 +23,13 @@ class AuthenticationResponseError {
 
   String get errors =>
       List.of([
-        data.username.map((error) => error).join(),
-        data.password.map((error) => error).join()
+        data.username.map((error) => "-  $error").join(),
+        data.password.map((error) => "-  $error").join(),
+        data.phone.map((error) => "- ️$error").join(),
+        data.accountType.map((error) => "-️ $error").join(),
+        data.city.map((error) => "- ️$error").join(),
+        data.cPassword.map((error) => "- ️$error").join(),
+        data.firebaseToken.map((error) => "-️ $error").join(),
       ]).join('\n').trim() ??
       ''.trim();
 }

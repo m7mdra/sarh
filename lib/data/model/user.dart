@@ -8,7 +8,7 @@ class User {
   int accountType;
   City city;
   String image;
-  int isVerified;
+  dynamic isVerified;
   String firebaseToken;
 
   User(

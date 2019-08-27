@@ -29,5 +29,9 @@ class Session {
   Company get company =>
       Company.fromJson(jsonDecode(_preferences.getString(KEY_COMPANY)));
 
-  String get token => _preferences.getString(KEY_TOKEN) ?? "";
+  String get token => _preferences.getString(KEY_TOKEN) ?? null;
+
+  Future<bool> clear() {
+    return _preferences.clear();
+  }
 }

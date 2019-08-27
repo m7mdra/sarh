@@ -41,10 +41,28 @@ class VerifyAccountBloc extends Bloc<VerificationEvent, VerificationState> {
         yield Timeout();
       } catch (error) {
         yield Failed();
+        print(error);
       }
     }
     if (event is ResentVerificationCode) {
-      timerBloc.dispatch(Start());
+      yield ResendLoading();
+      try {
+        var response = await userRepository.requestCode();
+        if (response.success) {
+          timerBloc.dispatch(Start());
+          yield ResendRequested();
+        } else {
+          yield ResendFailed();
+        }
+      } on SessionExpiredException {
+        yield SessionExpired();
+      } on UnableToConnectException {
+        yield NetworkError();
+      } on TimeoutException {
+        yield Timeout();
+      } catch (error) {
+        yield ResendFailed();
+      }
     }
     if (event is LoadPhoneNumber) {
       yield PhoneNumberLoaded(session.user.phone);

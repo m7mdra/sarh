@@ -205,6 +205,11 @@ class AppLocalizations {
       other: '$howMany Seconds',
       args: [howMany],
       name: 'seconds');
+
+  String creatingAccountProgressTitle(String accountType) =>
+      Intl.message("Creating new '$accountType' account",
+          name: 'creatingAccountProgressTitle', args: [accountType]);
+  String get errorDialogTitle=>Intl.message('Error occurred');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

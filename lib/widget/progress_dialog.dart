@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class ProgressDialog extends StatelessWidget {
   final String message;
 
-  const ProgressDialog({Key key, this.message}) : super(key: key);
+  const ProgressDialog({Key key, this.message =''}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,6 @@ class ProgressDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           SarhProgressBar(),
-
         ],
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

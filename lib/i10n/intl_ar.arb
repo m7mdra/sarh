@@ -388,5 +388,17 @@
     "placeholders": {
       "howMany": {}
     }
+  },
+  "creatingAccountProgressTitle": "جاري انشاء حساب '{accountType}' جديد",
+  "@creatingAccountProgressTitle": {
+    "type": "text",
+    "placeholders": {
+      "accountType": {}
+    }
+  },
+  "Error occurred": "حصل خطأ",
+  "@Error occurred": {
+    "type": "text",
+    "placeholders": {}
   }
 }

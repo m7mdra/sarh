@@ -22,7 +22,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m0(phoneNumber) => "Please enter the verification code below that we have sent to your phone number ${phoneNumber}";
 
-  static m1(howMany) => "${Intl.plural(howMany, zero: '${howMany} Second', one: '${howMany} Second', few: '${howMany} Seconds', many: '${howMany} Seconds', other: '${howMany} Seconds')}";
+  static m1(accountType) => "Creating new \'${accountType}\' account";
+
+  static m2(howMany) => "${Intl.plural(howMany, zero: '${howMany} Second', one: '${howMany} Second', few: '${howMany} Seconds', many: '${howMany} Seconds', other: '${howMany} Seconds')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -46,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Enter Password first" : MessageLookupByLibrary.simpleMessage("Enter Password first"),
     "Enter a valid email address" : MessageLookupByLibrary.simpleMessage("Enter a valid email address"),
     "Enter username or email address first" : MessageLookupByLibrary.simpleMessage("Enter username or email address first"),
+    "Error occurred" : MessageLookupByLibrary.simpleMessage("Error occurred"),
     "Explain what you need from the service provider" : MessageLookupByLibrary.simpleMessage("Explain what you need from the service provider"),
     "Failed to verfiy account." : MessageLookupByLibrary.simpleMessage("Failed to verfiy account."),
     "Favorite" : MessageLookupByLibrary.simpleMessage("Favorite"),
@@ -101,8 +104,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Will be sent to high rated service providers" : MessageLookupByLibrary.simpleMessage("Will be sent to high rated service providers"),
     "Will be sent to your favorite service providers" : MessageLookupByLibrary.simpleMessage("Will be sent to your favorite service providers"),
     "accountVerificationMessage" : m0,
+    "creatingAccountProgressTitle" : m1,
     "enter the quotation subject" : MessageLookupByLibrary.simpleMessage("enter the quotation subject"),
     "password field is empty" : MessageLookupByLibrary.simpleMessage("password field is empty"),
-    "seconds" : m1
+    "seconds" : m2
   };
 }

@@ -1,3 +1,4 @@
+import 'package:Sarh/page/account_type/account_type_page.dart';
 import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/page/register/register_page.dart';
 import 'package:Sarh/page/splash/splash_page.dart';
@@ -58,7 +59,7 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      home: RegisterPage(),
+      home: SplashPage(),
     );
   }
 }

@@ -22,7 +22,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m0(phoneNumber) => "قم بادخال رمز التحقق بالاسفل الذي تم ارساله الى الرقم ${phoneNumber}";
 
-  static m1(howMany) => "${Intl.plural(howMany, zero: '${howMany} ثانيه', one: '${howMany} ثانيه', few: '${howMany} ثواني', many: '${howMany} ثانية', other: '${howMany} Seconds')}";
+  static m1(accountType) => "جاري انشاء حساب \'${accountType}\' جديد";
+
+  static m2(howMany) => "${Intl.plural(howMany, zero: '${howMany} ثانيه', one: '${howMany} ثانيه', few: '${howMany} ثواني', many: '${howMany} ثانية', other: '${howMany} Seconds')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -46,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Enter Password first" : MessageLookupByLibrary.simpleMessage("ادخل كلمة المرور"),
     "Enter a valid email address" : MessageLookupByLibrary.simpleMessage("ادخل بريد الكتروني صالح"),
     "Enter username or email address first" : MessageLookupByLibrary.simpleMessage("قم بكتابة اسم المستخدم او البريد الالكتروني اولا"),
+    "Error occurred" : MessageLookupByLibrary.simpleMessage("حصل خطأ"),
     "Explain what you need from the service provider" : MessageLookupByLibrary.simpleMessage("قم بتوضيح ماذا تحتاج من مقدم الخدمة"),
     "Failed to verfiy account." : MessageLookupByLibrary.simpleMessage("فشل محاولة التحقق من الحساب"),
     "Favorite" : MessageLookupByLibrary.simpleMessage("المفضلة"),
@@ -100,8 +103,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Will be sent to high rated service providers" : MessageLookupByLibrary.simpleMessage("سيتم الارسال الى مزودي الخدمة الاعلى تقييماً"),
     "Will be sent to your favorite service providers" : MessageLookupByLibrary.simpleMessage("ستيم الارسال الى مزوري الخدمة المفضلين"),
     "accountVerificationMessage" : m0,
+    "creatingAccountProgressTitle" : m1,
     "enter the quotation subject" : MessageLookupByLibrary.simpleMessage("ادخل موضوع التسعيرة "),
     "password field is empty" : MessageLookupByLibrary.simpleMessage("حقل كلمة المرور خالي"),
-    "seconds" : m1
+    "seconds" : m2
   };
 }

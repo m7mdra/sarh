@@ -1,8 +1,16 @@
 import 'dart:async';
 
+import 'package:Sarh/data/session.dart';
+import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/page/login/login_page.dart';
+import 'package:Sarh/page/splash/bloc/session_bloc.dart';
+import 'package:Sarh/page/splash/bloc/session_bloc_event.dart';
+import 'package:Sarh/page/splash/bloc/session_bloc_state.dart';
+import 'package:Sarh/page/verify_account/verify_account_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -17,16 +25,19 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   AnimationController _slogunOpacityController;
   Animation<double> _slogunOpacityAnimation;
   FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+  SessionBloc _sessionBloc;
 
   @override
   void initState() {
     super.initState();
     animate();
+    _sessionBloc =
+        SessionBloc(DependencyProvider.provide(), DependencyProvider.provide());
+    _sessionBloc.dispatch(AppStarted());
   }
 
   void animate() {
     initNotificationAndListen();
-
     _logoScaleController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500))
           ..addListener(() => setState(() {}));
@@ -55,13 +66,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       if (_logoTranslateAnimation.status == AnimationStatus.completed)
         _slogunOpacityController.forward();
     });
-    _slogunOpacityController.addListener(() {
-      if (_slogunOpacityAnimation.status == AnimationStatus.completed)
-        Future.delayed(Duration(milliseconds: 500)).then((val) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginPage()));
-        });
-    });
+    _slogunOpacityController.addListener(() {});
     _logoScaleController.forward();
   }
 
@@ -91,6 +96,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     _logoScaleController.dispose();
     _logoTranslateController.dispose();
     _slogunOpacityController.dispose();
+    _sessionBloc.dispose();
   }
 
   @override
@@ -104,17 +110,40 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       ),
       backgroundColor: Colors.grey,
       body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            Image.asset(
-              'assets/background/background.jpg',
-              scale: 4,
-              fit: BoxFit.cover,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-            ),
-            buildCenter(),
-          ],
+        child: BlocListener(
+          bloc: _sessionBloc,
+          listener: (context, state) {
+            if (state is AccountNotVerified) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                return VerifyAccountPage();
+              }));
+            }
+            if (state is UserAuthenticated) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                return MainPage();
+              }));
+            }
+            if (state is UserUnauthenticated) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                return LoginPage();
+              }));
+            }
+          },
+          child: Stack(
+            children: <Widget>[
+              Image.asset(
+                'assets/background/background.jpg',
+                scale: 4,
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+              ),
+              buildCenter(),
+            ],
+          ),
         ),
       ),
     );

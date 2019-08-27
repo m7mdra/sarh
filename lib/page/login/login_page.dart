@@ -73,6 +73,11 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                 ),
               ),
             ),
+            buildSizedBox(),
+            buildSizedBox(),
+            buildSizedBox(),
+            buildSizedBox(),
+            buildSizedBox(),
             SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: BlocListener(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:Sarh/i10n/app_localizations.dart';
 
 class EmptyWidget extends StatelessWidget {
   @override
@@ -11,18 +12,21 @@ class EmptyWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-
+          //TODO add translation
           SizedBox(
             height: 8,
           ),
           Text(
-            'No Data found',
-            style: Theme.of(context).textTheme.title.copyWith(fontWeight: FontWeight.normal),
+            AppLocalizations.of(context).noDataFound,
+            style: Theme.of(context)
+                .textTheme
+                .title
+                .copyWith(fontWeight: FontWeight.normal),
           ),
           SizedBox(
             height: 4,
           ),
-          Text('Try to check after few minutes'),
+          Text(AppLocalizations.of(context).noDataFoundSubtitle),
           SizedBox(
             height: 4,
           ),

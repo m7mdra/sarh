@@ -1,4 +1,3 @@
-
 import 'package:Sarh/data/model/city.dart';
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/account_type/account_type_page.dart';
@@ -18,6 +17,7 @@ import 'package:Sarh/form_commons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../email_validator.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:Sarh/locale.dart';
 
 class RegisterPage extends StatefulWidget {
   final AccountType accountType;
@@ -99,18 +99,13 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
               showDialog(
                   context: context,
                   barrierDismissible: false,
-                  builder: (context) =>
-                      ProgressDialog(
-                          message: AppLocalizations.of(context)
-                              .creatingAccountProgressTitle(
-                              widget.accountType == AccountType.personal
-                                  ? AppLocalizations
-                                  .of(context)
-                                  .personalAccountType:
-                              AppLocalizations
-                                  .of(context)
-                                  .serviceProviderAccountType)
-                      ));
+                  builder: (context) => ProgressDialog(
+                      message: AppLocalizations.of(context)
+                          .creatingAccountProgressTitle(widget.accountType ==
+                                  AccountType.personal
+                              ? AppLocalizations.of(context).personalAccountType
+                              : AppLocalizations.of(context)
+                                  .serviceProviderAccountType)));
             }
             if (state is NetworkError) {
               Navigator.pop(context);
@@ -118,13 +113,9 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                 ..hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss)
                 ..showSnackBar(SnackBar(
                   behavior: SnackBarBehavior.floating,
-                  content: Text(AppLocalizations
-                      .of(context)
-                      .noNetworkError),
+                  content: Text(AppLocalizations.of(context).noNetworkError),
                   action: SnackBarAction(
-                      label: AppLocalizations
-                          .of(context)
-                          .retryButton,
+                      label: AppLocalizations.of(context).retryButton,
                       onPressed: () async {
                         await _attemptRegister();
                       }),
@@ -136,14 +127,13 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: Text(AppLocalizations.of(context).errorDialogTitle),
+                      title:
+                          Text(AppLocalizations.of(context).errorDialogTitle),
                       content: Text(state.error),
                       actions: <Widget>[
                         FlatButton(
                           child: Text(
-                              MaterialLocalizations
-                                  .of(context)
-                                  .okButtonLabel),
+                              MaterialLocalizations.of(context).okButtonLabel),
                           onPressed: () {
                             Navigator.pop(context);
                           },
@@ -156,10 +146,10 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
               Navigator.pop(context);
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
-                    return VerifyAccountPage(
-                      accountType: state.accountType,
-                    );
-                  }));
+                return VerifyAccountPage(
+                  accountType: state.accountType,
+                );
+              }));
             }
           },
           bloc: _registerBloc,
@@ -192,19 +182,12 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                             tag: 'screenName',
                             child: Text(
                               widget.accountType == AccountType.personal
-                                  ? AppLocalizations
-                                  .of(context)
-                                  .registerUser
-                                  : AppLocalizations
-                                  .of(context)
-                                  .registerServiceProvider,
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .title
-                                  .copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                                  ? AppLocalizations.of(context).registerUser
+                                  : AppLocalizations.of(context)
+                                      .registerServiceProvider,
+                              style: Theme.of(context).textTheme.title.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                           ),
                         ),
@@ -219,20 +202,16 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                           },
                           validator: (name) {
                             if (name.isEmpty)
-                              return AppLocalizations
-                                  .of(context)
+                              return AppLocalizations.of(context)
                                   .nameFieldIsEmpty;
                             else
                               return null;
                           },
                           decoration: buildInputDecoration(
                               widget.accountType == AccountType.personal
-                                  ? AppLocalizations
-                                  .of(context)
-                                  .fullName
-                                  : AppLocalizations
-                                  .of(context)
-                                  .serviceProviderName,
+                                  ? AppLocalizations.of(context).fullName
+                                  : AppLocalizations.of(context)
+                                      .serviceProviderName,
                               widget.accountType == AccountType.personal
                                   ? FontAwesomeIcons.user
                                   : FontAwesomeIcons.building),
@@ -248,16 +227,13 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                           },
                           validator: (name) {
                             if (name.isEmpty)
-                              return AppLocalizations
-                                  .of(context)
+                              return AppLocalizations.of(context)
                                   .nameFieldIsEmpty;
                             else
                               return null;
                           },
                           decoration: buildInputDecoration(
-                              AppLocalizations
-                                  .of(context)
-                                  .username,
+                              AppLocalizations.of(context).username,
                               widget.accountType == AccountType.personal
                                   ? FontAwesomeIcons.user
                                   : FontAwesomeIcons.building),
@@ -274,20 +250,16 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                           },
                           validator: (email) {
                             if (email.isEmpty)
-                              return AppLocalizations
-                                  .of(context)
+                              return AppLocalizations.of(context)
                                   .emailFieldEmpty;
                             else if (!isValidEmailAddress(email))
-                              return AppLocalizations
-                                  .of(context)
+                              return AppLocalizations.of(context)
                                   .invalidEmailValidationError;
                             else
                               return null;
                           },
                           decoration: buildInputDecoration(
-                              AppLocalizations
-                                  .of(context)
-                                  .emailAddress,
+                              AppLocalizations.of(context).emailAddress,
                               FontAwesomeIcons.envelope),
                         ),
                         _sizedBox,
@@ -304,20 +276,16 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                           },
                           validator: (phone) {
                             if (phone.isEmpty)
-                              return AppLocalizations
-                                  .of(context)
+                              return AppLocalizations.of(context)
                                   .phoneNumberFieldEmpty;
                             else if (phone.length < 10)
-                              return AppLocalizations
-                                  .of(context)
+                              return AppLocalizations.of(context)
                                   .phoneNumberFieldInvalid;
                             else
                               return null;
                           },
                           decoration: buildInputDecoration(
-                              AppLocalizations
-                                  .of(context)
-                                  .phoneNumberFieldHint,
+                              AppLocalizations.of(context).phoneNumberFieldHint,
                               FontAwesomeIcons.phone),
                         ),
                         _sizedBox,
@@ -326,8 +294,7 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                           controller: _passwordTextEditingController,
                           validator: (password) {
                             if (password.isEmpty)
-                              return AppLocalizations
-                                  .of(context)
+                              return AppLocalizations.of(context)
                                   .passwordFieldEmpty;
                             else
                               return null;
@@ -337,9 +304,7 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                           },
                           focusNode: _passwordFocusNode,
                           decoration: buildInputDecoration(
-                              AppLocalizations
-                                  .of(context)
-                                  .passwordFieldName,
+                              AppLocalizations.of(context).passwordFieldName,
                               FontAwesomeIcons.lock),
                         ),
                         _sizedBox,
@@ -358,32 +323,29 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                                 },
                                 validator: (city) {
                                   if (city == null)
-                                    return AppLocalizations
-                                        .of(context)
+                                    return AppLocalizations.of(context)
                                         .cityFieldEmpty;
                                   else
                                     return null;
                                 },
                                 value: _selectCity,
                                 items: state.cities.map((city) {
-                                  return DropdownMenuItem(
-                                      value: city,
-                                      child: Text(
-                                          '${city.name} - ${city.arName}'));
-                                }).toList() ??
+                                      return DropdownMenuItem(
+                                          value: city,
+                                          child: Text(
+                                              currentLanguage(context) == 'ar'
+                                                  ? city.arName
+                                                  : city.name));
+                                    }).toList() ??
                                     [],
                                 hint: Text(
-                                    AppLocalizations
-                                        .of(context)
-                                        .cityFieldHint),
+                                    AppLocalizations.of(context).cityFieldHint),
                                 decoration: dropDownDecoration,
                               );
                             return DropdownButtonFormField(
                                 items: [],
                                 hint: Text(
-                                    AppLocalizations
-                                        .of(context)
-                                        .cityFieldHint),
+                                    AppLocalizations.of(context).cityFieldHint),
                                 decoration: dropDownDecoration);
                           },
                         ),
@@ -398,9 +360,7 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                                 if (form.validate()) await _attemptRegister();
                               },
                               child:
-                              Text(AppLocalizations
-                                  .of(context)
-                                  .nextButton),
+                                  Text(AppLocalizations.of(context).nextButton),
                             ),
                             width: double.infinity,
                             height: 40,
@@ -413,26 +373,20 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
                           alignment: ALIGN.Start,
                           child: Text.rich(
                             TextSpan(
-                              text: AppLocalizations
-                                  .of(context)
+                              text: AppLocalizations.of(context)
                                   .iAlreadyHaveAccount,
                               children: [
                                 TextSpan(
                                     text:
-                                    ' ${AppLocalizations
-                                        .of(context)
-                                        .login}',
+                                        ' ${AppLocalizations.of(context).login}',
                                     recognizer: new TapGestureRecognizer()
-                                      ..onTap = () =>
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      LoginPage())),
+                                      ..onTap = () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginPage())),
                                     style: TextStyle(
-                                      color: Theme
-                                          .of(context)
-                                          .primaryColor,
+                                      color: Theme.of(context).primaryColor,
                                     ))
                               ],
                             ),
@@ -468,6 +422,7 @@ class _RegisterPageState extends State<RegisterPage> with EmailValidator {
       prefixIcon: Icon(FontAwesomeIcons.map),
       fillColor: Color(0xffECECEC),
       filled: true,
+      contentPadding: const EdgeInsets.all(8),
       border: InputBorder.none,
     );
   }

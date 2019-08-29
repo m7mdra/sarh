@@ -1,3 +1,4 @@
+import 'package:Sarh/data/activity/activity_repository.dart';
 import 'package:Sarh/data/country/city_repository.dart';
 import 'package:Sarh/data/session.dart';
 import 'package:Sarh/data/user/user_repository.dart';
@@ -36,11 +37,13 @@ class DependencyProvider {
     client.interceptors.add(TokenInterceptor(session));
     UserRepository userRepository = UserRepository(client);
     CountryRepository countryRepository = CountryRepository(client);
+    ActivityRepository activityRepository = ActivityRepository(client);
 
     _registrar.registerSingleton<Dio>(client);
     _registrar.registerSingleton<Session>(session);
     _registrar.registerFactory<UserRepository>(() => userRepository);
     _registrar.registerFactory<CountryRepository>(() => countryRepository);
+    _registrar.registerFactory<ActivityRepository>(() => activityRepository);
   }
 
   static T provide<T>() {

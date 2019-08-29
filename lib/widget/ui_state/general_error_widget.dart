@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:Sarh/i10n/app_localizations.dart';
 
 class GeneralErrorWidget extends StatelessWidget {
   final VoidCallback onRetry;
@@ -15,11 +16,13 @@ class GeneralErrorWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          //TODO add translation
+
           SizedBox(
             height: 8,
           ),
           Text(
-            'Error occured',
+            AppLocalizations.of(context).errorDialogTitle,
             style: Theme.of(context)
                 .textTheme
                 .title
@@ -28,13 +31,13 @@ class GeneralErrorWidget extends StatelessWidget {
           SizedBox(
             height: 4,
           ),
-          Text('Thats all we know for now.'),
+          Text(AppLocalizations.of(context).errorOccurredSubtitle),
           SizedBox(
             height: 4,
           ),
           OutlineButton(
-            onPressed: onRetry ,
-            child: Text('Retry'),
+            onPressed: onRetry,
+            child: Text(AppLocalizations.of(context).retryButton),
           )
         ],
       ),

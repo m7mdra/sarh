@@ -1,4 +1,5 @@
 import 'package:Sarh/i10n/app_localizations.dart';
+import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/attachment_widget.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/file_picker_sheet_modal.dart';
@@ -15,6 +16,7 @@ class _CreateQuotePageState extends State<CreateQuotePage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
@@ -26,12 +28,14 @@ class _CreateQuotePageState extends State<CreateQuotePage> {
           children: <Widget>[
             Text(
               'Qoutation creation',
-              style: TextStyle(
-              ),
+              style: TextStyle(),
             ),
             Text(
               'for Mohamed sed',
-              style: Theme.of(context).textTheme.caption.copyWith(color:Colors.white),
+              style: Theme.of(context)
+                  .textTheme
+                  .caption
+                  .copyWith(color: Colors.white),
             )
           ],
         ),
@@ -40,7 +44,7 @@ class _CreateQuotePageState extends State<CreateQuotePage> {
       body: SafeArea(
           child: Form(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -48,7 +52,6 @@ class _CreateQuotePageState extends State<CreateQuotePage> {
                 'Create new quotation',
                 style: Theme.of(context).textTheme.title,
               ),
-              _sizedBox(),
               _sizedBox(),
               TextFormField(
                 decoration: InputDecoration(
@@ -70,7 +73,7 @@ class _CreateQuotePageState extends State<CreateQuotePage> {
                 style: Theme.of(context).textTheme.subhead,
               ),
               Container(
-                height: 120,
+                height: SizeConfig.blockSizeVertical*20,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
@@ -89,33 +92,28 @@ class _CreateQuotePageState extends State<CreateQuotePage> {
                 ),
               ),
               _sizedBox(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    RaisedButton.icon(
-                        onPressed: () {
-                        },
-                        icon: Icon(FontAwesomeIcons.paperPlane),
-                        label:
-                        Text(AppLocalizations.of(context).submitButton)),
-                    FlatButton.icon(
-                        onPressed: () async {
-                          var file = await showFilePickDialog<AttachmentFile>(
-                              context: context);
-                          if (file != null)
-                            setState(() {
-                              attachments.removeWhere(
-                                      (attachment) => attachment == null);
-                              attachments.add(file);
-                            });
-                        },
-                        icon: Icon(Icons.attach_file),
-                        label: Text(
-                            AppLocalizations.of(context).attachFileButton))
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  RaisedButton.icon(
+                      onPressed: () {},
+                      icon: Icon(FontAwesomeIcons.paperPlane),
+                      label: Text(AppLocalizations.of(context).submitButton)),
+                  FlatButton.icon(
+                      onPressed: () async {
+                        var file = await showFilePickDialog<AttachmentFile>(
+                            context: context);
+                        if (file != null)
+                          setState(() {
+                            attachments.removeWhere(
+                                (attachment) => attachment == null);
+                            attachments.add(file);
+                          });
+                      },
+                      icon: Icon(Icons.attach_file),
+                      label:
+                          Text(AppLocalizations.of(context).attachFileButton))
+                ],
               )
             ],
           ),
@@ -125,8 +123,9 @@ class _CreateQuotePageState extends State<CreateQuotePage> {
   }
 
   SizedBox _sizedBox() {
-    return const SizedBox(
-      height: 8,
+    print((SizeConfig.blockSizeHorizontal * 2.5).round());
+    return SizedBox(
+      height: SizeConfig.blockSizeHorizontal * 2.5,
     );
   }
 }

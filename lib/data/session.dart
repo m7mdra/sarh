@@ -20,7 +20,7 @@ class Session {
     return true;
   }
 
-  Future<bool> isCompany() async {
+  bool isCompany() {
     return user.accountType == 2;
   }
 

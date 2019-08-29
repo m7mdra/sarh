@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Sarh/page/create_quote/create_quote_page.dart';
+import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -30,6 +31,7 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
   @override
   void initState() {
     super.initState();
+
     _chatController = TextEditingController();
     messages = List.generate(4, (index) {
       return index % 2 == 0
@@ -46,14 +48,26 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            tooltip: 'Create quote',
+            icon: Icon(FontAwesomeIcons.fileInvoice),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return CreateQuotePage();
+              }));
+            },
+            color: Colors.white,
+          )
+        ],
         elevation: 2,
         centerTitle: true,
         title: Text(
           'Mohamed Sed',
-          style: TextStyle(
-          ),
+          style: TextStyle(),
         ),
         leading: BackButtonNoLabel(Colors.white),
       ),
@@ -63,7 +77,7 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(8),
-              reverse: true,
+              reverse: false,
               itemBuilder: (context, index) {
                 var message = messages[index];
                 return message.isYou
@@ -74,37 +88,42 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
-            child: TextField(
-              controller: _chatController,
-              keyboardType: TextInputType.multiline,
-              textInputAction: TextInputAction.newline,
-              maxLines: 2,
-              decoration: InputDecoration(
-                  hintText: 'Type here...',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.zero),
-                  contentPadding: const EdgeInsets.all(10)),
-            ),
-          ),
-          Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                RaisedButton.icon(
-                    icon: Icon(FontAwesomeIcons.paperPlane),
-                    label: Text('Send'), onPressed: () {},),
-                FlatButton.icon(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return CreateQuotePage();
-                      }));
-                    },
-                    icon: Icon(FontAwesomeIcons.fileAlt),
-                    label: Text('Qoute'))
+                Expanded(
+                  child: Card(
+                    child: TextField(
+                      controller: _chatController,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                          hintText: 'Type here...',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.zero,
+                              borderSide: BorderSide.none),
+                          contentPadding: const EdgeInsets.all(10)),
+                    ),
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: Colors.black12),
+                  child: IconButton(
+                      icon: Icon(FontAwesomeIcons.solidPaperPlane),
+                      onPressed: () {
+                        setState(() {
+                          messages.add(Message(
+                              _chatController.value.text, true, 'Just now'));
+                          _chatController.clear();
+
+                        });
+                      }),
+                )
               ],
             ),
-          )
+          ),
         ],
       )),
     );
@@ -123,7 +142,7 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
                   const EdgeInsetsDirectional.only(end: 8, start: 16, top: 8),
               padding: const EdgeInsets.all(8),
               child: SizedBox(
-                width: MediaQuery.of(context).size.width - 150,
+                width: SizeConfig.blockSizeHorizontal * 65,
                 child: Text(
                   message.message,
                   textAlign: TextAlign.start,
@@ -173,7 +192,7 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
                   const EdgeInsetsDirectional.only(start: 8, end: 16, top: 8),
               padding: const EdgeInsets.all(8),
               child: SizedBox(
-                width: MediaQuery.of(context).size.width - 150,
+                width: SizeConfig.blockSizeHorizontal * 65,
                 child: Text(
                   message.message,
                   textAlign: TextAlign.start,

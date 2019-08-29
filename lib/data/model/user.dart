@@ -53,4 +53,8 @@ class User {
   bool get isCompany => accountType == 2;
 
   bool get isAccountVerified => isVerified == 1;
+  @override
+  String toString() {
+    return toJson().toString();
+  }
 }

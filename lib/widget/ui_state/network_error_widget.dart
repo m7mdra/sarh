@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:Sarh/i10n/app_localizations.dart';
 
 class NetworkErrorWidget extends StatelessWidget {
   final VoidCallback onRetry;
@@ -15,22 +15,29 @@ class NetworkErrorWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          //TODO add translation
 
           SizedBox(
             height: 8,
           ),
           Text(
-            'No Active internet connection',
-            style: Theme.of(context).textTheme.title.copyWith(fontWeight: FontWeight.normal),
+            AppLocalizations.of(context).noInternetConnection,
+            style: Theme.of(context)
+                .textTheme
+                .title
+                .copyWith(fontWeight: FontWeight.normal),
           ),
           SizedBox(
             height: 4,
           ),
-          Text('Have you tried to restart the router? :)'),
+          Text(AppLocalizations.of(context).noInternetConnectionSubtitle),
           SizedBox(
             height: 4,
           ),
-          OutlineButton(onPressed: onRetry,child: Text('Retry'),)
+          OutlineButton(
+            onPressed: onRetry,
+            child: Text(AppLocalizations.of(context).retryButton),
+          )
         ],
       ),
     );

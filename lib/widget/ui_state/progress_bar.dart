@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class SarhProgressBar extends StatelessWidget {
+class ProgressBar extends StatelessWidget {
   final bool circular;
 
-  const SarhProgressBar({Key key, this.circular = true}) : super(key: key);
+  const ProgressBar({Key key, this.circular = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

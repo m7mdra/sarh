@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:Sarh/page/home/main_page.dart';
+import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/media_picker_dialog.dart';
 import 'package:Sarh/widget/stepper.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +24,13 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _startDateController = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       key: _scaffoldKey,
       body: Column(
@@ -113,7 +114,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           bottomLeft: Radius.circular(64), bottomRight: Radius.circular(64)),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 150,
+        height: SizeConfig.blockSizeVertical*30,
         child: Stack(
           fit: StackFit.loose,
           overflow: Overflow.visible,
@@ -254,7 +255,8 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           width: MediaQuery.of(context).size.width,
           child: RaisedButton(
             onPressed: () {
-              _scaffoldKey.currentState.showBottomSheet(
+
+              scaffold.showBottomSheet(
                 (context) {
                   return Card(
                     margin: const EdgeInsets.all(8),
@@ -326,7 +328,6 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                     ),
                   );
                 },
-                backgroundColor: Colors.transparent,
               );
             },
             child: Text('Add client'),
@@ -336,6 +337,8 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
     );
   }
+
+  ScaffoldState get scaffold => _scaffoldKey.currentState;
 
   Column _buildContactInformationStep() {
     return Column(

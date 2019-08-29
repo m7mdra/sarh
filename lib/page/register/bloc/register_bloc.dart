@@ -46,7 +46,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
                 : AccountType.service_provider);
           }
         } else {
-          var errorResponse = either.second;//TODO fix sometimes error message not showing.
+          var errorResponse = either.second;
           yield RegisterError(errorResponse.errors);
         }
       } on TimeoutException {

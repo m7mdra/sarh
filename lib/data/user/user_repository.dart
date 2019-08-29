@@ -19,6 +19,7 @@ class UserRepository {
     try {
       var response = await _client.post('account/login',
           data: {'username': username, 'password': password});
+      print(response.data);
       return AuthenticationResponse.fromJson(response.data);
     } on DioError catch (error) {
       switch (error.type) {

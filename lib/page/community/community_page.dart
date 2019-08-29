@@ -36,7 +36,7 @@ class _CommunityPageState extends State<CommunityPage> {
                   minHeight: 70,
                   child: Material(
                     elevation: 2,
-
+                    color: Theme.of(context).primaryColor,
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       child: Row(

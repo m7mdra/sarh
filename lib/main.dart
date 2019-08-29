@@ -1,4 +1,5 @@
 import 'package:Sarh/page/account_type/account_type_page.dart';
+import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
 import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/page/register/register_page.dart';
 import 'package:Sarh/page/splash/splash_page.dart';

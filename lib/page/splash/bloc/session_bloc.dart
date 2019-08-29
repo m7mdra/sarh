@@ -18,7 +18,6 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
 
   @override
   void onError(Object error, StackTrace stacktrace) {
-    // TODO: implement onError
     super.onError(error, stacktrace);
     print(error);
     print(stacktrace);

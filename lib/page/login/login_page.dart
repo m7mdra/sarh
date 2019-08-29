@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
 
   @override
   void dispose() {
-     super.dispose();
+    super.dispose();
     _passwordFocusNode.dispose();
     _passwordTextEditingController.dispose();
     _idTextEditingController.dispose();
@@ -59,7 +59,6 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: Align(
@@ -87,10 +86,8 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                   if (state is LoadingState) {
                     showDialog(
                         context: context,
-                        builder: (context) =>
-                            ProgressDialog(
-                              message: AppLocalizations
-                                  .of(context)
+                        builder: (context) => ProgressDialog(
+                              message: AppLocalizations.of(context)
                                   .loginLoadingDialogMessage,
                             ));
                   }
@@ -118,13 +115,9 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                       ..showSnackBar(SnackBar(
                         behavior: SnackBarBehavior.floating,
                         content:
-                        Text(AppLocalizations
-                            .of(context)
-                            .noNetworkError),
+                            Text(AppLocalizations.of(context).noNetworkError),
                         action: SnackBarAction(
-                            label: AppLocalizations
-                                .of(context)
-                                .retryButton,
+                            label: AppLocalizations.of(context).retryButton,
                             onPressed: () {
                               attemptLogin();
                             }),
@@ -136,8 +129,7 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                     scaffold.showSnackBar(SnackBar(
                         backgroundColor: Colors.redAccent,
                         behavior: SnackBarBehavior.floating,
-                        content: Text(AppLocalizations
-                            .of(context)
+                        content: Text(AppLocalizations.of(context)
                             .invalidLoginCredentials)));
                   }
                   if (state is LoginError) {
@@ -161,16 +153,10 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                         child: Hero(
                           tag: 'screenName',
                           child: Text(
-                            '${AppLocalizations
-                                .of(context)
-                                .login}   ',
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .title
-                                .copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            '${AppLocalizations.of(context).login}   ',
+                            style: Theme.of(context).textTheme.title.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ),
                       ),
@@ -186,18 +172,15 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                         validator: (value) {
                           if (value.contains('@') &&
                               !isValidEmailAddress(value))
-                            return AppLocalizations
-                                .of(context)
+                            return AppLocalizations.of(context)
                                 .invalidEmailValidationError;
                           else if (value.isEmpty)
-                            return AppLocalizations
-                                .of(context)
+                            return AppLocalizations.of(context)
                                 .emptyEmailValidationError;
                           return null;
                         },
                         decoration: buildInputDecoration(
-                            AppLocalizations
-                                .of(context)
+                            AppLocalizations.of(context)
                                 .userIdentifierFieldHint,
                             FontAwesomeIcons.user),
                       ),
@@ -212,16 +195,13 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                         },
                         validator: (value) {
                           if (value.isEmpty)
-                            return AppLocalizations
-                                .of(context)
+                            return AppLocalizations.of(context)
                                 .emptyPasswordValidationError;
                           else
                             return null;
                         },
                         decoration: buildInputDecoration(
-                            AppLocalizations
-                                .of(context)
-                                .passwordFieldName,
+                            AppLocalizations.of(context).passwordFieldName,
                             FontAwesomeIcons.lock),
                       ),
                       SizedBox(
@@ -235,9 +215,7 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                               if (isFormValid()) attemptLogin();
                             },
                             child:
-                            Text(AppLocalizations
-                                .of(context)
-                                .signInButton),
+                                Text(AppLocalizations.of(context).signInButton),
                           ),
                           width: double.infinity,
                           height: 40,
@@ -248,15 +226,12 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                         alignment: ALIGN.Start,
                         child: Text.rich(
                           TextSpan(
-                              text: AppLocalizations
-                                  .of(context)
+                              text: AppLocalizations.of(context)
                                   .forgetMyPasswordButton,
                               recognizer: new TapGestureRecognizer()
                                 ..onTap = () => print('Tap Here onTap'),
                               style: TextStyle(
-                                color: Theme
-                                    .of(context)
-                                    .primaryColor,
+                                color: Theme.of(context).primaryColor,
                               )),
                           textAlign: TextAlign.start,
                         ),
@@ -267,26 +242,19 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                         child: Text.rich(
                           TextSpan(
                             text:
-                            AppLocalizations
-                                .of(context)
-                                .iDontHaveAnAccount,
+                                AppLocalizations.of(context).iDontHaveAnAccount,
                             children: [
                               TextSpan(
                                   text:
-                                  ' ${AppLocalizations
-                                      .of(context)
-                                      .createNew}',
+                                      ' ${AppLocalizations.of(context).createNew}',
                                   recognizer: new TapGestureRecognizer()
-                                    ..onTap = () =>
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AccountTypePage())),
+                                    ..onTap = () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AccountTypePage())),
                                   style: TextStyle(
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ))
                             ],
                           ),

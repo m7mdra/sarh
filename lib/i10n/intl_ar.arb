@@ -400,5 +400,25 @@
   "@Error occurred": {
     "type": "text",
     "placeholders": {}
+  },
+  "No data found.": "لم يتم ايجاد بيانات.",
+  "@No data found.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Try to check after few minutes": "حاول مجددا بعد عدة دقائق",
+  "@Try to check after few minutes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Thats all we know for now.": "هذا كل ما نعلمه حتى الان",
+  "@Thats all we know for now.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Try to change current wifi or contact your ISP": "جرب ان تغيير الوايفاي الحالى او اتصل بمزود الخدمة",
+  "@Try to change current wifi or contact your ISP": {
+    "type": "text",
+    "placeholders": {}
   }
 }

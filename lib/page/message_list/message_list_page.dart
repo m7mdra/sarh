@@ -71,6 +71,7 @@ class MessageListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+
       onTap: onTap,
       selected: newMessage,
       leading: CircleAvatar(
@@ -79,19 +80,19 @@ class MessageListItem extends StatelessWidget {
       ),
       dense: true,
       title: Text('Proivder name'),
-      contentPadding: const EdgeInsets.only(left: 16, right: 16),
+      contentPadding: const EdgeInsets.only(left: 4, right: 4),
       subtitle: Text(
         'Message message message messageMessage message message message',
         style: TextStyle(
             fontWeight: newMessage ? FontWeight.bold : FontWeight.normal),
-        maxLines: 2,
+        maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            'Today 8:25 am',
+            '8:25am',
             style: Theme.of(context).textTheme.caption,
           ),
           SizedBox(

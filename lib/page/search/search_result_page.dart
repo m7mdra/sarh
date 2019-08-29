@@ -1,3 +1,4 @@
+import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/sliver_header_delegate.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -56,7 +58,9 @@ class _SearchResultPageState extends State<SearchResultPage> {
                               });
                             },
                             icon: Icon(
-                             _showGrid? FontAwesomeIcons.list:FontAwesomeIcons.th,
+                              _showGrid
+                                  ? FontAwesomeIcons.list
+                                  : FontAwesomeIcons.th,
                             ),
                             label: Text(
                               'View',
@@ -69,12 +73,17 @@ class _SearchResultPageState extends State<SearchResultPage> {
                               showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                    contentPadding: const EdgeInsets.all(0),
-                                    actions: <Widget>[
-                                      FlatButton(onPressed: (){
-                                        Navigator.pop(context);
-                                      }, child: Text(MaterialLocalizations.of(context).cancelButtonLabel))
-                                    ],
+                                        contentPadding: const EdgeInsets.all(0),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                  MaterialLocalizations.of(
+                                                          context)
+                                                      .cancelButtonLabel))
+                                        ],
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(8)),
@@ -84,8 +93,6 @@ class _SearchResultPageState extends State<SearchResultPage> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
-
-
                                             ListTile(
                                               selected: _selectedSort == 1,
                                               leading: Icon(FontAwesomeIcons
@@ -102,8 +109,8 @@ class _SearchResultPageState extends State<SearchResultPage> {
                                             ),
                                             ListTile(
                                               selected: _selectedSort == 2,
-                                              leading: Icon(FontAwesomeIcons
-                                                  .sortAlphaUp),
+                                              leading: Icon(
+                                                  FontAwesomeIcons.sortAlphaUp),
                                               title: Text(
                                                   'Alphabetically Descending'),
                                               onTap: () {
@@ -131,8 +138,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                                               selected: _selectedSort == 4,
                                               leading: Icon(FontAwesomeIcons
                                                   .sortAmountUp),
-                                              title:
-                                                  Text('Rating Descending'),
+                                              title: Text('Rating Descending'),
                                               onTap: () {
                                                 _selectedSort = 4;
                                                 Navigator.pop(context);
@@ -154,7 +160,11 @@ class _SearchResultPageState extends State<SearchResultPage> {
                     ),
                   ),
                 )),
-            SliverToBoxAdapter(child: Divider(height: 1,),),
+            SliverToBoxAdapter(
+              child: Divider(
+                height: 1,
+              ),
+            ),
             SliverPadding(
               padding: const EdgeInsets.all(16),
               sliver: _showGrid
@@ -196,13 +206,14 @@ class _SearchResultPageState extends State<SearchResultPage> {
 class CompanyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Row(
       children: <Widget>[
         Container(
           child: Image.asset(
             'assets/logo/logo.png',
-            width: 120,
-            height: 120,
+            width: SizeConfig.blockSizeHorizontal * 30,
+            height: SizeConfig.blockSizeHorizontal * 30,
           ),
           decoration: BoxDecoration(
               border: Border.all(color: Colors.grey.withAlpha(80))),
@@ -215,7 +226,7 @@ class CompanyWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'Sentinel Constructions Sentinel Constructions',
+                'Sentinel Constructions ',
                 overflow: TextOverflow.ellipsis,
                 softWrap: true,
                 maxLines: 2,
@@ -341,8 +352,7 @@ class CompanyGridWidget extends StatelessWidget {
         Container(
           child: Image.asset(
             'assets/logo/logo.png',
-            width: 200,
-            height: 120,
+            height: SizeConfig.blockSizeVertical * 20,
           ),
           decoration: BoxDecoration(
               border: Border.all(color: Colors.grey.withAlpha(80))),
@@ -355,37 +365,24 @@ class CompanyGridWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-              width: MediaQuery.of(context).size.width / 2,
+
               child: Text(
-                'Sentinel Constructions Sentinel Constructions',
+                'Sentinel Constructions',
                 overflow: TextOverflow.ellipsis,
                 softWrap: true,
-                maxLines: 3,
+                maxLines: 2,
                 style: Theme.of(context)
                     .textTheme
                     .title
                     .copyWith(fontWeight: FontWeight.normal),
               ),
             ),
-            SizedBox(
-              height: 4,
+
+            Text(
+              'Build and constriction',
+
             ),
-            Row(
-              children: <Widget>[
-                Icon(
-                  FontAwesomeIcons.th,
-                  color: Colors.grey,
-                  size: 13,
-                ),
-                SizedBox(
-                  width: 4,
-                ),
-                Text('Build and constriction'),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
+
             Row(
               children: <Widget>[
                 Icon(FontAwesomeIcons.solidStar, size: 15),

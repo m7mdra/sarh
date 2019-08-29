@@ -16,7 +16,6 @@ class VerifyAccountBloc extends Bloc<VerificationEvent, VerificationState> {
   VerifyAccountBloc(this.userRepository, this.session, this.timerBloc);
 
   @override
-  // TODO: implement initialState
   get initialState => IdleState();
 
   @override

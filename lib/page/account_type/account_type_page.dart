@@ -30,8 +30,8 @@ class _AccountTypePageState extends State<AccountTypePage> {
           style: TextStyle(inherit: true, color: _fontColor),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -61,6 +61,7 @@ class _AccountTypePageState extends State<AccountTypePage> {
             Text(
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur augue lectus, egestas quis commodo a, auctor in eros. Curabitur facilisis egestas erat, mattis sagittis turpis sodales vitae.',
               style: TextStyle(fontWeight: FontWeight.w300),
+              maxLines: 2,
             ),
             Divider(),
             Text(
@@ -74,6 +75,7 @@ class _AccountTypePageState extends State<AccountTypePage> {
             Text(
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur augue lectus, egestas quis commodo a, auctor in eros. Curabitur facilisis egestas erat, mattis sagittis turpis sodales vitae.',
               style: TextStyle(fontWeight: FontWeight.w300),
+              maxLines: 2,
             ),
             SizedBox(
               height: 8,
@@ -152,10 +154,7 @@ class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
                       color: Colors.blue,
                     ),
                     Text(AppLocalizations.of(context).personalAccountType,
-                        style: Theme.of(context).textTheme.subhead.copyWith(
-                            fontWeight: isPersonal
-                                ? FontWeight.bold
-                                : FontWeight.normal))
+                        style: Theme.of(context).textTheme.subhead.copyWith())
                   ],
                 ),
               ),
@@ -173,8 +172,8 @@ class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
                             onPressed: () {
                               setState(() {
                                 _selectedAccount = AccountType.service_provider;
-                                widget
-                                    .onSelectChanged(AccountType.service_provider);
+                                widget.onSelectChanged(
+                                    AccountType.service_provider);
                               });
                             },
                           )),
@@ -183,10 +182,7 @@ class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
                     ),
                     Text(
                       AppLocalizations.of(context).serviceProviderAccountType,
-                      style: Theme.of(context).textTheme.subhead.copyWith(
-                          fontWeight: isServiceProvider
-                              ? FontWeight.bold
-                              : FontWeight.normal),
+                      style: Theme.of(context).textTheme.subhead.copyWith(),
                     )
                   ],
                 ),
@@ -196,7 +192,8 @@ class _AccountTypeSelectionWidgetState extends State<AccountTypeSelectionWidget>
     );
   }
 
-  bool get isServiceProvider => _selectedAccount == AccountType.service_provider;
+  bool get isServiceProvider =>
+      _selectedAccount == AccountType.service_provider;
 
   bool get isPersonal => _selectedAccount == AccountType.personal;
 }

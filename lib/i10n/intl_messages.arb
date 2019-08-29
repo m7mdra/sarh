@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-27T13:52:50.754265",
+  "@@last_modified": "2019-08-29T11:57:48.552736",
   "Login": "Login",
   "@Login": {
     "type": "text",
@@ -403,6 +403,26 @@
   },
   "Error occurred": "Error occurred",
   "@Error occurred": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "No data found.": "No data found.",
+  "@No data found.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Try to check after few minutes": "Try to check after few minutes",
+  "@Try to check after few minutes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Thats all we know for now.": "Thats all we know for now.",
+  "@Thats all we know for now.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Try to change current wifi or contact your ISP": "Try to change current wifi or contact your ISP",
+  "@Try to change current wifi or contact your ISP": {
     "type": "text",
     "placeholders": {}
   }

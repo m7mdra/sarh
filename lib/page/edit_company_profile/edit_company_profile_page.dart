@@ -1,3 +1,4 @@
+import 'package:Sarh/page/authorizers/authorizers_page.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,14 +13,12 @@ class _EditCompanyProfilePageState extends State<EditCompanyProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 2,
-        leading: BackButtonNoLabel(Colors.grey),
+        leading: BackButtonNoLabel(Colors.white),
         title: Text(
           'Profile settings',
-          style: TextStyle(inherit: true, color: Colors.grey),
+          style: TextStyle(inherit: true),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
       ),
       body: ListView(
         children: <Widget>[
@@ -40,10 +39,13 @@ class _EditCompanyProfilePageState extends State<EditCompanyProfilePage> {
           ),
           _divder,
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AuthorizersPage()));
+            },
             leading: Icon(FontAwesomeIcons.userShield,
                 color: Theme.of(context).accentColor),
-            title: Text('Authorizated From'),
+            title: Text('Authorizers'),
           ),
           _divder,
           ListTile(
@@ -70,9 +72,7 @@ class _EditCompanyProfilePageState extends State<EditCompanyProfilePage> {
           ListTile(
             onTap: () {},
             leading: Icon(FontAwesomeIcons.hashtag,
-                color: Theme
-                    .of(context)
-                    .accentColor),
+                color: Theme.of(context).accentColor),
             title: Text('Social media'),
           ),
           _divder,

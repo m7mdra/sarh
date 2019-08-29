@@ -17,7 +17,6 @@ class _ModifyProfileImagePageState extends State<ModifyProfileImagePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _bloc = ModifyProfileImageBloc(
         DependencyProvider.provide(), DependencyProvider.provide());

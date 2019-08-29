@@ -2,25 +2,23 @@ import 'package:Sarh/page/community/community_page.dart';
 import 'package:Sarh/page/search/search_result_page.dart';
 import 'package:flutter/material.dart';
 
-class FavoriteCompaniesPage extends StatefulWidget {
+class FavoritePage extends StatefulWidget {
   @override
-  _FavoriteCompaniesPageState createState() => _FavoriteCompaniesPageState();
+  _FavoritePageState createState() => _FavoritePageState();
 }
 
-class _FavoriteCompaniesPageState extends State<FavoriteCompaniesPage>
+class _FavoritePageState extends State<FavoritePage>
     with TickerProviderStateMixin {
   TabController _tabController;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _tabController.dispose();
   }

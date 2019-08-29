@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../size_config.dart';
+
 typedef VoidCallback OnChange(String value);
 typedef VoidCallback OnCodeChange(String value);
 typedef VoidCallback OnComplete(bool completed);
@@ -58,7 +60,7 @@ class VerificationCodeWidgetState extends State<VerificationCodeWidget> {
       _textEditingControllers.add(controller);
       _digitWidgets.add(CodeDigitWidget(
         key: UniqueKey(),
-        cellSize: Size(45, 45),
+        cellSize: Size(50, 45),
         focusNode: node,
 
         textEditingController: controller,
@@ -133,9 +135,10 @@ class CodeDigitWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Container(
-      width: cellSize.width ?? 45,
-      height: cellSize.height ?? 45,
+      width: SizeConfig.blockSizeHorizontal * 12.5,
+      height: SizeConfig.blockSizeHorizontal * 14.5,
       alignment: Alignment.center,
       margin: EdgeInsets.all(marginBetweenCells ?? 4),
       child: TextField(
@@ -153,7 +156,7 @@ class CodeDigitWidget extends StatelessWidget {
         onChanged: onChange,
         maxLength: 1,
         obscureText: obscureText ?? false,
-        style: cellsTextStyle ?? _defaultTextStyle,
+        style: Theme.of(context).textTheme.title,
         maxLengthEnforced: true,
         decoration: cellsInputDecoration ?? _defaultInputBorder,
         enableInteractiveSelection: false,

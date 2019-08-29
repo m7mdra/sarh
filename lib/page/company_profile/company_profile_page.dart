@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:Sarh/page/edit_company_profile/edit_company_profile_page.dart';
 import 'package:Sarh/page/profile_image_modify/modify_profile_image_page.dart';
+import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,6 +17,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -246,6 +248,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
       child: Stack(
         children: <Widget>[
           Container(
+            height: SizeConfig.blockSizeVertical*32,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 image: DecorationImage(
@@ -275,8 +278,9 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
+
                     children: <Widget>[
                       InkWell(
                         onTap: () {
@@ -288,8 +292,8 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                         child: Hero(
                           tag: 'profile_image',
                           child: Container(
-                            width: 120,
-                            height: 120,
+                            width: SizeConfig.blockSizeHorizontal*30,
+                            height:  SizeConfig.blockSizeVertical*20,
                             child: Icon(
                               Icons.camera_alt,
                               size: 30,
@@ -305,6 +309,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                       _widthSizedBox(),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
                             'Takween Enginering',
@@ -319,7 +324,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                                 text: 'Category',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle
+                                    .caption
                                     .copyWith(color: Colors.white)),
                             TextSpan(
                                 text: ' / ',
@@ -333,7 +338,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                                 text: 'Subcategory',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle
+                                    .caption
                                     .copyWith(color: Colors.white)),
                           ])),
                           _heightSizedBox(),

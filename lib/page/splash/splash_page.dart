@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Sarh/data/session.dart';
 import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
 import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/page/splash/bloc/session_bloc.dart';
@@ -129,6 +130,12 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return LoginPage();
+              }));
+            }
+            if (state is ProfileNotCompleted) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                return AddCompanyInfoPage();
               }));
             }
           },

@@ -98,6 +98,10 @@ class UserRepository {
           throw UnableToConnectException();
           break;
       }
+    }catch(error){
+      print(error);
+
+      throw error;
     }
   }
 

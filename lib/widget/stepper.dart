@@ -34,7 +34,6 @@ enum StepState {
   error,
 }
 
-
 /// A material step used in [WeeStepper]. The step can have a title and subtitle,
 /// an icon within its circle, some content and a state that governs its
 /// styling.
@@ -48,9 +47,7 @@ class WeeStep {
   /// Creates a step for a [WeeStepper].
   ///
   /// The [title], [content], and [state] arguments must not be null.
-  const WeeStep(
-    {
-      this.isActive,
+  const WeeStep({
     @required this.content,
   });
 
@@ -58,7 +55,6 @@ class WeeStep {
   ///
   /// Below the content, every step has a 'continue' and 'cancel' button.
   final Widget content;
-  final bool isActive;
 }
 
 /// A material stepper widget that displays progress through a sequence of
@@ -90,6 +86,7 @@ class WeeStepper extends StatefulWidget {
     this.onStepTapped,
     this.onStepContinue,
     this.onPrevious,
+    this.nextEnabled = true,
   })  : assert(steps != null),
         assert(currentStep != null),
         super(key: key);
@@ -98,6 +95,7 @@ class WeeStepper extends StatefulWidget {
   ///
   /// The length of [steps] must not change.
   final List<WeeStep> steps;
+  final bool nextEnabled;
 
   /// How the stepper's scroll view should respond to user input.
   ///
@@ -138,9 +136,6 @@ class _WeeStepperState extends State<WeeStepper> with TickerProviderStateMixin {
   bool _isLast(int index) {
     return widget.steps.length - 1 == index;
   }
-
-
-
 
   Widget _buildVerticalControls() {
     Color cancelColor;
@@ -183,9 +178,11 @@ class _WeeStepperState extends State<WeeStepper> with TickerProviderStateMixin {
               ),
             ),
             FlatButton(
-              onPressed: widget.onStepContinue,
+              onPressed: widget.nextEnabled ? widget.onStepContinue : null,
               textTheme: ButtonTextTheme.primary,
-              child: Text(widget.currentStep+1==widget.steps.length?'Finish':'Next'),
+              child: Text(widget.currentStep + 1 == widget.steps.length
+                  ? 'Finish'
+                  : 'Next'),
             ),
           ],
         ),
@@ -260,4 +257,3 @@ class _WeeStepperState extends State<WeeStepper> with TickerProviderStateMixin {
     return _buildHorizontal();
   }
 }
-

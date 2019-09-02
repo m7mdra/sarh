@@ -17,7 +17,12 @@ class VerifyAccountBloc extends Bloc<VerificationEvent, VerificationState> {
 
   @override
   get initialState => IdleState();
-
+@override
+  void onTransition(Transition<VerificationEvent, VerificationState> transition) {
+    // TODO: implement onTransition
+    super.onTransition(transition);
+    print(transition);
+  }
   @override
   Stream<VerificationState> mapEventToState(VerificationEvent event) async* {
     if (event is VerifyAccount) {
@@ -27,8 +32,15 @@ class VerifyAccountBloc extends Bloc<VerificationEvent, VerificationState> {
         if (response.success) {
           await session.saveUser(
               response.token, response.user, response.company);
-
-          yield Success();
+          if (response.isCompany) {
+            if (response.companyProfileCompleted) {
+              yield Success();
+            } else {
+              yield NavigateToCompleteProfilePage();
+            }
+          } else {
+            yield NavigateToInterestPickerPage();
+          }
         } else {
           yield InvalidCode();
         }

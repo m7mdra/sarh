@@ -1,6 +1,8 @@
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/account_type/account_type_page.dart';
+import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
 import 'package:Sarh/page/home/main_page.dart';
+import 'package:Sarh/page/intereset_selection/interest_selection_page.dart';
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/page/verify_account/bloc/verification_bloc/verify_account_bloc_event.dart';
 import 'package:Sarh/page/verify_account/bloc/verification_bloc/verify_account_bloc_state.dart';
@@ -75,14 +77,14 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
                   barrierDismissible: false);
             }
             if (state is Failed) {
-              Navigator.pop(context);
+              _hideProgressDialog(context);
               scaffold.hideCurrentSnackBar();
               scaffold.showSnackBar(SnackBar(
                   content: Text(AppLocalizations.of(context).verifyFailed),
                   behavior: SnackBarBehavior.floating));
             }
             if (state is InvalidCode) {
-              Navigator.pop(context);
+              _hideProgressDialog(context);
               scaffold.hideCurrentSnackBar();
               scaffold.showSnackBar(SnackBar(
                 content:
@@ -91,12 +93,26 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
               ));
             }
             if (state is Success) {
-              Navigator.pop(context);
+              _hideProgressDialog(context);
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MainPage()));
             }
+            if (state is NavigateToCompleteProfilePage) {
+              _hideProgressDialog(context);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddCompanyInfoPage()));
+            }
+            if (state is NavigateToInterestPickerPage) {
+              _hideProgressDialog(context);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => InterestSelectionPage()));
+            }
             if (state is ResendRequested) {
-              Navigator.pop(context);
+              _hideProgressDialog(context);
               scaffold.showSnackBar(SnackBar(
                 content:
                     Text(AppLocalizations.of(context).verificationCodeRequest),
@@ -104,11 +120,13 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
                 backgroundColor: Colors.green,
               ));
             }
-            if (state is SessionExpired)
+            if (state is SessionExpired) {
+              _hideProgressDialog(context);
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => LoginPage()));
+            }
             if (state is Timeout) {
-              Navigator.pop(context);
+              _hideProgressDialog(context);
               scaffold.showSnackBar(SnackBar(
                 content: Text(AppLocalizations.of(context).requestTimeout),
                 behavior: SnackBarBehavior.floating,
@@ -234,6 +252,8 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
       ),
     );
   }
+
+  bool _hideProgressDialog(BuildContext context) => Navigator.pop(context);
 
   ScaffoldState get scaffold => _scaffoldKey.currentState;
 

@@ -23,18 +23,26 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoadingState();
       try {
         var response = await userRepository.login(event.id, event.password);
-
         if (response.success) {
           await session.saveUser(
-              response.token, response.user, response.company ?? null);
-          if (response.user.isAccountVerified)
-            yield SuccessState();
-          else
+              response.token, response.user, response.company);
+          if (response.user.isAccountVerified) {
+            if (response.isCompany) {
+              if (response.companyProfileCompleted) {
+                yield SuccessState();
+              } else {
+                yield ProfileNotCompleted();
+              }
+            } else {
+              yield SuccessState();
+            }
+          } else {
             yield AccountNotVerified();
+          }
         } else {
           yield InvalidUsernameOrPassword();
         }
-      } on SessionExpiredException catch (error) {
+      } on SessionExpiredException {
         yield InvalidUsernameOrPassword();
       } on UnableToConnectException {
         yield NetworkError();

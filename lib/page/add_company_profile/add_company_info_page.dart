@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Sarh/data/model/company_size.dart';
 import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/media_picker_dialog.dart';
@@ -21,6 +22,8 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   File _logoImage;
   DateTime _startFromDate;
   TextEditingController _startDateController;
+  CompanySize companySize;
+  bool _nextEnable = false;
 
   @override
   void initState() {
@@ -33,14 +36,58 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     SizeConfig().init(context);
     return Scaffold(
       key: _scaffoldKey,
-        body: Column(
+      body: Column(
         children: <Widget>[
           _buildTopArcAndLogo(context),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: WeeStepper(
+                nextEnabled: _nextEnable,
                 steps: [
+                  WeeStep(
+                      content: Column(
+                    children: <Widget>[
+                      Image.asset(
+                        'assets/logo/logo.png',
+                        width: 150,
+                      ),
+                      _sizedBox,
+                      _sizedBox,
+                      _sizedBox,
+                      Text(
+                        'Welcome to Sarh',
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      Text(
+                        'Complete your Service provider registeration',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      _sizedBox,
+                      Text(
+                        'By comlpeting registeration, your profile will be'
+                        ' activated and other users/companies can interact with you',
+                        style: Theme.of(context).textTheme.body1,
+                        textAlign: TextAlign.center,
+                      ),
+                      _sizedBox,
+                      _sizedBox,
+                      CheckboxListTile(
+                        selected: _nextEnable,
+                        value: _nextEnable,
+                        dense: true,
+                        controlAffinity: ListTileControlAffinity.leading,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _nextEnable = !_nextEnable;
+                          });
+                        },
+                        title: Text(
+                            'By checking, you are Indicating that your agree to the Privacy Policy and Terms of Conditions'),
+                      )
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  )),
                   WeeStep(content: _buildCompanyDetailsWidgetStep()),
                   WeeStep(content: _buildContactInformationStep()),
                   WeeStep(content: _buildFeatureClientStep(context)),
@@ -49,7 +96,10 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                       content: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Documents',style: Theme.of(context).textTheme.title,),
+                      Text(
+                        'Documents',
+                        style: Theme.of(context).textTheme.title,
+                      ),
                       _sizedBox,
                       Text(
                         'Upload company trade license',
@@ -80,7 +130,6 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                 ],
                 currentStep: _currentStep,
                 onStepContinue: () {
-                  print('Current step: $_currentStep');
                   if (_currentStep != 4)
                     setState(() {
                       _currentStep += 1;
@@ -88,6 +137,8 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                   if (_currentStep == 4)
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => MainPage()));
+                  print('Current step: $_currentStep');
+
                 },
                 onPrevious: () {
                   setState(() {
@@ -108,65 +159,68 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   }
 
   _buildTopArcAndLogo(BuildContext context) {
-    return Material(
-      elevation: 8,
-      borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(64), bottomRight: Radius.circular(64)),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: SizeConfig.blockSizeVertical*30,
-        child: Stack(
-          fit: StackFit.loose,
-          overflow: Overflow.visible,
-          children: <Widget>[
-            Positioned(
-              top: 55,
-              left: 16,
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: InkWell(
-                  onTap: () async {
-                    var pickImage = await showDialog(
-                        context: context,
-                        builder: (context) => MediaPickDialog());
-                    if (pickImage == null) return;
+    return Opacity(
+      opacity: _currentStep == 0 ? 0 : 1.0,
+      child: Material(
+        elevation: 8,
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(64), bottomRight: Radius.circular(64)),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: SizeConfig.blockSizeVertical * 30,
+          child: Stack(
+            fit: StackFit.loose,
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Positioned(
+                top: 55,
+                left: 16,
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: InkWell(
+                    onTap: () async {
+                      var pickImage = await showDialog(
+                          context: context,
+                          builder: (context) => MediaPickDialog());
+                      if (pickImage == null) return;
 
-                    setState(() {
-                      _logoImage = pickImage;
-                    });
-                  },
-                  child: Container(
-                    width: 120,
-                    height: 120,
-                    child: _logoImage == null
-                        ? Icon(
-                            Icons.camera_alt,
-                            size: 30,
-                          )
-                        : ClipOval(
-                            clipBehavior: Clip.antiAlias,
-                            child: Image.file(
-                              _logoImage,
-                              width: 80,
-                              alignment: Alignment.center,
-                              height: 80,
-                              fit: BoxFit.fitWidth,
-                            )),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
+                      setState(() {
+                        _logoImage = pickImage;
+                      });
+                    },
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      child: _logoImage == null
+                          ? Icon(
+                              Icons.camera_alt,
+                              size: 30,
+                            )
+                          : ClipOval(
+                              clipBehavior: Clip.antiAlias,
+                              child: Image.file(
+                                _logoImage,
+                                width: 80,
+                                alignment: Alignment.center,
+                                height: 80,
+                                fit: BoxFit.fitWidth,
+                              )),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
+          decoration: BoxDecoration(
+              color: Color(0xff4AA2FB),
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(64),
+                  bottomRight: Radius.circular(64))),
         ),
-        decoration: BoxDecoration(
-            color: Color(0xff4AA2FB),
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(64),
-                bottomRight: Radius.circular(64))),
       ),
     );
   }
@@ -175,7 +229,10 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Social Media Accounts',style: Theme.of(context).textTheme.title,),
+        Text(
+          'Social Media Accounts',
+          style: Theme.of(context).textTheme.title,
+        ),
         _sizedBox,
         TextFormField(
           decoration: InputDecoration(
@@ -238,7 +295,10 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   Column _buildFeatureClientStep(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text('Featured clients',style: Theme.of(context).textTheme.title,),
+        Text(
+          'Featured clients',
+          style: Theme.of(context).textTheme.title,
+        ),
         _sizedBox,
         ListView.builder(
           primary: false,
@@ -255,7 +315,6 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           width: MediaQuery.of(context).size.width,
           child: RaisedButton(
             onPressed: () {
-
               scaffold.showBottomSheet(
                 (context) {
                   return Card(
@@ -266,7 +325,9 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text('Enter the client details',),
+                          Text(
+                            'Enter the client details',
+                          ),
                           _sizedBox,
                           TextFormField(
                             decoration: InputDecoration(
@@ -344,7 +405,10 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Contact information.',style: Theme.of(context).textTheme.title,),
+        Text(
+          'Contact information.',
+          style: Theme.of(context).textTheme.title,
+        ),
         _sizedBox,
         TextFormField(
           keyboardType: TextInputType.phone,
@@ -393,14 +457,14 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     );
   }
 
-  var _numberOfEmployees = 5.0;
-  var _numberOfClients = 0.0;
-
   Column _buildCompanyDetailsWidgetStep() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Company details.',style: Theme.of(context).textTheme.title,),
+        Text(
+          'Company details.',
+          style: Theme.of(context).textTheme.title,
+        ),
         _sizedBox,
         Form(
             child: Column(
@@ -411,7 +475,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                 var pickDate = await showDatePicker(
                     context: context,
                     initialDate: _startFromDate ?? DateTime.now(),
-                    firstDate: DateTime(1980, 8),
+                    firstDate: DateTime(1900, 8),
                     lastDate: DateTime.now());
                 if (pickDate == null) return;
                 print(pickDate.toIso8601String());
@@ -448,22 +512,11 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                   border: OutlineInputBorder()),
             ),
             _sizedBox,
-
-            Text.rich(TextSpan(children: [
-              TextSpan(text: 'Number of Employees: ',style: Theme.of(context).textTheme.subtitle),
-              TextSpan(text: '\n'),
-              TextSpan(text: 'More than '),
-              TextSpan(
-                  text: ' ${_numberOfEmployees.round()} employee',
-                  style: TextStyle(fontWeight: FontWeight.bold))
-            ])),
-            DropdownButtonFormField(
-              value: null,
-              items: <DropdownMenuItem>[
-                DropdownMenuItem(child: Text('More than 10')),
-                DropdownMenuItem(child: Text('More than 50')),
-                DropdownMenuItem(child: Text('More than 100')),
-              ],
+            Text('Number of Employees: ',
+                style: Theme.of(context).textTheme.subtitle),
+            DropdownButtonFormField<CompanySize>(
+              value: companySize,
+              items: <DropdownMenuItem<CompanySize>>[],
               decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(_kFormFieldPadding),
                   hintStyle: _hintTextStyle,
@@ -471,8 +524,6 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                   hintText: 'Number of Total Clients',
                   border: OutlineInputBorder()),
             ),
-
-
           ],
         ))
       ],

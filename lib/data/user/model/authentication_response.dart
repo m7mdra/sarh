@@ -29,6 +29,10 @@ class AuthenticationResponse {
   String get token => data.token;
 
   Company get company => data.companyInfo;
+
+  bool get isCompany => user.accountType == 2;
+
+  bool get companyProfileCompleted => isCompany && company != null;
 }
 
 class Data {
@@ -41,7 +45,7 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     token = json['token'];
     userInfo =
-        json['userInfo'] != null ? new User.fromJson(json['userInfo']) : null;
+    json['userInfo'] != null ? new User.fromJson(json['userInfo']) : null;
     companyInfo = json['companyInfo'] != null
         ? new Company.fromJson(json['companyInfo'])
         : null;

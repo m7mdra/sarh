@@ -8,10 +8,10 @@ import 'package:Sarh/data/exceptions/timeout_exception.dart';
 import 'package:Sarh/data/exceptions/unable_to_connect_exception.dart';
 
 class SessionBloc extends Bloc<SessionEvent, SessionState> {
-  final Session session;
-  final UserRepository userRepository;
+  final Session _session;
+  final UserRepository _userRepository;
 
-  SessionBloc(this.session, this.userRepository);
+  SessionBloc(this._session, this._userRepository);
 
   @override
   SessionState get initialState => AuthenticationUninitialized();
@@ -22,52 +22,68 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     print(error);
     print(stacktrace);
   }
-
+@override
+  void onTransition(Transition<SessionEvent, SessionState> transition) {
+    // TODO: implement onTransition
+    super.onTransition(transition);
+    print(transition);
+  }
   @override
   Stream<SessionState> mapEventToState(SessionEvent event) async* {
     await Future.delayed(Duration(seconds: 2));
     if (event is AppStarted) {
-      print('session token found? ${session.token}');
-      if (session.token != null && session.token.isNotEmpty) {
-        if (session.user.isAccountVerified) {
-          print('session found and account is verified');
-          yield UserAuthenticated();
+      if (_session.token != null && _session.token.isNotEmpty) {
+        if (_session.user.isAccountVerified) {
+          if (_session.isCompany) {
+            if (_session.companyProfileCompleted) {
+              yield UserAuthenticated();
+            } else {
+              yield ProfileNotCompleted();
+            }
+          } else {
+            yield UserAuthenticated();
+          }
         } else {
-          print('session found and account is not verified');
           try {
-            print(
-                'trying to check if user verified his account in another way');
-            var profile = await userRepository.profile();
+            var profile = await _userRepository.profile();
             if (profile.success) {
               if (profile.user.isAccountVerified) {
-                session.saveUser(profile.token, profile.user, profile.company);
-                yield UserAuthenticated();
+                await _session.saveUser(
+                    profile.token, profile.user, profile.company);
+                if (_session.isCompany) {
+                  if (_session.companyProfileCompleted) {
+                    yield UserAuthenticated();
+                  } else {
+                    yield ProfileNotCompleted();
+                  }
+                } else {
+                  yield UserAuthenticated();
+                }
               } else {
                 yield AccountNotVerified();
               }
             } else {
-              clearAndNavigateToLogin();
+              _clearAndNavigateToLogin();
             }
           } on UnableToConnectException {
-            clearAndNavigateToLogin();
+            _clearAndNavigateToLogin();
           } on SessionExpiredException {
-            clearAndNavigateToLogin();
+            _clearAndNavigateToLogin();
           } on TimeoutException {
-            clearAndNavigateToLogin();
+            _clearAndNavigateToLogin();
           } catch (error) {
             print(error);
-            clearAndNavigateToLogin();
+            _clearAndNavigateToLogin();
           }
         }
       } else {
-        print('no account found, going to login');
         yield UserUnauthenticated();
       }
     }
   }
 
-  Stream<SessionState> clearAndNavigateToLogin() async* {
-    session.clear();
+  Stream<SessionState> _clearAndNavigateToLogin() async* {
+    _session.clear();
     yield UserUnauthenticated();
   }
 }

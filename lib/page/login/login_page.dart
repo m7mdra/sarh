@@ -1,5 +1,6 @@
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/account_type/account_type_page.dart';
+import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
 import 'package:Sarh/page/home/main_page.dart';
 import 'package:Sarh/page/login/bloc/login_event_state.dart';
 import 'package:Sarh/page/verify_account/verify_account_page.dart';
@@ -93,7 +94,7 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                   }
                   if (state is SuccessState) {
                     Navigator.pop(context);
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (BuildContext context) => MainPage()));
@@ -101,10 +102,18 @@ class _LoginPageState extends State<LoginPage> with EmailValidator {
                   if (state is AccountNotVerified) {
                     Navigator.pop(context);
 
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) => VerifyAccountPage()));
+                  }
+                  if (state is ProfileNotCompleted) {
+                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                AddCompanyInfoPage()));
                   }
                   if (state is NetworkError) {
                     Navigator.pop(context);

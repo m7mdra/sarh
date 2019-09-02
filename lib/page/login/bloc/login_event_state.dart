@@ -10,6 +10,7 @@ class NetworkError extends LoginState {}
 
 class Timeout extends LoginState {}
 
+
 class LoginError extends LoginState {
   final String message;
 
@@ -17,6 +18,7 @@ class LoginError extends LoginState {
 }
 
 class AccountNotVerified extends LoginState {}
+class ProfileNotCompleted extends LoginState {}
 
 class InvalidUsernameOrPassword extends LoginState {}
 

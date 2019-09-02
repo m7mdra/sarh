@@ -50,7 +50,6 @@ class User {
     return data;
   }
 
-  bool get isCompany => accountType == 2;
 
   bool get isAccountVerified => isVerified == 1;
   @override

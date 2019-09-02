@@ -33,7 +33,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     SizeConfig().init(context);
     return Scaffold(
       key: _scaffoldKey,
-      body: Column(
+        body: Column(
         children: <Widget>[
           _buildTopArcAndLogo(context),
           Expanded(
@@ -457,36 +457,21 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                   text: ' ${_numberOfEmployees.round()} employee',
                   style: TextStyle(fontWeight: FontWeight.bold))
             ])),
-            Slider(
-                min: 5,
-                max: 1000,
-                divisions: 100,
-                value: _numberOfEmployees,
-                label: "${_numberOfEmployees.round()}+ employees",
-                onChanged: (value) {
-                  setState(() {
-                    this._numberOfEmployees = value;
-                  });
-                }),
-            _sizedBox,
-            Text.rich(TextSpan(children: [
-              TextSpan(text: 'Number of Client: '),
-              TextSpan(
-                  text: ' ${_numberOfClients.round()} Clients',
-                  style: TextStyle(fontWeight: FontWeight.bold))
-            ])),
-            Slider(
-                min: 0,
-                max: 100,
-                divisions: 100,
-                value: _numberOfClients,
-                label: "${_numberOfClients.round()}+ Clients",
-                onChanged: (value) {
-                  setState(() {
-                    this._numberOfClients = value;
-                  });
-                }),
-            _sizedBox,
+            DropdownButtonFormField(
+              value: null,
+              items: <DropdownMenuItem>[
+                DropdownMenuItem(child: Text('More than 10')),
+                DropdownMenuItem(child: Text('More than 50')),
+                DropdownMenuItem(child: Text('More than 100')),
+              ],
+              decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(_kFormFieldPadding),
+                  hintStyle: _hintTextStyle,
+                  labelStyle: _lableTextStyle,
+                  hintText: 'Number of Total Clients',
+                  border: OutlineInputBorder()),
+            ),
+
 
           ],
         ))

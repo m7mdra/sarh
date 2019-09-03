@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
-import 'city_response.dart';
-import 'country_response.dart';
+import 'model/city_response.dart';
+import 'model/country_response.dart';
 
 class CountryRepository {
   final Dio _client;

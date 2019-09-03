@@ -1,13 +1,19 @@
 import 'dart:io';
 
 import 'package:Sarh/data/model/company_size.dart';
-import 'package:Sarh/page/home/main_page.dart';
+import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/add_company_profile/bloc/company_size_bloc.dart';
+import 'package:Sarh/page/add_company_profile/bloc/company_size_event.dart';
+import 'package:Sarh/page/add_company_profile/bloc/company_size_state.dart';
 import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/media_picker_dialog.dart';
 import 'package:Sarh/widget/stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:validators/validators.dart' as validator;
+import 'package:meta/meta.dart';
 
 class AddCompanyInfoPage extends StatefulWidget {
   @override
@@ -16,19 +22,196 @@ class AddCompanyInfoPage extends StatefulWidget {
 
 const _kFormFieldPadding = 12.0;
 
+TextStyle get _hintTextStyle => const TextStyle(fontSize: 12);
+
+TextStyle get _labelTextStyle => const TextStyle(fontSize: 14);
+
+SizedBox get _sizedBox => const SizedBox(
+      height: 4,
+    );
+
+BorderRadius get _border8Radius => BorderRadius.circular(8);
+
 class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   int _currentStep = 0;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   File _logoImage;
   DateTime _startFromDate;
   TextEditingController _startDateController;
+  TextEditingController _companyDescriptionController;
+  TextEditingController _landLineController;
+  TextEditingController _addressController;
+  TextEditingController _zipController;
+  TextEditingController _websiteController;
+  TextEditingController _facebookController;
+  TextEditingController _instagramController;
+  TextEditingController _twitterController;
+  TextEditingController _linkedInController;
+  TextEditingController _behanceController;
   CompanySize companySize;
   bool _nextEnable = false;
+  File _tradeLicenseFile;
+  CompanySizeBloc _companySizeBloc;
+  GlobalKey<FormState> _companyDetailsFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _companyContactFormKey = GlobalKey<FormState>();
+  List<FeaturedClient> _featuredClients = [];
+
+  FormState get companyDetailsForm => _companyDetailsFormKey.currentState;
+
+  FormState get companyContactForm => _companyContactFormKey.currentState;
 
   @override
   void initState() {
     super.initState();
+    _companySizeBloc = CompanySizeBloc(DependencyProvider.provide());
+    _companySizeBloc.dispatch(LoadCompanySize());
     _startDateController = TextEditingController();
+    _companyDescriptionController = TextEditingController();
+    _landLineController = TextEditingController();
+    _addressController = TextEditingController();
+    _zipController = TextEditingController();
+    _websiteController = TextEditingController();
+    _facebookController = TextEditingController();
+    _instagramController = TextEditingController();
+    _twitterController = TextEditingController();
+    _linkedInController = TextEditingController();
+    _behanceController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _companySizeBloc.dispose();
+    _startDateController.dispose();
+    _companyDescriptionController.dispose();
+    _landLineController.dispose();
+    _addressController.dispose();
+    _zipController.dispose();
+    _websiteController.dispose();
+    _facebookController.dispose();
+    _instagramController.dispose();
+    _twitterController.dispose();
+    _linkedInController.dispose();
+    _behanceController.dispose();
+  }
+
+  _moveToNextStep() {
+    setState(() {
+      _currentStep += 1;
+    });
+  }
+
+  void _onNextClicked() {
+    if (_currentStep != 5) {
+      /*switch (_currentStep) {
+        case 0:
+          _moveToNextStep();
+          break;
+        case 1:
+          if (companyDetailsForm.validate()) {
+            _moveToNextStep();
+          }
+          break;
+        case 2:
+          if (companyContactForm.validate()) {
+            _moveToNextStep();
+          }
+          break;
+        case 3:
+          break;
+        case 4:
+          break;
+        case 5:
+          break;
+      }*/
+      _moveToNextStep();
+    }
+  }
+
+  Widget _buildCompanyDetailsWidgetStep() {
+    return Form(
+      key: _companyDetailsFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Company details.',
+            style: Theme.of(context).textTheme.title,
+          ),
+          _sizedBox,
+          GestureDetector(
+            onTap: () async {
+              var pickDate = await showDatePicker(
+                  context: context,
+                  initialDate: _startFromDate ?? DateTime.now(),
+                  firstDate: DateTime(1900, 8),
+                  lastDate: DateTime.now());
+              if (pickDate == null) return;
+              print(pickDate.toIso8601String());
+              _startDateController.text =
+                  '${pickDate.year}/${pickDate.month}/${pickDate.day}';
+              setState(() {
+                _startFromDate = pickDate;
+              });
+            },
+            child: AbsorbPointer(
+              child: TextFormField(
+                validator: (date) {
+                  if (date.isEmpty)
+                    return 'Start date field is empty';
+                  else
+                    return null;
+                },
+                controller: _startDateController,
+                decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(_kFormFieldPadding),
+                    labelText: 'Company start from',
+                    hintStyle: _hintTextStyle,
+                    labelStyle: _labelTextStyle,
+                    border: OutlineInputBorder()),
+                readOnly: true,
+              ),
+            ),
+          ),
+          _sizedBox,
+          TextFormField(
+            maxLength: 100,
+            maxLines: 2,
+            controller: _companyDescriptionController,
+            validator: (description) {
+              if (description.isEmpty) {
+                return 'Description field is empty';
+              } else
+                return null;
+            },
+            maxLengthEnforced: true,
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(_kFormFieldPadding),
+                labelText: 'Company description',
+                hintStyle: _hintTextStyle,
+                labelStyle: _labelTextStyle,
+                hintText: 'In less than 100 Characters describe the company',
+                border: OutlineInputBorder()),
+          ),
+          _sizedBox,
+          Text('Number of Employees: ',
+              style: Theme.of(context).textTheme.subtitle),
+          BlocBuilder(
+            bloc: _companySizeBloc,
+            builder: (BuildContext context, state) {
+              if (state is CompanySizeLoaded) {
+                return _companySizeRange(false, state.sizes);
+              }
+              if (state is CompanySizeFailed) {
+                return _companySizeRange(true, []);
+              }
+              return Container();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   @override
@@ -45,101 +228,15 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
               child: WeeStepper(
                 nextEnabled: _nextEnable,
                 steps: [
-                  WeeStep(
-                      content: Column(
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/logo/logo.png',
-                        width: 150,
-                      ),
-                      _sizedBox,
-                      _sizedBox,
-                      _sizedBox,
-                      Text(
-                        'Welcome to Sarh',
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                      Text(
-                        'Complete your Service provider registeration',
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                      _sizedBox,
-                      Text(
-                        'By comlpeting registeration, your profile will be'
-                        ' activated and other users/companies can interact with you',
-                        style: Theme.of(context).textTheme.body1,
-                        textAlign: TextAlign.center,
-                      ),
-                      _sizedBox,
-                      _sizedBox,
-                      CheckboxListTile(
-                        selected: _nextEnable,
-                        value: _nextEnable,
-                        dense: true,
-                        controlAffinity: ListTileControlAffinity.leading,
-                        onChanged: (bool value) {
-                          setState(() {
-                            _nextEnable = !_nextEnable;
-                          });
-                        },
-                        title: Text(
-                            'By checking, you are Indicating that your agree to the Privacy Policy and Terms of Conditions'),
-                      )
-                    ],
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                  )),
+                  WeeStep(content: _acceptTermsStep(context)),
                   WeeStep(content: _buildCompanyDetailsWidgetStep()),
                   WeeStep(content: _buildContactInformationStep()),
                   WeeStep(content: _buildFeatureClientStep(context)),
                   WeeStep(content: _buildSocialMediaStep()),
-                  WeeStep(
-                      content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Documents',
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                      _sizedBox,
-                      Text(
-                        'Upload company trade license',
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                      _sizedBox,
-                      Container(
-                        height: 150,
-                        color: Color(0xffF6F6F6),
-                        child: Center(
-                          child: Icon(Icons.camera_alt),
-                        ),
-                      ),
-                      _sizedBox,
-                      Text.rich(TextSpan(children: [
-                        TextSpan(
-                            text: 'Note: ',
-                            style: TextStyle(fontWeight: FontWeight.w600)),
-                        TextSpan(
-                            text:
-                                'The documents required to verify your account.\nyou can '
-                                'skip this step by '
-                                'pressing the next button, you can upload '
-                                'it later from your profile.')
-                      ]))
-                    ],
-                  )),
+                  WeeStep(content: _documentsStep(context)),
                 ],
                 currentStep: _currentStep,
-                onStepContinue: () {
-                  if (_currentStep != 4)
-                    setState(() {
-                      _currentStep += 1;
-                    });
-                  if (_currentStep == 4)
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => MainPage()));
-                  print('Current step: $_currentStep');
-
-                },
+                onStepContinue: _onNextClicked,
                 onPrevious: () {
                   setState(() {
                     if (_currentStep != 0) _currentStep -= 1;
@@ -158,22 +255,129 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     );
   }
 
+  Column _documentsStep(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Documents',
+          style: Theme.of(context).textTheme.title,
+        ),
+        _sizedBox,
+        Text(
+          'Upload company trade license',
+          style: Theme.of(context).textTheme.caption,
+        ),
+        _sizedBox,
+        Stack(
+          children: <Widget>[
+            if (_tradeLicenseFile != null)
+              ClipRRect(
+                borderRadius: _border8Radius,
+                child: Image.file(
+                  _tradeLicenseFile,
+                  height: 150,
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            InkWell(
+              onTap: () async {
+                var file = await showDialog(
+                    context: context, builder: (context) => MediaPickDialog());
+                if (file != null)
+                  setState(() {
+                    _tradeLicenseFile = file;
+                  });
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: _border8Radius,
+                  color: Colors.black12,
+                ),
+                height: 150,
+                child: Center(
+                  child: Icon(Icons.camera_alt),
+                ),
+              ),
+            ),
+          ],
+        ),
+        _sizedBox,
+        Text.rich(TextSpan(children: [
+          TextSpan(
+              text: 'Note: ', style: TextStyle(fontWeight: FontWeight.w600)),
+          TextSpan(
+              text: 'The documents required to verify your account.\nyou can '
+                  'skip this step by '
+                  'pressing the next button, you can upload '
+                  'it later from your profile.')
+        ]))
+      ],
+    );
+  }
+
+  Column _acceptTermsStep(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Image.asset(
+          'assets/logo/logo.png',
+          width: 150,
+        ),
+        _sizedBox,
+        _sizedBox,
+        _sizedBox,
+        Text(
+          'Welcome to Sarh',
+          style: Theme.of(context).textTheme.title,
+        ),
+        Text(
+          'Complete your Service provider registeration',
+          style: Theme.of(context).textTheme.caption,
+        ),
+        _sizedBox,
+        Text(
+          'By comlpeting registeration, your profile will be'
+          ' activated and other users/companies can interact with you',
+          style: Theme.of(context).textTheme.body1,
+          textAlign: TextAlign.center,
+        ),
+        _sizedBox,
+        _sizedBox,
+        CheckboxListTile(
+          selected: _nextEnable,
+          value: _nextEnable,
+          dense: true,
+          controlAffinity: ListTileControlAffinity.leading,
+          onChanged: (bool value) {
+            setState(() {
+              _nextEnable = !_nextEnable;
+            });
+          },
+          title: Text(
+              'By checking, you are Indicating that your agree to the Privacy Policy and Terms of Conditions'),
+        )
+      ],
+      crossAxisAlignment: CrossAxisAlignment.center,
+    );
+  }
+
   _buildTopArcAndLogo(BuildContext context) {
     return Opacity(
       opacity: _currentStep == 0 ? 0 : 1.0,
       child: Material(
         elevation: 8,
         borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(64), bottomRight: Radius.circular(64)),
+            bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: SizeConfig.blockSizeVertical * 30,
+          height: SizeConfig.blockSizeVertical * 25,
           child: Stack(
             fit: StackFit.loose,
             overflow: Overflow.visible,
             children: <Widget>[
               Positioned(
-                top: 55,
+                bottom: -30,
                 left: 16,
                 child: Align(
                   alignment: Alignment.bottomLeft,
@@ -218,8 +422,8 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           decoration: BoxDecoration(
               color: Color(0xff4AA2FB),
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(64),
-                  bottomRight: Radius.circular(64))),
+                  bottomLeft: Radius.circular(8),
+                  bottomRight: Radius.circular(8))),
         ),
       ),
     );
@@ -235,57 +439,67 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
         ),
         _sizedBox,
         TextFormField(
+          controller: _facebookController,
+          keyboardType: TextInputType.url,
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(_kFormFieldPadding),
               labelText: 'https:www.facebook.com/',
               hintStyle: _hintTextStyle,
               prefixIcon: Icon(FontAwesomeIcons.facebookF),
-              labelStyle: _lableTextStyle,
+              labelStyle: _labelTextStyle,
               hintText: 'Enter facebook account',
               border: OutlineInputBorder()),
         ),
         _sizedBox,
         TextFormField(
+          keyboardType: TextInputType.url,
+          controller: _instagramController,
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(_kFormFieldPadding),
               labelText: 'https:www.instagram.com/',
               hintStyle: _hintTextStyle,
               prefixIcon: Icon(FontAwesomeIcons.instagram),
-              labelStyle: _lableTextStyle,
+              labelStyle: _labelTextStyle,
               hintText: 'Enter Instagram account',
               border: OutlineInputBorder()),
         ),
         _sizedBox,
         TextFormField(
+          keyboardType: TextInputType.url,
+          controller: _twitterController,
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(_kFormFieldPadding),
               labelText: 'https:www.twitter.com/',
               hintStyle: _hintTextStyle,
               prefixIcon: Icon(FontAwesomeIcons.twitter),
-              labelStyle: _lableTextStyle,
-              hintText: 'Enter Instagram account',
+              labelStyle: _labelTextStyle,
+              hintText: 'Enter Twitter account',
               border: OutlineInputBorder()),
         ),
         _sizedBox,
         TextFormField(
+          keyboardType: TextInputType.url,
+          controller: _linkedInController,
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(_kFormFieldPadding),
               labelText: 'https:www.linkedin.com/',
               hintStyle: _hintTextStyle,
               prefixIcon: Icon(FontAwesomeIcons.linkedinIn),
-              labelStyle: _lableTextStyle,
-              hintText: 'Enter Instagram account',
+              labelStyle: _labelTextStyle,
+              hintText: 'Enter Linkedin account',
               border: OutlineInputBorder()),
         ),
         _sizedBox,
         TextFormField(
+          keyboardType: TextInputType.url,
+          controller: _behanceController,
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(_kFormFieldPadding),
               labelText: 'https:www.behance.com/',
               hintStyle: _hintTextStyle,
               prefixIcon: Icon(FontAwesomeIcons.behance),
-              labelStyle: _lableTextStyle,
-              hintText: 'Enter Instagram account',
+              labelStyle: _labelTextStyle,
+              hintText: 'Enter Behance account',
               border: OutlineInputBorder()),
         ),
       ],
@@ -304,92 +518,46 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           primary: false,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text('data$index'),
+              title: Text(
+                _featuredClients[index].name,
+                maxLines: 1,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Text(_featuredClients[index].website),
+              leading: Image.file(
+                _featuredClients[index].logo,
+                height: 50,
+                width: 50,
+                fit: BoxFit.cover,
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  setState(() {
+                    _featuredClients.removeAt(index);
+                  });
+                },
+              ),
             );
           },
-          itemCount: 3,
+          itemCount: _featuredClients.length,
           shrinkWrap: true,
         ),
         _sizedBox,
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
+        Center(
           child: RaisedButton(
-            onPressed: () {
-              scaffold.showBottomSheet(
-                (context) {
-                  return Card(
-                    margin: const EdgeInsets.all(8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Enter the client details',
-                          ),
-                          _sizedBox,
-                          TextFormField(
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    const EdgeInsets.all(_kFormFieldPadding),
-                                labelText: 'Enter client name',
-                                hintStyle: _hintTextStyle,
-                                labelStyle: _lableTextStyle,
-                                hintText: 'Enter Street/building address',
-                                border: OutlineInputBorder()),
-                          ),
-                          _sizedBox,
-                          TextFormField(
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    const EdgeInsets.all(_kFormFieldPadding),
-                                labelText: 'Client website URL',
-                                hintStyle: _hintTextStyle,
-                                labelStyle: _lableTextStyle,
-                                hintText: 'Enter Zip code',
-                                border: OutlineInputBorder()),
-                          ),
-                          _sizedBox,
-                          TextFormField(
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    const EdgeInsets.all(_kFormFieldPadding),
-                                labelText: 'Client website URL',
-                                hintStyle: _hintTextStyle,
-                                labelStyle: _lableTextStyle,
-                                hintText: 'Enter Zip code',
-                                border: OutlineInputBorder()),
-                          ),
-                          _sizedBox,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16)),
-                                color: Colors.grey.withAlpha(50),
-                                textColor: Colors.black,
-                                child: Text('Cancel'),
-                              ),
-                              RaisedButton(
-                                elevation: 0,
-                                onPressed: () {},
-                                child: Text('Save'),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16)),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
+            onPressed: () async {
+              var featuredClient = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddClientPage(),
+                      fullscreenDialog: true));
+              if (featuredClient != null) {
+                setState(() {
+                  _featuredClients.add(featuredClient);
+                });
+              }
             },
             child: Text('Add client'),
           ),
@@ -401,140 +569,350 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
 
   ScaffoldState get scaffold => _scaffoldKey.currentState;
 
-  Column _buildContactInformationStep() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Contact information.',
-          style: Theme.of(context).textTheme.title,
-        ),
-        _sizedBox,
-        TextFormField(
-          keyboardType: TextInputType.phone,
-          decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-              labelText: 'Land line number',
-              hintText: 'Enter land line number',
-              hintStyle: _hintTextStyle,
-              labelStyle: _lableTextStyle,
-              border: OutlineInputBorder()),
-        ),
-        _sizedBox,
-        TextFormField(
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-              labelText: 'Address',
-              hintText: 'Enter company address',
-              hintStyle: _hintTextStyle,
-              labelStyle: _lableTextStyle,
-              border: OutlineInputBorder()),
-        ),
-        _sizedBox,
-        TextFormField(
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-              labelText: 'ZIP code',
-              hintText: 'Enter ZIP code',
-              hintStyle: _hintTextStyle,
-              labelStyle: _lableTextStyle,
-              border: OutlineInputBorder()),
-        ),
-        _sizedBox,
-        TextFormField(
-          keyboardType: TextInputType.url,
-          decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-              labelText: 'Website address URL',
-              hintText: 'Enter Website address URL',
-              hintStyle: _hintTextStyle,
-              labelStyle: _lableTextStyle,
-              border: OutlineInputBorder()),
-        ),
-      ],
+  Widget _buildContactInformationStep() {
+    return Form(
+      key: _companyContactFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Contact information.',
+            style: Theme.of(context).textTheme.title,
+          ),
+          _sizedBox,
+          TextFormField(
+            validator: (landLine) {
+              if (landLine.isEmpty) {
+                return 'Land line field is empty';
+              } else
+                return null;
+            },
+            inputFormatters: [LengthLimitingTextInputFormatter(10)],
+            keyboardType: TextInputType.phone,
+            controller: _landLineController,
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(_kFormFieldPadding),
+                labelText: 'Land line number',
+                hintText: 'Enter land line number',
+                hintStyle: _hintTextStyle,
+                labelStyle: _labelTextStyle,
+                border: OutlineInputBorder()),
+          ),
+          _sizedBox,
+          TextFormField(
+            controller: _addressController,
+            validator: (address) {
+              if (address.isEmpty) {
+                return 'Address field is empty';
+              } else
+                return null;
+            },
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(_kFormFieldPadding),
+                labelText: 'Address',
+                hintText: 'Enter company address',
+                hintStyle: _hintTextStyle,
+                labelStyle: _labelTextStyle,
+                border: OutlineInputBorder()),
+          ),
+          _sizedBox,
+          TextFormField(
+            controller: _zipController,
+            validator: (zip) {
+              if (zip.isEmpty) {
+                return 'Zip field is empty';
+              } else
+                return null;
+            },
+            inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(_kFormFieldPadding),
+                labelText: 'ZIP code',
+                hintText: 'Enter ZIP code',
+                hintStyle: _hintTextStyle,
+                labelStyle: _labelTextStyle,
+                border: OutlineInputBorder()),
+          ),
+          _sizedBox,
+          TextFormField(
+            validator: (website) {
+              if (website.isEmpty)
+                return null;
+              else {
+                if (!validator.isURL(website)) {
+                  return 'Invalid url';
+                } else {
+                  return null;
+                }
+              }
+            },
+            controller: _websiteController,
+            keyboardType: TextInputType.url,
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(_kFormFieldPadding),
+                labelText: 'Website address URL',
+                hintText: 'Enter Website address URL',
+                hintStyle: _hintTextStyle,
+                labelStyle: _labelTextStyle,
+                border: OutlineInputBorder()),
+          ),
+        ],
+      ),
     );
   }
 
-  Column _buildCompanyDetailsWidgetStep() {
+  Widget _companySizeRange(bool failed, List<CompanySize> sizes) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'Company details.',
-          style: Theme.of(context).textTheme.title,
+        DropdownButtonFormField<CompanySize>(
+          validator: (size) {
+            if (size == null) {
+              return 'Select number clients';
+            } else
+              return null;
+          },
+          onChanged: (newSize) {
+            setState(() {
+              this.companySize = newSize;
+            });
+          },
+          value: companySize,
+          items: sizes
+              .map((size) => DropdownMenuItem(
+                    child: Text('${size.size} employees'),
+                    value: size,
+                  ))
+              .toList(),
+          decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(_kFormFieldPadding),
+              hintStyle: _hintTextStyle,
+              labelStyle: _labelTextStyle,
+              hintText: 'Number of Total Clients',
+              border: OutlineInputBorder()),
         ),
-        _sizedBox,
-        Form(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            GestureDetector(
-              onTap: () async {
-                var pickDate = await showDatePicker(
-                    context: context,
-                    initialDate: _startFromDate ?? DateTime.now(),
-                    firstDate: DateTime(1900, 8),
-                    lastDate: DateTime.now());
-                if (pickDate == null) return;
-                print(pickDate.toIso8601String());
-                _startDateController.text =
-                    '${pickDate.year}/${pickDate.month}/${pickDate.day}';
-                setState(() {
-                  _startFromDate = pickDate;
-                });
+        Visibility(
+          child: Text(
+            'Failed to load data',
+            style: TextStyle(color: Theme.of(context).errorColor),
+          ),
+          visible: failed,
+        ),
+        Visibility(
+            visible: failed,
+            child: OutlineButton(
+              onPressed: () {
+                _companySizeBloc.dispatch(LoadCompanySize());
               },
-              child: AbsorbPointer(
-                child: TextFormField(
-                  controller: _startDateController,
-                  decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-                      labelText: 'Company start from',
-                      hintStyle: _hintTextStyle,
-                      labelStyle: _lableTextStyle,
-                      border: OutlineInputBorder()),
-                  readOnly: true,
-                ),
+              child: Text('Retry'),
+            ))
+      ],
+    );
+  }
+}
+
+class AddClientPage extends StatefulWidget {
+  const AddClientPage({Key key}) : super(key: key);
+
+  @override
+  _AddClientPageState createState() => _AddClientPageState();
+}
+
+class _AddClientPageState extends State<AddClientPage> {
+  File _logoFile;
+  TextEditingController _clientNameController;
+  TextEditingController _clientWebsiteUrl;
+  GlobalKey<FormState> _formKey = GlobalKey();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _clientNameController = TextEditingController();
+    _clientWebsiteUrl = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _clientWebsiteUrl.dispose();
+    _clientNameController.dispose();
+  }
+
+  FormState get form => _formKey.currentState;
+
+  ScaffoldState get scaffold => _scaffoldKey.currentState;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _scaffoldKey,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('Add Featured Client'),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Text(
+                    'Enter the client details',
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  Text('Featured client will be shown in your profile'),
+                  _sizedBox,
+                  _sizedBox,
+                  Text('Client logo'),
+                  _sizedBox,
+                  Stack(
+                    children: <Widget>[
+                      if (_logoFile != null)
+                        ClipRRect(
+                          borderRadius: _border8Radius,
+                          child: Image.file(
+                            _logoFile,
+                            height: 150,
+                            width: 150,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      InkWell(
+                        onTap: () async {
+                          var file = await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return MediaPickDialog();
+                              });
+                          if (file != null)
+                            setState(() {
+                              this._logoFile = file;
+                            });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: _border8Radius,
+                            color: Colors.black12,
+                          ),
+                          height: 150,
+                          width: 150,
+                          child: Center(
+                            child: Icon(Icons.camera_alt),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  _sizedBox,
+                  _sizedBox,
+                  TextFormField(
+                    controller: _clientNameController,
+                    validator: (name) {
+                      if (name.isEmpty) {
+                        return 'Client name is empty';
+                      } else
+                        return null;
+                    },
+                    decoration: InputDecoration(
+                        contentPadding:
+                            const EdgeInsets.all(_kFormFieldPadding),
+                        labelText: 'Enter client name',
+                        hintStyle: _hintTextStyle,
+                        labelStyle: _labelTextStyle,
+                        hintText: 'Client name',
+                        border: OutlineInputBorder()),
+                  ),
+                  _sizedBox,
+                  TextFormField(
+                    controller: _clientWebsiteUrl,
+                    validator: (website) {
+                      if (website.isEmpty)
+                        return null;
+                      else {
+                        if (!validator.isURL(website)) {
+                          return 'invalid url';
+                        } else {
+                          return null;
+                        }
+                      }
+                    },
+                    keyboardType: TextInputType.url,
+                    decoration: InputDecoration(
+                        contentPadding:
+                            const EdgeInsets.all(_kFormFieldPadding),
+                        labelText: 'Client website URL',
+                        hintStyle: _hintTextStyle,
+                        labelStyle: _labelTextStyle,
+                        hintText: 'Website',
+                        border: OutlineInputBorder()),
+                  ),
+                  _sizedBox,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: _border8Radius),
+                        color: Colors.grey.withAlpha(50),
+                        textColor: Colors.black,
+                        child: Text('Cancel'),
+                      ),
+                      RaisedButton(
+                        elevation: 0,
+                        onPressed: () {
+                          if (form.validate()) {
+                            if (_logoFile == null) {
+                              scaffold.showSnackBar(SnackBar(
+                                content: Text('Client logo is required'),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.redAccent,
+                              ));
+                              return;
+                            }
+                            Navigator.pop(
+                                context,
+                                FeaturedClient(
+                                    name: _clientNameController.text,
+                                    logo: _logoFile,
+                                    website: _clientWebsiteUrl.text));
+                          }
+                        },
+                        child: Text('Save'),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: _border8Radius),
+                      ),
+                    ],
+                  )
+                ],
               ),
             ),
-            _sizedBox,
-            TextFormField(
-              maxLength: 400,
-              maxLines: 2,
-              maxLengthEnforced: true,
-              decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-                  labelText: 'Company description',
-                  hintStyle: _hintTextStyle,
-                  labelStyle: _lableTextStyle,
-                  hintText: 'In less than 400 Characters describe the company',
-                  border: OutlineInputBorder()),
-            ),
-            _sizedBox,
-            Text('Number of Employees: ',
-                style: Theme.of(context).textTheme.subtitle),
-            DropdownButtonFormField<CompanySize>(
-              value: companySize,
-              items: <DropdownMenuItem<CompanySize>>[],
-              decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(_kFormFieldPadding),
-                  hintStyle: _hintTextStyle,
-                  labelStyle: _lableTextStyle,
-                  hintText: 'Number of Total Clients',
-                  border: OutlineInputBorder()),
-            ),
-          ],
-        ))
-      ],
+          ),
+        ),
+      ),
     );
   }
+}
 
-  TextStyle get _hintTextStyle => TextStyle(fontSize: 12);
+class FeaturedClient {
+  final String name;
+  final File logo;
+  final String website;
 
-  TextStyle get _lableTextStyle => TextStyle(fontSize: 14);
+  FeaturedClient({@Required() this.name, @Required() this.logo, this.website});
 
-  SizedBox get _sizedBox => SizedBox(
-        height: 4,
-      );
+  @override
+  String toString() {
+    return 'FeaturedClient{name: $name, logo: $logo, website: $website}';
+  }
 }

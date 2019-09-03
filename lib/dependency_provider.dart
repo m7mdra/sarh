@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'data/company/company_repository.dart';
 import 'data/token_interceptor.dart';
 
 GetIt _registrar = GetIt();
@@ -38,12 +39,14 @@ class DependencyProvider {
     UserRepository userRepository = UserRepository(client);
     CountryRepository countryRepository = CountryRepository(client);
     ActivityRepository activityRepository = ActivityRepository(client);
+    CompanyRepository companyRepository = CompanyRepository(client);
 
     _registrar.registerSingleton<Dio>(client);
     _registrar.registerSingleton<Session>(session);
     _registrar.registerFactory<UserRepository>(() => userRepository);
     _registrar.registerFactory<CountryRepository>(() => countryRepository);
     _registrar.registerFactory<ActivityRepository>(() => activityRepository);
+    _registrar.registerFactory<CompanyRepository>(() => companyRepository);
   }
 
   static T provide<T>() {

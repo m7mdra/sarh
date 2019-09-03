@@ -190,12 +190,12 @@ class _WeeStepperState extends State<WeeStepper> with TickerProviderStateMixin {
     );
   }
 
-  get counterTheme => TextStyle(
-        fontWeight: FontWeight.w200,
-      );
+  get counterTheme => TextStyle(fontWeight: FontWeight.w500, letterSpacing: 2);
 
-  get slashTheme =>
-      TextStyle(fontWeight: FontWeight.w200, fontStyle: FontStyle.italic);
+  get slashTheme => TextStyle(
+      fontWeight: FontWeight.w100,
+      fontStyle: FontStyle.italic,
+      letterSpacing: 2);
 
   Widget _buildHorizontal() {
     final List<Widget> children = <Widget>[];

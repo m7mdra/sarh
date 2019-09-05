@@ -45,7 +45,7 @@ class _CategoriesPageState extends State<CategoriesPage>
     return Scaffold(
       body: BlocListener(
         listener: (context, state) {
-          if (state is SessionExpired)
+          if (state is ActivitySessionExpired)
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return LoginPage();
             }));
@@ -54,10 +54,10 @@ class _CategoriesPageState extends State<CategoriesPage>
         child: BlocBuilder(
           bloc: _activityBloc,
           builder: (BuildContext context, state) {
-            if (state is Loading) {
+            if (state is ActivityLoading) {
               return ProgressBar();
             }
-            if (state is NetworkError) {
+            if (state is ActivityNetworkError) {
               return Center(
                 child: NetworkErrorWidget(
                   onRetry: () {
@@ -66,17 +66,17 @@ class _CategoriesPageState extends State<CategoriesPage>
                 ),
               );
             }
-            if (state is Error) {
+            if (state is ActivityError) {
               return Center(child: GeneralErrorWidget(
                 onRetry: () {
                   _dispatchLoadEvent();
                 },
               ));
             }
-            if (state is Empty) {
+            if (state is ActivityEmpty) {
               return Center(child: EmptyWidget());
             }
-            if (state is Success) {
+            if (state is ActivitySuccess) {
               return RefreshIndicator(
                 onRefresh: () {
                   _dispatchLoadEvent();

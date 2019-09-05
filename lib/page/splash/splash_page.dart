@@ -32,8 +32,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     animate();
-    _sessionBloc =
-        SessionBloc(DependencyProvider.provide(), DependencyProvider.provide());
+
+    _sessionBloc =BlocProvider.of(context);
+
     _sessionBloc.dispatch(AppStarted());
   }
 
@@ -97,7 +98,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     _logoScaleController.dispose();
     _logoTranslateController.dispose();
     _slogunOpacityController.dispose();
-    _sessionBloc.dispose();
   }
 
   @override

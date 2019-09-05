@@ -2,22 +2,22 @@ import 'package:Sarh/data/model/activity.dart';
 
 class ActivityState {}
 
-class Loading extends ActivityState {}
+class ActivityLoading extends ActivityState {}
 
-class NetworkError extends ActivityState {}
+class ActivityNetworkError extends ActivityState {}
 
-class Empty extends ActivityState {}
+class ActivityEmpty extends ActivityState {}
 
-class Success extends ActivityState {
+class ActivitySuccess extends ActivityState {
   final List<Activity> activityList;
 
-  Success(this.activityList);
+  ActivitySuccess(this.activityList);
 }
 
-class Error extends ActivityState {}
+class ActivityError extends ActivityState {}
 
-class Idle extends ActivityState {}
+class ActivityIdle extends ActivityState {}
 
-class Timeout extends ActivityState {}
-class SessionExpired extends ActivityState {}
+class ActivityTimeout extends ActivityState {}
 
+class ActivitySessionExpired extends ActivityState {}

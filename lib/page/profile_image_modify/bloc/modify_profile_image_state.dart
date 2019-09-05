@@ -9,6 +9,8 @@ class ImageLoaded extends ModifyProfileImageState {
 
   ImageLoaded(this.imageUrl);
 }
+class SessionExpired extends ModifyProfileImageState{}
+
 
 class Success extends ModifyProfileImageState {}
 

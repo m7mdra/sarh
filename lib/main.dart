@@ -1,15 +1,10 @@
-import 'package:Sarh/page/account_type/account_type_page.dart';
-import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
-import 'package:Sarh/page/home/main_page.dart';
-import 'package:Sarh/page/intereset_selection/interest_selection_page.dart';
-import 'package:Sarh/page/register/register_page.dart';
+import 'package:Sarh/page/splash/bloc/session_bloc.dart';
 import 'package:Sarh/page/splash/splash_page.dart';
-import 'package:Sarh/page/verify_account/verify_account_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'dependency_provider.dart';
 import 'i10n/app_localizations.dart';
-import 'widget/ui_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   await DependencyProvider.build();
@@ -61,7 +56,11 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      home: SplashPage(),
+      home: BlocProvider.value(
+        child: SplashPage(),
+        value: SessionBloc(
+            DependencyProvider.provide(), DependencyProvider.provide()),
+      ),
     );
   }
 }

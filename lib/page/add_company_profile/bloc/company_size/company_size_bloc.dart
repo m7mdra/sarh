@@ -1,6 +1,6 @@
 import 'package:Sarh/data/company/company_repository.dart';
-import 'package:Sarh/page/add_company_profile/bloc/company_size_event.dart';
-import 'package:Sarh/page/add_company_profile/bloc/company_size_state.dart';
+import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_event.dart';
+import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_state.dart';
 import 'package:bloc/bloc.dart';
 
 class CompanySizeBloc

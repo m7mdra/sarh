@@ -10,32 +10,32 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
   ActivityBloc(this._repository);
 
   @override
-  ActivityState get initialState => Idle();
+  ActivityState get initialState => ActivityIdle();
 
   @override
   Stream<ActivityState> mapEventToState(ActivityEvent event) async* {
     if (event is LoadActivities) {
-      yield Loading();
+      yield ActivityLoading();
       try {
         var response = await _repository.getActivities();
         if (response.success) {
           if (response.activities.isNotEmpty) {
-            yield Success(response.activities);
+            yield ActivitySuccess(response.activities);
           } else {
-            yield Empty();
+            yield ActivityEmpty();
           }
         } else {
-          yield Error();
+          yield ActivityError();
         }
       } on UnableToConnectException {
-        yield NetworkError();
+        yield ActivityNetworkError();
       } on TimeoutException {
-        yield Timeout();
+        yield ActivityTimeout();
       } on SessionExpiredException {
-        yield SessionExpired();
+        yield ActivitySessionExpired();
       } catch (error) {
         print(error);
-        yield Error();
+        yield ActivityError();
       }
     }
   }

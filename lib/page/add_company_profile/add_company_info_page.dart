@@ -1,19 +1,29 @@
 import 'dart:io';
 
+import 'package:Sarh/data/model/activity.dart';
 import 'package:Sarh/data/model/company_size.dart';
 import 'package:Sarh/dependency_provider.dart';
-import 'package:Sarh/page/add_company_profile/bloc/company_size_bloc.dart';
-import 'package:Sarh/page/add_company_profile/bloc/company_size_event.dart';
-import 'package:Sarh/page/add_company_profile/bloc/company_size_state.dart';
+import 'package:Sarh/i10n/app_localizations.dart';
+import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_bloc.dart';
+import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_event.dart';
+import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_state.dart';
+import 'package:Sarh/page/add_company_profile/client_model.dart';
+import 'package:Sarh/page/home/activity/bloc/activity_bloc.dart';
+import 'package:Sarh/page/home/activity/bloc/activity_event.dart';
+import 'package:Sarh/page/home/activity/bloc/activity_state.dart';
+import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/media_picker_dialog.dart';
+import 'package:Sarh/widget/progress_dialog.dart';
 import 'package:Sarh/widget/stepper.dart';
+import 'package:Sarh/widget/ui_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:validators/validators.dart' as validator;
-import 'package:meta/meta.dart';
+import 'bloc/client/add_client/bloc.dart';
+import 'bloc/client/load_client/bloc.dart';
 
 class AddCompanyInfoPage extends StatefulWidget {
   @override
@@ -52,9 +62,12 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   bool _nextEnable = false;
   File _tradeLicenseFile;
   CompanySizeBloc _companySizeBloc;
+  LoadClientBloc _loadClientBloc;
+  AddClientBloc _addClientBloc;
+  ActivityBloc _activityBloc;
+  Activity _activity;
   GlobalKey<FormState> _companyDetailsFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> _companyContactFormKey = GlobalKey<FormState>();
-  List<FeaturedClient> _featuredClients = [];
 
   FormState get companyDetailsForm => _companyDetailsFormKey.currentState;
 
@@ -64,6 +77,12 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   void initState() {
     super.initState();
     _companySizeBloc = CompanySizeBloc(DependencyProvider.provide());
+    _activityBloc = ActivityBloc(DependencyProvider.provide());
+    _activityBloc.dispatch(LoadActivities());
+    _loadClientBloc = LoadClientBloc(DependencyProvider.provide());
+    _addClientBloc = AddClientBloc(DependencyProvider.provide(),
+        DependencyProvider.provide(), _loadClientBloc);
+    _loadClientBloc.dispatch(LoadClients());
     _companySizeBloc.dispatch(LoadCompanySize());
     _startDateController = TextEditingController();
     _companyDescriptionController = TextEditingController();
@@ -80,9 +99,11 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _companySizeBloc.dispose();
+    _loadClientBloc.dispose();
+    _activityBloc.dispose();
+    _addClientBloc.dispose();
     _startDateController.dispose();
     _companyDescriptionController.dispose();
     _landLineController.dispose();
@@ -104,13 +125,20 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
 
   void _onNextClicked() {
     if (_currentStep != 5) {
-      /*switch (_currentStep) {
+      switch (_currentStep) {
         case 0:
           _moveToNextStep();
           break;
         case 1:
           if (companyDetailsForm.validate()) {
-            _moveToNextStep();
+            if (_logoImage == null)
+              scaffold.showSnackBar(SnackBar(
+                content: Text('Please selected company logo first'),
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.orange,
+              ));
+            else
+              _moveToNextStep();
           }
           break;
         case 2:
@@ -119,13 +147,12 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           }
           break;
         case 3:
-          break;
         case 4:
+          _moveToNextStep();
           break;
         case 5:
           break;
-      }*/
-      _moveToNextStep();
+      }
     }
   }
 
@@ -140,6 +167,32 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
             style: Theme.of(context).textTheme.title,
           ),
           _sizedBox,
+          BlocBuilder(
+            bloc: _activityBloc,
+            builder: (BuildContext context, state) {
+              print(state);
+              if (state is ActivitySuccess) {
+                return _activityPickerWidget(state.activityList);
+              }
+
+              if (state is ActivityTimeout ||
+                  state is ActivityNetworkError ||
+                  state is ActivityError) {
+                return _activityPickerWidget([], true);
+              }
+
+              return Column(
+                children: <Widget>[
+                  _activityPickerWidget([]),
+                  SizedBox(
+                    child: LinearProgressIndicator(),
+                    height: 1,
+                  )
+                ],
+              );
+            },
+          ),
+          _sizedBox,
           GestureDetector(
             onTap: () async {
               var pickDate = await showDatePicker(
@@ -148,9 +201,8 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                   firstDate: DateTime(1900, 8),
                   lastDate: DateTime.now());
               if (pickDate == null) return;
-              print(pickDate.toIso8601String());
               _startDateController.text =
-                  '${pickDate.year}/${pickDate.month}/${pickDate.day}';
+                  '${pickDate.year}-${pickDate.month}-${pickDate.day}';
               setState(() {
                 _startFromDate = pickDate;
               });
@@ -211,6 +263,50 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           )
         ],
       ),
+    );
+  }
+
+  Widget _activityPickerWidget(List<Activity> activities,
+      [bool error = false]) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        DropdownButtonFormField<Activity>(
+            items: activities
+                .map((activity) => DropdownMenuItem(
+                      child: Text('${activity.nameEn} - ${activity.nameAr}'),
+                      value: activity,
+                    ))
+                .toList(),
+            value: _activity,
+            validator: (_activity) {
+              if (_activity == null)
+                return 'Select main activity';
+              else
+                return null;
+            },
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(_kFormFieldPadding),
+                hintStyle: _hintTextStyle,
+                labelStyle: _labelTextStyle,
+                hintText: 'Main activiy',
+                border: OutlineInputBorder())),
+        Visibility(
+          visible: error,
+          child: Text('Failed to load activities',
+              style: TextStyle(color: Theme.of(context).errorColor)),
+        ),
+        Visibility(
+          visible: error,
+          child: OutlineButton(
+              onPressed: () {
+                _activityBloc.dispatch(LoadActivities());
+              },
+              child: Text(
+                AppLocalizations.of(context).retryButton,
+              )),
+        )
+      ],
     );
   }
 
@@ -354,8 +450,18 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
               _nextEnable = !_nextEnable;
             });
           },
-          title: Text(
-              'By checking, you are Indicating that your agree to the Privacy Policy and Terms of Conditions'),
+          title: Text.rich(TextSpan(children: [
+            TextSpan(
+                text: 'By checking, you are Indicating that your '
+                    'agree to the '),
+            TextSpan(
+                text: 'Privacy Policy',
+                style: TextStyle(decoration: TextDecoration.underline)),
+            TextSpan(text: '  '),
+            TextSpan(
+                text: 'Terms of Conditions',
+                style: TextStyle(decoration: TextDecoration.underline))
+          ])),
         )
       ],
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -506,65 +612,132 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     );
   }
 
-  Column _buildFeatureClientStep(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Text(
-          'Featured clients',
-          style: Theme.of(context).textTheme.title,
-        ),
-        _sizedBox,
-        ListView.builder(
-          primary: false,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                _featuredClients[index].name,
-                maxLines: 1,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-              ),
-              subtitle: Text(_featuredClients[index].website),
-              leading: Image.file(
-                _featuredClients[index].logo,
-                height: 50,
-                width: 50,
-                fit: BoxFit.cover,
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  setState(() {
-                    _featuredClients.removeAt(index);
-                  });
-                },
-              ),
-            );
-          },
-          itemCount: _featuredClients.length,
-          shrinkWrap: true,
-        ),
-        _sizedBox,
-        Center(
-          child: RaisedButton(
-            onPressed: () async {
-              var featuredClient = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddClientPage(),
-                      fullscreenDialog: true));
-              if (featuredClient != null) {
-                setState(() {
-                  _featuredClients.add(featuredClient);
-                });
-              }
-            },
-            child: Text('Add client'),
+  Widget _buildFeatureClientStep(BuildContext context) {
+    return BlocListener(
+      bloc: _addClientBloc,
+      listener: (context, state) {
+        if (state is LoadingAdd) {
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) => ProgressDialog(
+                    message: 'Adding new client...',
+                  ));
+        }
+        if (state is NewClientAdded) {
+          pop(context);
+          scaffold.showSnackBar(SnackBar(
+            content: Text('Client added successfully.'),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+          ));
+        }
+        if (state is AddError || state is AddNetworkError) {
+          pop(context);
+          scaffold.showSnackBar(SnackBar(
+            content: Text('Failed to add new client'),
+            backgroundColor: Colors.redAccent,
+            behavior: SnackBarBehavior.floating,
+            action: SnackBarAction(
+              label: AppLocalizations.of(context).retryButton,
+              onPressed: () {
+                _addClientBloc.dispatch(RetryAdd());
+              },
+            ),
+          ));
+        }
+        if (state is AddSessionExpired) {
+          _onSessionExpired(context);
+        }
+      },
+      child: Column(
+        children: <Widget>[
+          Text(
+            'Featured clients',
+            style: Theme.of(context).textTheme.title,
           ),
-        )
-      ],
-      crossAxisAlignment: CrossAxisAlignment.start,
+          _sizedBox,
+          BlocListener(
+            bloc: _loadClientBloc,
+            child: BlocBuilder(
+              bloc: _loadClientBloc,
+              builder: (BuildContext context, LoadClientState state) {
+                if (state is LoadingClients) {
+                  return ProgressBar();
+                }
+                if (state is LoadError) {
+                  return GeneralErrorWidget(onRetry: _onRetry);
+                }
+                if (state is EmptyWidget) {
+                  return EmptyWidget();
+                }
+                if (state is LoadNetworkError) {
+                  return NetworkErrorWidget(onRetry: _onRetry);
+                }
+                if (state is ClientsLoaded) {
+                  return ListView.builder(
+                    primary: false,
+                    itemBuilder: (context, index) {
+                      var client = state.clients[index];
+                      return ListTile(
+                        title: Text(
+                          client.name,
+                          maxLines: 1,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subtitle: Text(client.website),
+                        leading: Image.network(
+                          client.logo,
+                          height: 50,
+                          width: 50,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    },
+                    itemCount: state.clients.length,
+                    shrinkWrap: true,
+                  );
+                }
+                return Container();
+              },
+            ),
+            listener: (BuildContext context, state) {
+              if (state is LoadSessionExpired) _onSessionExpired(context);
+            },
+          ),
+          _sizedBox,
+          Center(
+            child: RaisedButton(
+              onPressed: () async {
+                var featuredClient = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddClientPage(),
+                        fullscreenDialog: true));
+                if (featuredClient != null) {
+                  _addClientBloc.dispatch(AddNewClient(featuredClient));
+                }
+              },
+              child: Text('Add client'),
+            ),
+          )
+        ],
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
     );
+  }
+
+  void _onSessionExpired(BuildContext context) {
+    Navigator.pop(context);
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
+  }
+
+  bool pop(BuildContext context) => Navigator.pop(context);
+
+  void _onRetry() {
+    _loadClientBloc.dispatch(RetryLoad());
   }
 
   ScaffoldState get scaffold => _scaffoldKey.currentState;
@@ -901,18 +1074,5 @@ class _AddClientPageState extends State<AddClientPage> {
         ),
       ),
     );
-  }
-}
-
-class FeaturedClient {
-  final String name;
-  final File logo;
-  final String website;
-
-  FeaturedClient({@Required() this.name, @Required() this.logo, this.website});
-
-  @override
-  String toString() {
-    return 'FeaturedClient{name: $name, logo: $logo, website: $website}';
   }
 }

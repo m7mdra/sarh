@@ -27,7 +27,9 @@ class ModifyProfileImageBloc
       try {
         var response = await userRepository.uploadProfileImage(event.file);
         print(response.data);
-      } on SessionExpiredException {} on TimeoutException {} on UnableToConnectException {} catch (error) {}
+      } on SessionExpiredException {
+        yield SessionExpired();
+      } on TimeoutException {} on UnableToConnectException {} catch (error) {}
     }
   }
 }

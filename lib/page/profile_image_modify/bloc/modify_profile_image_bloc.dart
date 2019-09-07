@@ -7,7 +7,7 @@ import 'package:Sarh/page/profile/bloc/bloc.dart';
 import 'package:Sarh/page/profile_image_modify/bloc/modify_profile_image_event.dart';
 import 'package:Sarh/page/profile_image_modify/bloc/modify_profile_image_state.dart';
 import 'package:bloc/bloc.dart';
-
+import 'package:sqflite/sql.dart';
 class ModifyProfileImageBloc
     extends Bloc<ModifyProfileImageEvent, ModifyProfileImageState> {
   final UserRepository _userRepository;

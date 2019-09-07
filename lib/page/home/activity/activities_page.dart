@@ -132,22 +132,23 @@ class ActivityWidget extends StatelessWidget {
       onTap: () => onActivityTap(activity),
       child: Container(
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.withAlpha(80), width: 0.2)),
+            border: Border.all(color: Colors.grey.withAlpha(80), width: 0.4)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.network(
-              activity.img,
-              width: 150,
-              fit: BoxFit.fitWidth,
+            Image.asset(
+              'assets/logo/logo.png',
+              width: 120,
             ),
             SizedBox(
               height: 8,
             ),
-            Text(currentLanguage(context) == 'ar'
-                ? activity.nameAr
-                : activity.nameEn),
+            Text(
+                currentLanguage(context) == 'ar'
+                    ? activity.nameAr
+                    : activity.nameEn,
+                maxLines: 2),
             SizedBox(
               height: 2,
             ),

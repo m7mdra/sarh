@@ -82,13 +82,16 @@ class _SubActivityPageState extends State<SubActivityPage> {
                 _dispatchLoadSubActivitiesEvent();
                 return Future.value(null);
               },
-              child: ListView.builder(
+              child: ListView.separated(
                 itemBuilder: (context, index) {
                   return SubActivityItem(
                     activity: state.activityList[index],
                   );
                 },
                 itemCount: state.activityList.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return Divider(height: 1,);
+                },
               ),
             );
           }
@@ -107,6 +110,7 @@ class SubActivityItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+
       title: Text(
           currentLanguage(context) == 'ar' ? activity.nameAr : activity.nameEn),
       onTap: () {

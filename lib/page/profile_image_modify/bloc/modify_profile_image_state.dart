@@ -14,4 +14,8 @@ class SessionExpired extends ModifyProfileImageState{}
 
 class Success extends ModifyProfileImageState {}
 
-class Idle extends ModifyProfileImageState {}
+class Idle extends ModifyProfileImageState {
+  final String url;
+
+  Idle(this.url);
+}

@@ -104,7 +104,10 @@ class _CommunityPageState extends State<CommunityPage> {
 }
 
 class CommunityPostWidget extends StatelessWidget {
-  const CommunityPostWidget({Key key}) : super(key: key);
+  final bool showBottomActionButtons;
+
+  const CommunityPostWidget({Key key, this.showBottomActionButtons = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -153,26 +156,34 @@ class CommunityPostWidget extends StatelessWidget {
                 ),
               ],
             ),
-            Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconText(
-                  icon: FontAwesomeIcons.thumbsUp,
-                  text: 'Like',
-                  onTap: () {},
-                ),
-                IconText(
-                  icon: FontAwesomeIcons.commentAlt,
-                  text: 'Comment',
-                  onTap: () {},
-                ),
-                IconText(
-                  icon: FontAwesomeIcons.shareAlt,
-                  text: 'Share',
-                  onTap: () {},
-                ),
-              ],
+            Visibility(
+              child: Divider(
+                height: 1,
+              ),
+              visible: showBottomActionButtons,
+            ),
+            Visibility(
+              visible: showBottomActionButtons,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  IconText(
+                    icon: FontAwesomeIcons.thumbsUp,
+                    text: 'Like',
+                    onTap: () {},
+                  ),
+                  IconText(
+                    icon: FontAwesomeIcons.commentAlt,
+                    text: 'Comment',
+                    onTap: () {},
+                  ),
+                  IconText(
+                    icon: FontAwesomeIcons.shareAlt,
+                    text: 'Share',
+                    onTap: () {},
+                  ),
+                ],
+              ),
             )
           ],
         ),

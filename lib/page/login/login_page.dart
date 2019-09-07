@@ -1,7 +1,7 @@
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/account_type/account_type_page.dart';
 import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
-import 'package:Sarh/page/home/main_page.dart';
+import 'package:Sarh/page/home/main/main_page.dart';
 import 'package:Sarh/page/login/bloc/login_event_state.dart';
 import 'package:Sarh/page/verify_account/verify_account_page.dart';
 import 'package:Sarh/widget/back_button_widget.dart';

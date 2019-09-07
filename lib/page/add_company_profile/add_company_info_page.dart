@@ -24,6 +24,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:validators/validators.dart' as validator;
 import 'bloc/client/add_client/bloc.dart';
 import 'bloc/client/load_client/bloc.dart';
+import 'bloc/complete_register/bloc.dart';
 
 class AddCompanyInfoPage extends StatefulWidget {
   @override
@@ -65,6 +66,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   LoadClientBloc _loadClientBloc;
   AddClientBloc _addClientBloc;
   ActivityBloc _activityBloc;
+  CompleteRegisterBloc _completeRegisterBloc;
   Activity _activity;
   GlobalKey<FormState> _companyDetailsFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> _companyContactFormKey = GlobalKey<FormState>();
@@ -77,6 +79,12 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   void initState() {
     super.initState();
     _companySizeBloc = CompanySizeBloc(DependencyProvider.provide());
+    _completeRegisterBloc = CompleteRegisterBloc(
+        DependencyProvider.provide());
+    _completeRegisterBloc.state.listen((state) {
+      print(state);
+    });
+
     _activityBloc = ActivityBloc(DependencyProvider.provide());
     _activityBloc.dispatch(LoadActivities());
     _loadClientBloc = LoadClientBloc(DependencyProvider.provide());
@@ -103,6 +111,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     _companySizeBloc.dispose();
     _loadClientBloc.dispose();
     _activityBloc.dispose();
+    _completeRegisterBloc.dispose();
     _addClientBloc.dispose();
     _startDateController.dispose();
     _companyDescriptionController.dispose();
@@ -124,8 +133,8 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   }
 
   void _onNextClicked() {
-    if (_currentStep != 5) {
-      switch (_currentStep) {
+    if (_currentStep != 6) {
+      switch (_currentStep ) {
         case 0:
           _moveToNextStep();
           break;
@@ -151,6 +160,35 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           _moveToNextStep();
           break;
         case 5:
+
+          _completeRegisterBloc
+              .dispatch(CompleteRegister(CompleteRegistrationModel(
+            startFromDate: _startDateController.value.text,
+            about: _companyDescriptionController.value.text,
+            companySize: companySize,
+            landPhone: _landLineController.value.text,
+            website: _websiteController.value.text,
+            activity: _activity,
+            companyAttachments: [_tradeLicenseFile],
+            socialMediaList: [
+              SocialMedia(
+                  link: _facebookController.value.text,
+                  id: SocialMediaId.FACEBOOk.value),
+              SocialMedia(
+                  link: _instagramController.value.text,
+                  id: SocialMediaId.INSTAGRAM.value),
+              SocialMedia(
+                  link: _twitterController.value.text,
+                  id: SocialMediaId.TWITTER.value),
+              SocialMedia(
+                  link: _linkedInController.value.text,
+                  id: SocialMediaId.LINKEDIN.value),
+              SocialMedia(
+                  link: _behanceController.value.text,
+                  id: SocialMediaId.BEHANCE.value),
+            ],
+            address: _addressController.value.text,
+          )));
           break;
       }
     }
@@ -272,6 +310,11 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         DropdownButtonFormField<Activity>(
+            onChanged: (activity) {
+              setState(() {
+                this._activity = activity;
+              });
+            },
             items: activities
                 .map((activity) => DropdownMenuItem(
                       child: Text('${activity.nameEn} - ${activity.nameAr}'),
@@ -334,9 +377,12 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                 currentStep: _currentStep,
                 onStepContinue: _onNextClicked,
                 onPrevious: () {
+
                   setState(() {
                     if (_currentStep != 0) _currentStep -= 1;
                   });
+                  print(_currentStep);
+
                 },
                 onStepTapped: (step) {
                   setState(() {

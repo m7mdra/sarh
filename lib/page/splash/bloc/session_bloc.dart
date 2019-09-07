@@ -36,6 +36,7 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
       var profile = await _userRepository.profile();
       if (profile.success) {
         _session.saveUser(profile.token, profile.user, profile.company);
+        print(profile.toJson());
       }
     }
     await Future.delayed(Duration(seconds: 2));

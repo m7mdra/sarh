@@ -10,6 +10,7 @@ const KEY_COMPANY = 'company';
 class Session {
   final SharedPreferences _preferences;
 
+
   Session(this._preferences);
 
   Future<bool> saveUser(String token, User user, Company company) async {
@@ -38,4 +39,8 @@ class Session {
   Future<bool> clear() {
     return _preferences.clear();
   }
+
+ Future<void> reload() {
+    return _preferences.reload();
+ }
 }

@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:Sarh/page/home/main_page.dart';
+import 'package:Sarh/page/home/main/main_page.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 

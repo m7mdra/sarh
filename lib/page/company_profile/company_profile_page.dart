@@ -248,7 +248,6 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
       child: Stack(
         children: <Widget>[
           Container(
-            height: SizeConfig.blockSizeVertical*32,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 image: DecorationImage(

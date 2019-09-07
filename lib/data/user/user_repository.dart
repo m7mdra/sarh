@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:Sarh/data/either.dart';
 import 'package:Sarh/data/exceptions/timeout_exception.dart';
 import 'package:Sarh/data/exceptions/unable_to_connect_exception.dart';
+import 'package:Sarh/data/response_status.dart';
 import 'package:dio/dio.dart';
 import 'model/authentication_response_error.dart';
 import 'model/authentication_response.dart';
@@ -177,12 +178,12 @@ class UserRepository {
     }
   }
 
-  Future<AuthenticationResponse> uploadProfileImage(File file) async {
+  Future<ResponseStatus> uploadProfileImage(File file) async {
     try {
       FormData formData =
           FormData.from({'image': new UploadFileInfo(file, 'image')});
       var response = await _client.post('customer/uploadImage', data: formData);
-      return AuthenticationResponse.fromJson(response.data);
+      return ResponseStatus.fromJson(response.data);
     } on DioError catch (error) {
       if (error.response.statusCode == HTTP_UNAUTHORIZED)
         throw SessionExpiredException();

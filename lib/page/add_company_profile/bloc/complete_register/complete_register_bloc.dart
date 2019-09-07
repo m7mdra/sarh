@@ -1,5 +1,4 @@
 import 'package:Sarh/data/exceptions/exceptions.dart';
-import 'package:Sarh/data/user/user_repository.dart';
 
 import 'bloc.dart';
 import 'package:bloc/bloc.dart';
@@ -15,6 +14,14 @@ class CompleteRegisterBloc
   CompleteRegisterState get initialState => RegisterIdle();
 
   @override
+  void onTransition(
+      Transition<CompleteRegisterEvent, CompleteRegisterState> transition) {
+    // TODO: implement onTransition
+    super.onTransition(transition);
+    print(transition);
+  }
+
+  @override
   Stream<CompleteRegisterState> mapEventToState(
       CompleteRegisterEvent event) async* {
     if (event is CompleteRegister) {
@@ -23,7 +30,6 @@ class CompleteRegisterBloc
         var response = await _companyRepository
             .completeRegister(event.completeRegistrationModel);
         if (response.success) {
-
           yield RegisterSuccess();
         } else {
           yield RegisterFailed();

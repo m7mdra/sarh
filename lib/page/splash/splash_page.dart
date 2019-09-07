@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:Sarh/data/session.dart';
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
-import 'package:Sarh/page/home/main_page.dart';
+import 'package:Sarh/page/home/main/main_page.dart';
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/page/splash/bloc/session_bloc.dart';
 import 'package:Sarh/page/splash/bloc/session_bloc_event.dart';

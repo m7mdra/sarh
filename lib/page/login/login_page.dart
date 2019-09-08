@@ -89,6 +89,7 @@ class _LoginPageState extends State<LoginPage> with Validators {
                       if (state is LoadingState) {
                         showDialog(
                             context: context,
+                            barrierDismissible: false,
                             builder: (context) => ProgressDialog(
                                   message: AppLocalizations.of(context)
                                       .loginLoadingDialogMessage,

@@ -11,6 +11,7 @@ import 'package:Sarh/page/add_company_profile/client_model.dart';
 import 'package:Sarh/page/home/activity/bloc/activity_bloc.dart';
 import 'package:Sarh/page/home/activity/bloc/activity_event.dart';
 import 'package:Sarh/page/home/activity/bloc/activity_state.dart';
+import 'package:Sarh/page/home/main/main_page.dart';
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/page/privacy_policy/privacy_policy_page.dart';
 import 'package:Sarh/page/profile_image_modify/bloc/bloc.dart';
@@ -65,6 +66,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   TextEditingController _linkedInController;
   TextEditingController _behanceController;
   CompanySize companySize;
+  File _logoFile;
   bool _nextEnable = false;
   File _tradeLicenseFile;
   CompanySizeBloc _companySizeBloc;
@@ -130,6 +132,77 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     _behanceController.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    return Scaffold(
+      key: _scaffoldKey,
+      body: BlocListener(
+        bloc: _completeRegisterBloc,
+        listener: (context, state) {
+          if (state is RegisterLoading) {
+            showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => ProgressDialog(
+                      message: 'Completing registering your account.',
+                    ));
+          }
+          if (state is RegisterSuccess) {
+            pop(context);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => MainPage()));
+          }
+          if (state is RegisterNetworkError) {
+            pop(context);
+            scaffold
+              ..hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss)
+              ..showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text(AppLocalizations.of(context).noNetworkError),
+                action: SnackBarAction(
+                    label: AppLocalizations.of(context).retryButton,
+                    onPressed: () {
+                      _attemptRegister();
+                    }),
+              ));
+          }
+          if (state is RegisterSessionExpired) {
+            pop(context);
+
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (BuildContext context) {
+              return LoginPage();
+            }));
+          }
+          if (state is RegisterFailed) {
+            pop(context);
+            scaffold.showSnackBar(SnackBar(
+                backgroundColor: Colors.redAccent,
+                behavior: SnackBarBehavior.floating,
+                content: Text('Failed to complete registering.')));
+          }
+          if (state is RegisterTimeout) {
+            pop(context);
+            scaffold.showSnackBar(SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Text('Request timeout, retry'),
+              action: SnackBarAction(
+                label: AppLocalizations.of(context).retryButton,
+                onPressed: () {
+                  _attemptRegister();
+                },
+              ),
+            ));
+          }
+        },
+        child: _registerStepper(context),
+      ),
+    );
+  }
+
   _moveToNextStep() {
     setState(() {
       _currentStep += 1;
@@ -143,16 +216,18 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           _moveToNextStep();
           break;
         case 1:
-/*          if (companyDetailsForm.validate()) {
-            if (_logoImage == null)
+          if (companyDetailsForm.validate()) {
+            if (_logoFile == null) {
               scaffold.showSnackBar(SnackBar(
                 content: Text('Please selected company logo first'),
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Colors.orange,
               ));
-            else
+              return;
+            } else {
               _moveToNextStep();
-          }*/
+            }
+          }
           _moveToNextStep();
           break;
         case 2:
@@ -165,37 +240,40 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           _moveToNextStep();
           break;
         case 5:
-          _completeRegisterBloc
-              .dispatch(CompleteRegister(CompleteRegistrationModel(
-            startFromDate: _startDateController.value.text,
-            about: _companyDescriptionController.value.text,
-            companySize: companySize,
-            landPhone: _landLineController.value.text,
-            website: _websiteController.value.text,
-            activity: _activity,
-            companyAttachments: [_tradeLicenseFile],
-            socialMediaList: [
-              SocialMedia(
-                  link: _facebookController.value.text,
-                  id: SocialMediaId.FACEBOOk.value),
-              SocialMedia(
-                  link: _instagramController.value.text,
-                  id: SocialMediaId.INSTAGRAM.value),
-              SocialMedia(
-                  link: _twitterController.value.text,
-                  id: SocialMediaId.TWITTER.value),
-              SocialMedia(
-                  link: _linkedInController.value.text,
-                  id: SocialMediaId.LINKEDIN.value),
-              SocialMedia(
-                  link: _behanceController.value.text,
-                  id: SocialMediaId.BEHANCE.value),
-            ],
-            address: _addressController.value.text,
-          )));
+          _attemptRegister();
           break;
       }
     }
+  }
+
+  void _attemptRegister() {
+    _completeRegisterBloc.dispatch(CompleteRegister(CompleteRegistrationModel(
+      startFromDate: _startDateController.value.text,
+      about: _companyDescriptionController.value.text,
+      companySize: companySize,
+      landPhone: _landLineController.value.text,
+      website: _websiteController.value.text,
+      activity: _activity,
+      companyAttachments: [_tradeLicenseFile],
+      socialMediaList: [
+        SocialMedia(
+            link: _facebookController.value.text,
+            id: SocialMediaId.FACEBOOk.value),
+        SocialMedia(
+            link: _instagramController.value.text,
+            id: SocialMediaId.INSTAGRAM.value),
+        SocialMedia(
+            link: _twitterController.value.text,
+            id: SocialMediaId.TWITTER.value),
+        SocialMedia(
+            link: _linkedInController.value.text,
+            id: SocialMediaId.LINKEDIN.value),
+        SocialMedia(
+            link: _behanceController.value.text,
+            id: SocialMediaId.BEHANCE.value),
+      ],
+      address: _addressController.value.text,
+    )));
   }
 
   Widget _buildCompanyDetailsWidgetStep() {
@@ -357,45 +435,40 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    return Scaffold(
-      key: _scaffoldKey,
-      body: Column(
-        children: <Widget>[
-          _buildTopArcAndLogo(context),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: WeeStepper(
-                nextEnabled: _nextEnable,
-                steps: [
-                  WeeStep(content: _acceptTermsStep(context)),
-                  WeeStep(content: _buildCompanyDetailsWidgetStep()),
-                  WeeStep(content: _buildContactInformationStep()),
-                  WeeStep(content: _buildFeatureClientStep(context)),
-                  WeeStep(content: _buildSocialMediaStep()),
-                  WeeStep(content: _documentsStep(context)),
-                ],
-                currentStep: _currentStep,
-                onStepContinue: _onNextClicked,
-                onPrevious: () {
-                  setState(() {
-                    if (_currentStep != 0) _currentStep -= 1;
-                  });
-                  print(_currentStep);
-                },
-                onStepTapped: (step) {
-                  setState(() {
-                    this._currentStep = step;
-                  });
-                },
-              ),
+  Column _registerStepper(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        _buildTopArcAndLogo(context),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: WeeStepper(
+              nextEnabled: _nextEnable,
+              steps: [
+                WeeStep(content: _acceptTermsStep(context)),
+                WeeStep(content: _buildCompanyDetailsWidgetStep()),
+                WeeStep(content: _buildContactInformationStep()),
+                WeeStep(content: _buildFeatureClientStep(context)),
+                WeeStep(content: _buildSocialMediaStep()),
+                WeeStep(content: _documentsStep(context)),
+              ],
+              currentStep: _currentStep,
+              onStepContinue: _onNextClicked,
+              onPrevious: () {
+                setState(() {
+                  if (_currentStep != 0) _currentStep -= 1;
+                });
+                print(_currentStep);
+              },
+              onStepTapped: (step) {
+                setState(() {
+                  this._currentStep = step;
+                });
+              },
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -579,8 +652,11 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           onTap: () async {
             var pickImage = await showDialog(
                 context: context, builder: (context) => MediaPickDialog());
-            if (pickImage != null)
+            if (pickImage != null) {
               _modifyProfileImageBloc.dispatch(Modify(pickImage));
+              _logoFile = pickImage;
+              setState(() {});
+            }
           },
           child: ClipOval(
             child: Container(

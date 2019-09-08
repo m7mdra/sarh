@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:Sarh/data/company/model/company_clients_response.dart';
 import 'package:Sarh/data/company/model/company_size_response.dart';
@@ -6,6 +8,7 @@ import 'package:Sarh/data/exceptions/exceptions.dart';
 import 'package:Sarh/data/response_status.dart';
 import 'package:Sarh/page/add_company_profile/bloc/complete_register/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 
 class CompanyRepository {
   final Dio _client;
@@ -119,18 +122,14 @@ class CompanyRepository {
         'land_phone': model.landPhone,
         'address': model.address,
         'website': model.website,
-        'main_activity': 1,
+        'main_activity': 1, //TODO remove hardcoded activity value
         'company_attachments': model.companyAttachments
             .map((attachment) => UploadFileInfo(attachment,
                 'attachment${DateTime.now().millisecondsSinceEpoch})'))
             .toList(),
+        'socialMedia': jsonEncode(
+            model.socialMediaList.map((social) => social.toJson()).toList())
       });
-      for (int i = 0; i < model.socialMediaList.length; i++) {
-        formData['socialMedia[].social_media_id'] =
-            model.socialMediaList[i].id;
-        formData['socialMedia[].social_media_link'] =
-            model.socialMediaList[i].link;
-      }
       formData.forEach((key, value) {
         print("{key: $key, value: $value} data type: ${value.runtimeType}");
       });

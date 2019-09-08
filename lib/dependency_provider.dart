@@ -2,6 +2,7 @@ import 'package:Sarh/data/activity/activity_repository.dart';
 import 'package:Sarh/data/country/city_repository.dart';
 import 'package:Sarh/data/session.dart';
 import 'package:Sarh/data/user/user_repository.dart';
+import 'package:Sarh/page/splash/bloc/session_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,6 +36,12 @@ class DependencyProvider {
         responseHeader: true,
         error: true,
         logSize: 2048 * 2));
+    client.interceptors.add(InterceptorsWrapper(onResponse: (response) {
+      if (response.statusCode == 401) {
+        session.clear();
+        session.reload();
+      }
+    }));
     client.interceptors.add(TokenInterceptor(session));
     UserRepository userRepository = UserRepository(client);
     CountryRepository countryRepository = CountryRepository(client);

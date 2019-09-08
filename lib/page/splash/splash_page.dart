@@ -26,16 +26,11 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   AnimationController _slogunOpacityController;
   Animation<double> _slogunOpacityAnimation;
   FirebaseMessaging firebaseMessaging = FirebaseMessaging();
-  SessionBloc _sessionBloc;
 
   @override
   void initState() {
     super.initState();
     animate();
-
-    _sessionBloc =BlocProvider.of(context);
-
-    _sessionBloc.dispatch(AppStarted());
   }
 
   void animate() {
@@ -55,7 +50,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     _logoScaleAnimation.addListener(() {
       if (_logoScaleAnimation.status == AnimationStatus.completed)
         _logoTranslateController.forward();
-
     });
 
     _slogunOpacityAnimation =
@@ -111,7 +105,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       backgroundColor: Colors.grey,
       body: SafeArea(
         child: BlocListener(
-          bloc: _sessionBloc,
+          bloc: BlocProvider.of<SessionBloc>(context)..dispatch(AppStarted()),
           listener: (context, state) {
             if (state is AccountNotVerified) {
               Navigator.pushReplacement(context,

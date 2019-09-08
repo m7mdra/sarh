@@ -90,7 +90,9 @@ class _SubActivityPageState extends State<SubActivityPage> {
                 },
                 itemCount: state.activityList.length,
                 separatorBuilder: (BuildContext context, int index) {
-                  return Divider(height: 1,);
+                  return Divider(
+                    height: 1,
+                  );
                 },
               ),
             );
@@ -110,7 +112,6 @@ class SubActivityItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-
       title: Text(
           currentLanguage(context) == 'ar' ? activity.nameAr : activity.nameEn),
       onTap: () {

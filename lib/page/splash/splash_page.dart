@@ -54,9 +54,8 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
         Tween<double>(begin: 100, end: 180).animate(_logoScaleController);
     _logoScaleAnimation.addListener(() {
       if (_logoScaleAnimation.status == AnimationStatus.completed)
-        Future.delayed(Duration(milliseconds: 500)).then((val) {
-          _logoTranslateController.forward();
-        });
+        _logoTranslateController.forward();
+
     });
 
     _slogunOpacityAnimation =

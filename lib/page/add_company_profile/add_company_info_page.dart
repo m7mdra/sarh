@@ -12,11 +12,17 @@ import 'package:Sarh/page/home/activity/bloc/activity_bloc.dart';
 import 'package:Sarh/page/home/activity/bloc/activity_event.dart';
 import 'package:Sarh/page/home/activity/bloc/activity_state.dart';
 import 'package:Sarh/page/login/login_page.dart';
+import 'package:Sarh/page/privacy_policy/privacy_policy_page.dart';
+import 'package:Sarh/page/profile_image_modify/bloc/bloc.dart';
+import 'package:Sarh/page/profile_image_modify/bloc/modify_profile_image_bloc.dart';
+import 'package:Sarh/page/profile_image_modify/bloc/modify_profile_image_event.dart';
+import 'package:Sarh/page/tos/tos_page.dart';
 import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/media_picker_dialog.dart';
 import 'package:Sarh/widget/progress_dialog.dart';
 import 'package:Sarh/widget/stepper.dart';
 import 'package:Sarh/widget/ui_state.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -46,7 +52,6 @@ BorderRadius get _border8Radius => BorderRadius.circular(8);
 class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   int _currentStep = 0;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  File _logoImage;
   DateTime _startFromDate;
   TextEditingController _startDateController;
   TextEditingController _companyDescriptionController;
@@ -66,6 +71,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   LoadClientBloc _loadClientBloc;
   AddClientBloc _addClientBloc;
   ActivityBloc _activityBloc;
+  ModifyProfileImageBloc _modifyProfileImageBloc;
   CompleteRegisterBloc _completeRegisterBloc;
   Activity _activity;
   GlobalKey<FormState> _companyDetailsFormKey = GlobalKey<FormState>();
@@ -79,12 +85,10 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   void initState() {
     super.initState();
     _companySizeBloc = CompanySizeBloc(DependencyProvider.provide());
-    _completeRegisterBloc = CompleteRegisterBloc(
-        DependencyProvider.provide());
-    _completeRegisterBloc.state.listen((state) {
-      print(state);
-    });
-
+    _completeRegisterBloc = CompleteRegisterBloc(DependencyProvider.provide());
+    _modifyProfileImageBloc = ModifyProfileImageBloc(
+        DependencyProvider.provide(), DependencyProvider.provide());
+    _modifyProfileImageBloc.dispatch(Load());
     _activityBloc = ActivityBloc(DependencyProvider.provide());
     _activityBloc.dispatch(LoadActivities());
     _loadClientBloc = LoadClientBloc(DependencyProvider.provide());
@@ -134,12 +138,12 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
 
   void _onNextClicked() {
     if (_currentStep != 6) {
-      switch (_currentStep ) {
+      switch (_currentStep) {
         case 0:
           _moveToNextStep();
           break;
         case 1:
-          if (companyDetailsForm.validate()) {
+/*          if (companyDetailsForm.validate()) {
             if (_logoImage == null)
               scaffold.showSnackBar(SnackBar(
                 content: Text('Please selected company logo first'),
@@ -148,7 +152,8 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
               ));
             else
               _moveToNextStep();
-          }
+          }*/
+          _moveToNextStep();
           break;
         case 2:
           if (companyContactForm.validate()) {
@@ -160,7 +165,6 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           _moveToNextStep();
           break;
         case 5:
-
           _completeRegisterBloc
               .dispatch(CompleteRegister(CompleteRegistrationModel(
             startFromDate: _startDateController.value.text,
@@ -377,12 +381,10 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                 currentStep: _currentStep,
                 onStepContinue: _onNextClicked,
                 onPrevious: () {
-
                   setState(() {
                     if (_currentStep != 0) _currentStep -= 1;
                   });
                   print(_currentStep);
-
                 },
                 onStepTapped: (step) {
                   setState(() {
@@ -486,33 +488,47 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
         ),
         _sizedBox,
         _sizedBox,
-        CheckboxListTile(
-          selected: _nextEnable,
-          value: _nextEnable,
-          dense: true,
-          controlAffinity: ListTileControlAffinity.leading,
-          onChanged: (bool value) {
-            setState(() {
-              _nextEnable = !_nextEnable;
-            });
-          },
-          title: Text.rich(TextSpan(children: [
-            TextSpan(
-                text: 'By checking, you are Indicating that your '
-                    'agree to the '),
-            TextSpan(
-                text: 'Privacy Policy',
-                style: TextStyle(decoration: TextDecoration.underline)),
-            TextSpan(text: '  '),
-            TextSpan(
-                text: 'Terms of Conditions',
-                style: TextStyle(decoration: TextDecoration.underline))
-          ])),
-        )
+        Row(
+          children: <Widget>[
+            Checkbox(
+                value: _nextEnable,
+                onChanged: (value) {
+                  setState(() {
+                    _nextEnable = !_nextEnable;
+                  });
+                }),
+            Flexible(
+              child: Text.rich(TextSpan(children: [
+                TextSpan(
+                    text: 'By checking, you are Indicating that your '
+                        'agree to the '),
+                TextSpan(
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        PrivacyPolicyPage.navigate(context);
+                      },
+                    text: 'Privacy Policy',
+                    style: _clickableTextStyle(context)),
+                TextSpan(text: ' and '),
+                TextSpan(
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        TosPage.navigate(context);
+                      },
+                    text: 'Terms of Conditions',
+                    style: _clickableTextStyle(context))
+              ])),
+            ),
+          ],
+        ),
       ],
       crossAxisAlignment: CrossAxisAlignment.center,
     );
   }
+
+  TextStyle _clickableTextStyle(BuildContext context) => TextStyle(
+      decoration: TextDecoration.underline,
+      color: Theme.of(context).primaryColor);
 
   _buildTopArcAndLogo(BuildContext context) {
     return Opacity(
@@ -528,46 +544,17 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
             fit: StackFit.loose,
             overflow: Overflow.visible,
             children: <Widget>[
-              Positioned(
-                bottom: -30,
-                left: 16,
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: InkWell(
-                    onTap: () async {
-                      var pickImage = await showDialog(
-                          context: context,
-                          builder: (context) => MediaPickDialog());
-                      if (pickImage == null) return;
-
-                      setState(() {
-                        _logoImage = pickImage;
-                      });
-                    },
-                    child: Container(
-                      width: 120,
-                      height: 120,
-                      child: _logoImage == null
-                          ? Icon(
-                              Icons.camera_alt,
-                              size: 30,
-                            )
-                          : ClipOval(
-                              clipBehavior: Clip.antiAlias,
-                              child: Image.file(
-                                _logoImage,
-                                width: 80,
-                                alignment: Alignment.center,
-                                height: 80,
-                                fit: BoxFit.fitWidth,
-                              )),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+              BlocBuilder(
+                bloc: _modifyProfileImageBloc,
+                builder: (BuildContext context, state) {
+                  if (state is ImageLoaded) {
+                    return _pickImageWidget(context, state.imageUrl);
+                  }
+                  if (state is Loading) {
+                    return _pickImageWidget(context, "", true);
+                  }
+                  return _pickImageWidget(context);
+                },
               )
             ],
           ),
@@ -576,6 +563,57 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(8),
                   bottomRight: Radius.circular(8))),
+        ),
+      ),
+    );
+  }
+
+  Widget _pickImageWidget(BuildContext context,
+      [String imageUrl, bool progress = false]) {
+    return Positioned(
+      bottom: -30,
+      left: 16,
+      child: Align(
+        alignment: Alignment.bottomLeft,
+        child: InkWell(
+          onTap: () async {
+            var pickImage = await showDialog(
+                context: context, builder: (context) => MediaPickDialog());
+            if (pickImage != null)
+              _modifyProfileImageBloc.dispatch(Modify(pickImage));
+          },
+          child: ClipOval(
+            child: Container(
+              width: 120,
+              height: 120,
+              child: Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  imageUrl != null
+                      ? Image.network(
+                          imageUrl,
+                          width: 120,
+                          alignment: Alignment.center,
+                          height: 120,
+                          fit: BoxFit.fitWidth,
+                        )
+                      : Container(),
+                  Icon(
+                    Icons.camera_alt,
+                    size: 30,
+                  ),
+                  Visibility(
+                    child: ProgressBar(),
+                    visible: progress,
+                  ),
+                ],
+              ),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ),
       ),
     );

@@ -42,6 +42,7 @@ class CompleteRegisterBloc
         yield RegisterNetworkError();
       } catch (error) {
         yield RegisterFailed();
+      print(error);
       }
     }
   }

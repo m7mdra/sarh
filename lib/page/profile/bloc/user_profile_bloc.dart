@@ -8,7 +8,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   UserProfileBloc(this._session);
 
   @override
-  UserProfileState get initialState => UserProfileState();
+  UserProfileState get initialState => ProfileLoaded(_session.user);
 
 
   @override

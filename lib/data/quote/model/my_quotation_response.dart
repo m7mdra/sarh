@@ -1,14 +1,14 @@
 import 'package:Sarh/data/model/activity.dart';
 import 'package:Sarh/data/model/user.dart';
 
-class MyQuotationResponse {
+class QuotationResponse {
   bool success;
   List<Data> data;
   String message;
 
-  MyQuotationResponse({this.success, this.data, this.message});
+  QuotationResponse({this.success, this.data, this.message});
 
-  MyQuotationResponse.fromJson(Map<String, dynamic> json) {
+  QuotationResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     if (json['data'] != null) {
       data = new List<Data>();
@@ -32,22 +32,19 @@ class MyQuotationResponse {
 
 class Data {
   int id;
-  User account;
   Activity activity;
   List<CompanyQuotations> companyQuotations;
   List<String> attachment;
 
   Data(
       {this.id,
-        this.account,
         this.activity,
         this.companyQuotations,
         this.attachment});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    account =
-    json['account'] != null ? new User.fromJson(json['account']) : null;
+
     activity = json['activity'] != null
         ? new Activity.fromJson(json['activity'])
         : null;
@@ -68,9 +65,7 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    if (this.account != null) {
-      data['account'] = this.account.toJson();
-    }
+
     if (this.activity != null) {
       data['activity'] = this.activity.toJson();
     }

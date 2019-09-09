@@ -12,9 +12,7 @@ class RequestQuoteScreen extends StatefulWidget {
 
 class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
   List<AttachmentFile> attachments = []..addAll([null, null, null, null]);
-  bool _randomRequestMethod = false;
-  bool _favoriteRequestMethod = true;
-  bool _recommendationReqeustMethod = true;
+  int _selectedMethod = -1;
   TextEditingController _activityTextEditingController;
   TextEditingController _qouteSubjectTextEditingController;
   TextEditingController _qouteDetailsTextEditingController;
@@ -44,16 +42,13 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
       key: _scaffoldKey,
       appBar: AppBar(
         elevation: 2,
         centerTitle: true,
         title: Text(
           AppLocalizations.of(context).requestQuotations,
-          style: TextStyle(
-          ),
+          style: TextStyle(),
         ),
         leading: BackButtonNoLabel(Colors.white),
       ),
@@ -78,7 +73,8 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
                       child: TextFormField(
                         validator: (text) {
                           if (text.isEmpty)
-                            return AppLocalizations.of(context).activityFieldEmptyError;
+                            return AppLocalizations.of(context)
+                                .activityFieldEmptyError;
                           else
                             return null;
                         },
@@ -102,12 +98,12 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
                       title:
                           Text(AppLocalizations.of(context).requestMethodHint),
                       children: <Widget>[
-                        CheckboxListTile(
-                          selected: _favoriteRequestMethod,
-                          value: _favoriteRequestMethod,
+                        RadioListTile(
+                          selected: _selectedMethod==0,
+                          value: 0,
                           onChanged: (newValue) {
                             setState(() {
-                              this._favoriteRequestMethod = newValue;
+                              this._selectedMethod = newValue;
                             });
                           },
                           controlAffinity: ListTileControlAffinity.leading,
@@ -116,18 +112,20 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
                               .favoriteRequestMethod),
                           subtitle: Text(AppLocalizations.of(context)
                               .favoriteRequestMethodHint),
+                          groupValue: _selectedMethod,
                         ),
                         Divider(
                           height: 1,
                         ),
-                        CheckboxListTile(
+                        RadioListTile(
+                          selected: _selectedMethod==1,
                           controlAffinity: ListTileControlAffinity.leading,
-                          selected: _recommendationReqeustMethod,
-                          value: _recommendationReqeustMethod,
+                          value: 1,
+                          groupValue: _selectedMethod,
                           secondary: Icon(FontAwesomeIcons.listOl),
                           onChanged: (newValue) {
                             setState(() {
-                              this._recommendationReqeustMethod = newValue;
+                              _selectedMethod = newValue;
                             });
                           },
                           title: Text(AppLocalizations.of(context)
@@ -138,14 +136,15 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
                         Divider(
                           height: 1,
                         ),
-                        CheckboxListTile(
+                        RadioListTile(
+                          selected: _selectedMethod==2,
                           controlAffinity: ListTileControlAffinity.leading,
-                          selected: _randomRequestMethod,
-                          value: _randomRequestMethod,
+                          value: 2,
+                          groupValue: _selectedMethod,
                           secondary: Icon(FontAwesomeIcons.listUl),
                           onChanged: (newValue) {
                             setState(() {
-                              this._randomRequestMethod = newValue;
+                              this._selectedMethod = newValue;
                             });
                           },
                           title: Text(
@@ -167,7 +166,8 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
                   TextFormField(
                     validator: (text) {
                       if (text.isEmpty)
-                        return AppLocalizations.of(context).quotationSubjectFieldEmptyError;
+                        return AppLocalizations.of(context)
+                            .quotationSubjectFieldEmptyError;
                       else
                         return null;
                     },

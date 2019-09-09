@@ -2,11 +2,9 @@ import 'package:Sarh/data/exceptions/session_expired_exception.dart';
 import 'package:Sarh/data/exceptions/timeout_exception.dart';
 import 'package:Sarh/data/exceptions/unable_to_connect_exception.dart';
 import 'package:Sarh/data/session.dart';
-import 'package:Sarh/data/user/model/authentication_response.dart';
 import 'package:Sarh/data/user/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'login_event_state.dart';
-import 'package:dio/dio.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;

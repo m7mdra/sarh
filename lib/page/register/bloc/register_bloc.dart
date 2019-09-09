@@ -1,5 +1,4 @@
 import 'package:Sarh/data/country/city_repository.dart';
-import 'package:Sarh/data/exceptions/session_expired_exception.dart';
 import 'package:Sarh/data/exceptions/timeout_exception.dart';
 import 'package:Sarh/data/exceptions/unable_to_connect_exception.dart';
 import 'package:Sarh/data/session.dart';

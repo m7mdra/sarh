@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:Sarh/data/exceptions/exceptions.dart';
+import 'package:Sarh/data/quote/model/my_quotation_response.dart';
 import 'package:dio/dio.dart';
 import 'package:Sarh/data/response_status.dart';
 
@@ -8,7 +9,7 @@ class QuotationRepository {
 
   QuotationRepository(this._client);
 
-  Future<ResponseStatus> createQuote(
+  Future<ResponseStatus> requestQuote(
       {int requestMethod,
       int accountId,
       int activityId,
@@ -25,16 +26,16 @@ class QuotationRepository {
         'files_attachment': attachments
             .asMap()
             .map((index, file) {
-              return MapEntry(index, UploadFileInfo(file, 'file${index+1}'));
+              return MapEntry(index, UploadFileInfo(file, 'file${index + 1}'));
             })
             .values
             .toList()
       });
 
       print(formData.toString());
-      /* var response = await _client.post('quotation_requests');
+      var response = await _client.post('quotation_requests');
 
-      return ResponseStatus.fromJson(response.data);*/
+      return ResponseStatus.fromJson(response.data);
     } on DioError catch (error) {
       switch (error.type) {
         case DioErrorType.CONNECT_TIMEOUT:
@@ -54,6 +55,39 @@ class QuotationRepository {
         case DioErrorType.DEFAULT:
           throw UnableToConnectException();
           break;
+        default:
+          throw error;
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<QuotationResponse> getQuotations() async {
+    try {
+      var response = await _client.get('quotation_requests');
+      return QuotationResponse.fromJson(response.data);
+    } on DioError catch (error) {
+      switch (error.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+        case DioErrorType.SEND_TIMEOUT:
+        case DioErrorType.RECEIVE_TIMEOUT:
+          throw TimeoutException();
+          break;
+        case DioErrorType.RESPONSE:
+          if (error.response.statusCode == HTTP_UNAUTHORIZED)
+            throw SessionExpiredException();
+          else
+            throw error;
+          break;
+        case DioErrorType.CANCEL:
+          throw error;
+          break;
+        case DioErrorType.DEFAULT:
+          throw UnableToConnectException();
+          break;
+        default:
+          throw error;
       }
     } catch (error) {
       throw error;

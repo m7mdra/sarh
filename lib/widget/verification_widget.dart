@@ -114,8 +114,7 @@ class CodeDigitWidget extends StatelessWidget {
   final Size cellSize;
   final InputDecoration cellsInputDecoration;
   final TextStyle cellsTextStyle;
-  final _defaultTextStyle = const TextStyle(
-      fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black);
+
   final _defaultInputBorder = const InputDecoration(
       counterText: '',
       border: OutlineInputBorder(

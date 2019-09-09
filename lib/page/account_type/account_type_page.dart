@@ -3,7 +3,6 @@ import 'package:Sarh/page/register/register_page.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:Sarh/i10n/app_localizations.dart';
 
 class AccountTypePage extends StatefulWidget {
   @override

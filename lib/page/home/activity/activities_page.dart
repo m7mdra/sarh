@@ -1,7 +1,5 @@
-import 'dart:math';
 
 import 'package:Sarh/data/model/activity.dart';
-import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/home/activity/bloc/activity_bloc.dart';
 import 'package:Sarh/page/home/activity/bloc/activity_event.dart';
 import 'package:Sarh/page/home/activity/bloc/activity_state.dart';
@@ -11,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Sarh/widget/ui_state.dart';
 import 'package:Sarh/locale.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoriesPage extends StatefulWidget {
   @override

@@ -1,4 +1,3 @@
-import 'package:Sarh/data/model/client.dart';
 
 class AddClientState {}
 

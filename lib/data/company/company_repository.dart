@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:Sarh/data/company/model/company_clients_response.dart';
 import 'package:Sarh/data/company/model/company_size_response.dart';
@@ -8,7 +7,6 @@ import 'package:Sarh/data/exceptions/exceptions.dart';
 import 'package:Sarh/data/response_status.dart';
 import 'package:Sarh/page/add_company_profile/bloc/complete_register/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:intl/intl.dart';
 
 class CompanyRepository {
   final Dio _client;
@@ -38,6 +36,8 @@ class CompanyRepository {
         case DioErrorType.DEFAULT:
           throw UnableToConnectException();
           break;
+        default:
+          throw error;
       }
     } catch (error) {
       throw error;
@@ -67,6 +67,8 @@ class CompanyRepository {
         case DioErrorType.DEFAULT:
           throw UnableToConnectException();
           break;
+        default:
+          throw error;
       }
     } catch (error) {
       throw error;
@@ -103,6 +105,8 @@ class CompanyRepository {
         case DioErrorType.DEFAULT:
           throw UnableToConnectException();
           break;
+        default:
+          throw error;
       }
     } catch (error) {
       throw error;
@@ -154,6 +158,8 @@ class CompanyRepository {
         case DioErrorType.DEFAULT:
           throw UnableToConnectException();
           break;
+        default:
+          throw error;
       }
     } catch (error) {
       throw error;

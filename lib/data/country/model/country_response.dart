@@ -1,4 +1,3 @@
-import 'package:Sarh/data/model/city.dart';
 import 'package:Sarh/data/model/country.dart';
 
 class CountryResponse {

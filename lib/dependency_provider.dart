@@ -2,12 +2,12 @@ import 'package:Sarh/data/activity/activity_repository.dart';
 import 'package:Sarh/data/country/city_repository.dart';
 import 'package:Sarh/data/session.dart';
 import 'package:Sarh/data/user/user_repository.dart';
-import 'package:Sarh/page/splash/bloc/session_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/company/company_repository.dart';
+import 'data/quote/quotation_repository.dart';
 import 'data/token_interceptor.dart';
 
 GetIt _registrar = GetIt();
@@ -47,11 +47,12 @@ class DependencyProvider {
     CountryRepository countryRepository = CountryRepository(client);
     ActivityRepository activityRepository = ActivityRepository(client);
     CompanyRepository companyRepository = CompanyRepository(client);
-
+    QuotationRepository quotationRepository=QuotationRepository(client);
     _registrar.registerSingleton<Dio>(client);
     _registrar.registerSingleton<Session>(session);
     _registrar.registerFactory<UserRepository>(() => userRepository);
     _registrar.registerFactory<CountryRepository>(() => countryRepository);
+    _registrar.registerFactory<QuotationRepository>(() => quotationRepository);
     _registrar.registerFactory<ActivityRepository>(() => activityRepository);
     _registrar.registerFactory<CompanyRepository>(() => companyRepository);
   }

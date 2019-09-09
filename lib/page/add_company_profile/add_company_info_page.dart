@@ -228,7 +228,6 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
               _moveToNextStep();
             }
           }
-          _moveToNextStep();
           break;
         case 2:
           if (companyContactForm.validate()) {

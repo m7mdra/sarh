@@ -1,9 +1,7 @@
 import 'package:Sarh/widget/file_picker_sheet_modal.dart';
-import 'package:Sarh/widget/file_picker_sheet_modal.dart' as prefix0;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:video_player/video_player.dart';
-import 'package:async/async.dart';
 
 class AttachmentWidget extends StatelessWidget {
   final VoidCallback onRemove;

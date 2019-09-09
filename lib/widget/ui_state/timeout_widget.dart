@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:Sarh/i10n/app_localizations.dart';
+import 'package:flutter/material.dart';
 
-class GeneralErrorWidget extends StatelessWidget {
+class TimeoutWidget extends StatelessWidget {
   final VoidCallback onRetry;
 
-  const GeneralErrorWidget({Key key, this.onRetry}) : super(key: key);
+  const TimeoutWidget({Key key, this.onRetry}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +19,15 @@ class GeneralErrorWidget extends StatelessWidget {
           SizedBox(
             height: 8,
           ),
-          Text(
-            AppLocalizations.of(context).errorDialogTitle,
-            style: Theme.of(context)
-                .textTheme
-                .title
-                .copyWith(fontWeight: FontWeight.normal),
-          ),
+          Text('Operation timeout',
+              style: Theme.of(context)
+                  .textTheme
+                  .title
+                  .copyWith(fontWeight: FontWeight.normal)),
           SizedBox(
             height: 4,
           ),
-          Text(AppLocalizations.of(context).errorOccurredSubtitle),
+          Text('This took longer than we expected, try again'),
           SizedBox(
             height: 4,
           ),

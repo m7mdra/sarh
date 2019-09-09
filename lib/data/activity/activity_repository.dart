@@ -30,6 +30,8 @@ class ActivityRepository {
         case DioErrorType.DEFAULT:
           throw UnableToConnectException();
           break;
+        default:
+          throw error;
       }
     } catch (error) {
       throw error;
@@ -60,6 +62,8 @@ class ActivityRepository {
         case DioErrorType.DEFAULT:
           throw UnableToConnectException();
           break;
+        default:
+          throw error;
       }
     } catch (error) {
       throw error;

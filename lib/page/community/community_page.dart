@@ -1,6 +1,4 @@
-import 'package:Sarh/page/message_list/message_list_page.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
-import 'package:Sarh/widget/sliver_header_delegate.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,6 +14,11 @@ class _CommunityPageState extends State<CommunityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Community'),
+        centerTitle: true,
+        leading: BackButtonNoLabel(Colors.white),
+      ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'fabAdd',
         onPressed: () {
@@ -26,57 +29,33 @@ class _CommunityPageState extends State<CommunityPage> {
         child: Icon(FontAwesomeIcons.plus),
       ),
       body: SafeArea(
-          child: CustomScrollView(
-        slivers: <Widget>[
-          SliverPersistentHeader(
-              floating: true,
-              pinned: true,
-              delegate: SliverHeaderDelegate(
-                  maxHeight: 70,
-                  minHeight: 70,
-                  child: Material(
-                    elevation: 2,
-                    color: Theme.of(context).primaryColor,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        children: <Widget>[
-                          BackButtonNoLabel(Colors.white),
-                          Expanded(
-                              child: TextField(
-                            onTap: () {},
-                            decoration: InputDecoration.collapsed(
-                                    hintText: 'Search...')
-                                .copyWith(
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    suffixIcon: Icon(
-                                      FontAwesomeIcons.search,
-                                      size: 15,
-                                    ),
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(32),
-                                        gapPadding: 0),
-                                    hintText: 'Search...',
-                                    contentPadding: const EdgeInsets.all(8)),
-                          )),
-                        ],
-                      ),
-                    ),
-                  ))),
-          SliverPadding(
+          child: ListView(
+        primary: true,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+            child: TextField(
+                decoration: InputDecoration.collapsed(
+                        hintText: 'Search ...',
+                        filled: true,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide.none))
+                    .copyWith(
+              contentPadding: const EdgeInsets.all(9),
+            )),
+          ),
+          Padding(
             padding: const EdgeInsets.only(left: 16, right: 16),
-            sliver: SliverToBoxAdapter(
-              child: Text(
-                'Latest Posts',
-                style: Theme.of(context).textTheme.title,
-              ),
+            child: Text(
+              'Latest Posts',
+              style: Theme.of(context).textTheme.title,
             ),
           ),
-          SliverToBoxAdapter(
-              child: Container(
+          Container(
             height: 50,
             child: ListView.builder(
+              shrinkWrap: true,
               padding: const EdgeInsetsDirectional.only(start: 16),
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int index) {
@@ -87,15 +66,17 @@ class _CommunityPageState extends State<CommunityPage> {
               },
               itemCount: 10,
             ),
-          )),
-          SliverPadding(
-            padding: const EdgeInsets.only(bottom: 64),
-            sliver: SliverList(
-                delegate: SliverChildBuilderDelegate((context, index) {
+          ),
+          ListView.builder(
+            itemBuilder: (context, index) {
               return CommunityPostWidget(
                 key: ValueKey(index),
               );
-            }, childCount: 10)),
+            },
+            itemCount: 10,
+            shrinkWrap: true,
+            primary: false,
+            padding: const EdgeInsets.only(bottom: 64),
           )
         ],
       )),

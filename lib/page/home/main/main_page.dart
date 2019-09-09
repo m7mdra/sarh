@@ -7,10 +7,14 @@ import 'package:Sarh/page/home/main/bloc/bloc.dart';
 import 'package:Sarh/page/home/main/bloc/home_page_bloc.dart';
 import 'package:Sarh/page/home/updates_page.dart';
 import 'package:Sarh/page/message_list/message_list_page.dart';
+import 'package:Sarh/page/profile/bloc/user_profile_bloc.dart';
+import 'package:Sarh/page/profile/bloc/user_profile_event.dart';
+import 'package:Sarh/page/profile/bloc/user_profile_state.dart';
 import 'package:Sarh/page/profile/user_profile_page.dart';
+import 'package:Sarh/page/quotes_list/quotes_list_page.dart';
 import 'package:Sarh/page/request_quote/request_quote_screen.dart';
 import 'package:Sarh/page/search/search_page.dart';
-import 'package:Sarh/widget/category_ship_widget.dart';
+import 'package:Sarh/page/settings/settings_page.dart';
 import 'package:Sarh/widget/fab_bottom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -54,10 +58,10 @@ class _MainPageState extends State<MainPage> {
       bloc: _homePageBloc,
       listener: (context, state) {
         if (state is NavigateToCompanyProfile) {
-          drawer.navigateToCompanyProfile(context);
+          drawer.navigateToCompanyProfile();
         }
         if (state is NavigateToUserProfile) {
-          drawer.navigateToUserProfile(context);
+          drawer.navigateToUserProfile();
         }
       },
       child: Scaffold(
@@ -196,67 +200,93 @@ class UserDrawer extends StatefulWidget {
 }
 
 class UserDrawerState extends State<UserDrawer> {
+  UserProfileBloc _userProfileBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _userProfileBloc = UserProfileBloc(DependencyProvider.provide());
+    _userProfileBloc.dispatch(LoadProfile());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
         color: Theme.of(context).accentColor,
         child: ListView(
-          padding:
-              const EdgeInsets.only(top: 32, left: 16, right: 16, bottom: 16),
           children: <Widget>[
-            InkWell(
-              onTap: () => BlocProvider.of<HomePageBloc>(context)
-                  .dispatch(NavigateToProfile()),
-              child: Row(
-                children: <Widget>[
-                  Hero(
-                    tag: 'profile_image',
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.white,
-                      child: IconButton(
-                        icon: Icon(
-                          FontAwesomeIcons.user,
-                          size: 30,
+            BlocBuilder(
+              bloc: _userProfileBloc,
+              builder: (context, state) {
+                if (state is ProfileLoaded) {
+                  var user = state.user;
+
+                  return Padding(
+                    padding: EdgeInsets.only(
+                        top: 32, left: 16, right: 16, bottom: 16),
+                    child: Column(
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () => BlocProvider.of<HomePageBloc>(context)
+                              .dispatch(NavigateToProfile()),
+                          child: Row(
+                            children: <Widget>[
+                              Hero(
+                                tag: 'profile_image',
+                                child: CircleAvatar(
+                                  radius: 40,
+                                  backgroundColor: Colors.white,
+                                  child: ClipOval(
+                                      child: Image.network(user.image)),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    user.username,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .title
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                  Text('Mail@Domain.com',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .body1
+                                          .copyWith(
+                                            color: Colors.white,
+                                          )),
+                                  Text('Tap to view your profile',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption
+                                          .copyWith(
+                                            color: Colors.white,
+                                          )),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        onPressed: () {
-                          widget._scaffoldKey.currentState.openDrawer();
-                        },
-                      ),
+                        Divider(
+                          color: Colors.white,
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Username',
-                        style: Theme.of(context)
-                            .textTheme
-                            .title
-                            .copyWith(color: Colors.white),
-                      ),
-                      Text('Mail@Domain.com',
-                          style: Theme.of(context).textTheme.body1.copyWith(
-                                color: Colors.white,
-                              )),
-                      Text('Tap to view your profile',
-                          style: Theme.of(context).textTheme.caption.copyWith(
-                                color: Colors.white,
-                              )),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Divider(
-              color: Colors.white,
+                  );
+                }
+                return Container();
+              },
             ),
             ListTile(
+              onTap: _navigateToQuotesPage,
               leading: Icon(
                 FontAwesomeIcons.solidFileAlt,
                 color: Colors.white,
@@ -271,21 +301,13 @@ class UserDrawerState extends State<UserDrawer> {
                 FontAwesomeIcons.users,
                 color: Colors.white,
               ),
-              onTap: () => _navigateToCommunityPage(context),
+              onTap: _navigateToCommunityPage,
               title: Text('Community',
                   style: Theme.of(context).textTheme.title.copyWith(
                       color: Colors.white, fontWeight: FontWeight.normal)),
             ),
             ListTile(
-              leading: Icon(
-                FontAwesomeIcons.solidHeart,
-                color: Colors.white,
-              ),
-              title: Text('Favorites',
-                  style: Theme.of(context).textTheme.title.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.normal)),
-            ),
-            ListTile(
+              onTap: _navigatedToSettings,
               leading: Icon(
                 FontAwesomeIcons.cog,
                 color: Colors.white,
@@ -302,7 +324,7 @@ class UserDrawerState extends State<UserDrawer> {
               children: <Widget>[
                 RaisedButton(
                   padding: const EdgeInsets.only(
-                      left: 64, right: 64, top: 16, bottom: 16),
+                      left: 32, right: 32, top: 8, bottom: 8),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(32)),
                   child: Text('Logout',
@@ -320,21 +342,33 @@ class UserDrawerState extends State<UserDrawer> {
     );
   }
 
-  void navigateToUserProfile(BuildContext context) {
+  void _navigateToQuotesPage() {
+    Navigator.pop(context);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) => QuoteListPage()));
+  }
+
+  void _navigatedToSettings() {
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SettingsPage()));
+  }
+
+  void navigateToUserProfile() {
     Navigator.pop(context);
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return UserProfilePage();
     }));
   }
 
-  void navigateToCompanyProfile(BuildContext context) {
+  void navigateToCompanyProfile() {
     Navigator.pop(context);
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return CompanyProfilePage();
     }));
   }
 
-  void _navigateToCommunityPage(BuildContext context) {
+  void _navigateToCommunityPage() {
     Navigator.pop(context);
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {

@@ -41,6 +41,8 @@ class UserRepository {
         case DioErrorType.DEFAULT:
           throw UnableToConnectException();
           break;
+        default:
+          throw error;
       }
     } catch (error) {
       throw error;
@@ -70,6 +72,8 @@ class UserRepository {
         case DioErrorType.DEFAULT:
           throw UnableToConnectException();
           break;
+        default:
+          throw error;
       }
     }
   }
@@ -98,6 +102,8 @@ class UserRepository {
         case DioErrorType.DEFAULT:
           throw UnableToConnectException();
           break;
+        default:
+          throw error;
       }
     }catch(error){
       print(error);
@@ -143,6 +149,8 @@ class UserRepository {
         case DioErrorType.DEFAULT:
           throw UnableToConnectException();
           break;
+        default:
+          throw error;
       }
     } catch (error) {
       throw error;
@@ -172,6 +180,8 @@ class UserRepository {
         case DioErrorType.DEFAULT:
           throw UnableToConnectException();
           break;
+        default:
+          throw error;
       }
     } catch (error) {
       throw error;

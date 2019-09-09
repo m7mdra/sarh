@@ -126,7 +126,8 @@ class CompanyRepository {
         'land_phone': model.landPhone,
         'address': model.address,
         'website': model.website,
-        'main_activity': 1, //TODO remove hardcoded activity value
+        'post_code': model.postCode,
+        'main_category': 1, //TODO remove hardcoded activity value
         'company_attachments': model.companyAttachments
             .map((attachment) => UploadFileInfo(attachment,
                 'attachment${DateTime.now().millisecondsSinceEpoch})'))
@@ -134,9 +135,7 @@ class CompanyRepository {
         'socialMedia': jsonEncode(
             model.socialMediaList.map((social) => social.toJson()).toList())
       });
-      formData.forEach((key, value) {
-        print("{key: $key, value: $value} data type: ${value.runtimeType}");
-      });
+
       var response = await _client.post('company-register', data: formData);
       return ResponseStatus.fromJson(response.data);
     } on DioError catch (error) {

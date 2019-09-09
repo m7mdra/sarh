@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:Sarh/data/model/activity.dart';
+import 'package:Sarh/data/model/category.dart';
 import 'package:Sarh/data/model/company_size.dart';
 
 class CompleteRegisterEvent {}
@@ -12,7 +13,8 @@ class CompleteRegistrationModel {
   final String landPhone;
   final String address;
   final String website;
-  final Activity activity;
+  final String postCode;
+  final Category activity;
   final List<File> companyAttachments;
   final List<SocialMedia> socialMediaList;
 
@@ -21,6 +23,7 @@ class CompleteRegistrationModel {
       this.about,
       this.companySize,
       this.landPhone,
+      this.postCode,
       this.address,
       this.website,
       this.activity,

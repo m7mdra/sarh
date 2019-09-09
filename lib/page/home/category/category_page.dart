@@ -1,38 +1,39 @@
-import 'package:Sarh/data/model/activity.dart';
-import 'package:Sarh/page/home/activity/bloc/activity_bloc.dart';
-import 'package:Sarh/page/home/activity/bloc/activity_event.dart';
-import 'package:Sarh/page/home/activity/bloc/activity_state.dart';
+import 'package:Sarh/data/model/category.dart';
+import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/home/Category/bloc/category_bloc.dart';
+import 'package:Sarh/page/home/category/bloc/category_event.dart';
+import 'package:Sarh/page/home/category/bloc/category_state.dart';
 import 'package:Sarh/page/login/login_page.dart';
-import 'package:Sarh/page/sub_activity/sub_activity_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Sarh/widget/ui_state.dart';
 import 'package:Sarh/locale.dart';
 
-class CategoriesPage extends StatefulWidget {
+class CategoryPage extends StatefulWidget {
   @override
-  _CategoriesPageState createState() => _CategoriesPageState();
+  _CategoryPageState createState() => _CategoryPageState();
 }
 
-class _CategoriesPageState extends State<CategoriesPage>
+class _CategoryPageState extends State<CategoryPage>
     with AutomaticKeepAliveClientMixin {
-  ActivityBloc _activityBloc;
+  CategoryBloc _categoryBloc;
 
   @override
   void initState() {
     super.initState();
+    _categoryBloc = CategoryBloc(DependencyProvider.provide());
+    _categoryBloc.dispatch(LoadCategories());
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _activityBloc = BlocProvider.of(context);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _activityBloc.dispose();
+    _categoryBloc.dispose();
   }
 
   @override
@@ -41,19 +42,19 @@ class _CategoriesPageState extends State<CategoriesPage>
     return Scaffold(
       body: BlocListener(
         listener: (context, state) {
-          if (state is ActivitySessionExpired)
+          if (state is CategorySessionExpired)
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return LoginPage();
             }));
         },
-        bloc: _activityBloc,
+        bloc: _categoryBloc,
         child: BlocBuilder(
-          bloc: _activityBloc,
+          bloc: _categoryBloc,
           builder: (BuildContext context, state) {
-            if (state is ActivityLoading) {
+            if (state is CategoryLoading) {
               return ProgressBar();
             }
-            if (state is ActivityNetworkError) {
+            if (state is CategoryNetworkError) {
               return Center(
                 child: NetworkErrorWidget(
                   onRetry: () {
@@ -62,17 +63,17 @@ class _CategoriesPageState extends State<CategoriesPage>
                 ),
               );
             }
-            if (state is ActivityError) {
+            if (state is CategoryError) {
               return Center(child: GeneralErrorWidget(
                 onRetry: () {
                   _dispatchLoadEvent();
                 },
               ));
             }
-            if (state is ActivityEmpty) {
+            if (state is CategoryEmpty) {
               return Center(child: EmptyWidget());
             }
-            if (state is ActivitySuccess) {
+            if (state is CategorySuccess) {
               return RefreshIndicator(
                 onRefresh: () {
                   _dispatchLoadEvent();
@@ -86,19 +87,12 @@ class _CategoriesPageState extends State<CategoriesPage>
                       crossAxisSpacing: 4,
                       childAspectRatio: 1),
                   itemBuilder: (BuildContext context, int index) {
-                    return ActivityWidget(
-                      state.activityList[index],
-                      onActivityTap: (activity) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SubActivityPage(
-                                      parentActivity: state.activityList[index],
-                                    )));
-                      },
+                    return CategoryWidget(
+                      state.categoryList[index],
+                      onCategoryTap: (Category) {},
                     );
                   },
-                  itemCount: state.activityList.length,
+                  itemCount: state.categoryList.length,
                 ),
               );
             }
@@ -109,23 +103,23 @@ class _CategoriesPageState extends State<CategoriesPage>
     );
   }
 
-  void _dispatchLoadEvent() => _activityBloc.dispatch(LoadActivities());
+  void _dispatchLoadEvent() => _categoryBloc.dispatch(LoadCategories());
 
   @override
   bool get wantKeepAlive => true;
 }
 
-class ActivityWidget extends StatelessWidget {
-  final Activity activity;
-  final ValueSetter<Activity> onActivityTap;
+class CategoryWidget extends StatelessWidget {
+  final Category category;
+  final ValueSetter<Category> onCategoryTap;
 
-  const ActivityWidget(this.activity, {Key key, this.onActivityTap})
+  const CategoryWidget(this.category, {Key key, this.onCategoryTap})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onActivityTap(activity),
+      onTap: () => onCategoryTap(category),
       child: Container(
         decoration: BoxDecoration(
             border: Border.all(color: Colors.grey.withAlpha(80), width: 0.4)),
@@ -133,8 +127,8 @@ class ActivityWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.asset(
-              'assets/logo/logo.png',
+            Image.network(
+              category.img,
               width: 120,
             ),
             SizedBox(
@@ -142,8 +136,8 @@ class ActivityWidget extends StatelessWidget {
             ),
             Text(
                 currentLanguage(context) == 'ar'
-                    ? activity.nameAr
-                    : activity.nameEn,
+                    ? category.nameAr
+                    : category.nameEn,
                 maxLines: 2),
             SizedBox(
               height: 2,

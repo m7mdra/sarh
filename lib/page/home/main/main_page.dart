@@ -1,7 +1,9 @@
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/community/community_page.dart';
 import 'package:Sarh/page/company_profile/company_profile_page.dart';
-import 'package:Sarh/page/home/activity/bloc/activity_event.dart';
+import 'package:Sarh/page/home/category/bloc/category_bloc.dart';
+import 'package:Sarh/page/home/category/bloc/category_event.dart';
+import 'package:Sarh/page/home/category/category_page.dart';
 import 'package:Sarh/page/home/favorite/favorites_page.dart';
 import 'package:Sarh/page/home/main/bloc/bloc.dart';
 import 'package:Sarh/page/home/main/bloc/home_page_bloc.dart';
@@ -19,8 +21,6 @@ import 'package:Sarh/widget/fab_bottom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../activity/activities_page.dart';
-import '../activity/bloc/activity_bloc.dart';
 import '../home_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -33,21 +33,18 @@ class _MainPageState extends State<MainPage> {
   GlobalKey<UserDrawerState> _drawerKey = GlobalKey();
   GlobalKey<FABBottomAppBarState> _bottomBarKey = GlobalKey();
   PageController _pageController = PageController(initialPage: 0);
-  ActivityBloc _activityBloc;
   HomePageBloc _homePageBloc;
 
   @override
   void initState() {
     super.initState();
-    _activityBloc = ActivityBloc(DependencyProvider.provide());
-    _activityBloc.dispatch(LoadActivities());
+
     _homePageBloc = HomePageBloc(DependencyProvider.provide());
   }
 
   @override
   void dispose() {
     super.dispose();
-    _activityBloc.dispose();
   }
 
   UserDrawerState get drawer => _drawerKey.currentState;
@@ -137,10 +134,7 @@ class _MainPageState extends State<MainPage> {
                 controller: _pageController,
                 children: <Widget>[
                   HomePage(),
-                  BlocProvider.value(
-                    child: CategoriesPage(),
-                    value: _activityBloc,
-                  ),
+                  CategoryPage(),
                   UpdatesPage(),
                   FavoritePage()
                 ],
@@ -170,7 +164,7 @@ class _MainPageState extends State<MainPage> {
           items: [
             FABBottomAppBarItem(iconData: FontAwesomeIcons.home, text: 'Home'),
             FABBottomAppBarItem(
-                iconData: FontAwesomeIcons.th, text: 'Acitivty'),
+                iconData: FontAwesomeIcons.th, text: 'Category'),
             FABBottomAppBarItem(
                 iconData: FontAwesomeIcons.solidBell, text: 'Updates'),
             FABBottomAppBarItem(

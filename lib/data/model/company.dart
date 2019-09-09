@@ -7,7 +7,7 @@ class Company {
   int id;
   int startFrom;
   String about;
-  Activity activity;
+  int activity;
   String landPhone;
   String address;
   String postCode;
@@ -39,9 +39,7 @@ class Company {
     id = json['id'];
     startFrom = json['start_from'];
     about = json['about'];
-    activity = json['main_activity'] != null
-        ? new Activity.fromJson(json['main_activity'])
-        : null;
+    activity = json['main_activity'];
     landPhone = json['land_phone'];
     address = json['address'];
     postCode = json['post_code'];
@@ -69,9 +67,7 @@ class Company {
     data['id'] = this.id;
     data['start_from'] = this.startFrom;
     data['about'] = this.about;
-    if (this.activity != null) {
-      data['main_activity'] = this.activity.toJson();
-    }
+    data['main_activity'] = this.activity;
     data['land_phone'] = this.landPhone;
     data['address'] = this.address;
     data['post_code'] = this.postCode;

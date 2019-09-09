@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:Sarh/data/model/activity.dart';
+import 'package:Sarh/data/model/category.dart';
 import 'package:Sarh/data/model/company_size.dart';
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/i10n/app_localizations.dart';
@@ -8,9 +9,9 @@ import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_blo
 import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_event.dart';
 import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_state.dart';
 import 'package:Sarh/page/add_company_profile/client_model.dart';
-import 'package:Sarh/page/home/activity/bloc/activity_bloc.dart';
-import 'package:Sarh/page/home/activity/bloc/activity_event.dart';
-import 'package:Sarh/page/home/activity/bloc/activity_state.dart';
+import 'package:Sarh/page/home/category/bloc/category_bloc.dart';
+import 'package:Sarh/page/home/category/bloc/category_event.dart';
+import 'package:Sarh/page/home/category/bloc/category_state.dart';
 import 'package:Sarh/page/home/main/main_page.dart';
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/page/privacy_policy/privacy_policy_page.dart';
@@ -72,10 +73,10 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   CompanySizeBloc _companySizeBloc;
   LoadClientBloc _loadClientBloc;
   AddClientBloc _addClientBloc;
-  ActivityBloc _activityBloc;
+  CategoryBloc _categoryBloc;
   ModifyProfileImageBloc _modifyProfileImageBloc;
   CompleteRegisterBloc _completeRegisterBloc;
-  Activity _activity;
+  Category _category;
   GlobalKey<FormState> _companyDetailsFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> _companyContactFormKey = GlobalKey<FormState>();
 
@@ -87,12 +88,13 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   void initState() {
     super.initState();
     _companySizeBloc = CompanySizeBloc(DependencyProvider.provide());
-    _completeRegisterBloc = CompleteRegisterBloc(DependencyProvider.provide());
+    _completeRegisterBloc = CompleteRegisterBloc(DependencyProvider.provide(),
+        DependencyProvider.provide(), DependencyProvider.provide());
     _modifyProfileImageBloc = ModifyProfileImageBloc(
         DependencyProvider.provide(), DependencyProvider.provide());
     _modifyProfileImageBloc.dispatch(Load());
-    _activityBloc = ActivityBloc(DependencyProvider.provide());
-    _activityBloc.dispatch(LoadActivities());
+    _categoryBloc = CategoryBloc(DependencyProvider.provide());
+    _categoryBloc.dispatch(LoadCategories());
     _loadClientBloc = LoadClientBloc(DependencyProvider.provide());
     _addClientBloc = AddClientBloc(DependencyProvider.provide(),
         DependencyProvider.provide(), _loadClientBloc);
@@ -116,7 +118,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     super.dispose();
     _companySizeBloc.dispose();
     _loadClientBloc.dispose();
-    _activityBloc.dispose();
+    _categoryBloc.dispose();
     _completeRegisterBloc.dispose();
     _addClientBloc.dispose();
     _startDateController.dispose();
@@ -252,7 +254,8 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
       companySize: companySize,
       landPhone: _landLineController.value.text,
       website: _websiteController.value.text,
-      activity: _activity,
+      activity: _category,
+      postCode: _zipController.value.text,
       companyAttachments: [_tradeLicenseFile],
       socialMediaList: [
         SocialMedia(
@@ -287,16 +290,16 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           ),
           _sizedBox,
           BlocBuilder(
-            bloc: _activityBloc,
+            bloc: _categoryBloc,
             builder: (BuildContext context, state) {
               print(state);
-              if (state is ActivitySuccess) {
-                return _activityPickerWidget(state.activityList);
+              if (state is CategorySuccess) {
+                return _activityPickerWidget(state.categoryList);
               }
 
-              if (state is ActivityTimeout ||
-                  state is ActivityNetworkError ||
-                  state is ActivityError) {
+              if (state is CategoryTimeout ||
+                  state is CategoryNetworkError ||
+                  state is CategoryError) {
                 return _activityPickerWidget([], true);
               }
 
@@ -385,24 +388,24 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     );
   }
 
-  Widget _activityPickerWidget(List<Activity> activities,
+  Widget _activityPickerWidget(List<Category> categories,
       [bool error = false]) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        DropdownButtonFormField<Activity>(
-            onChanged: (activity) {
+        DropdownButtonFormField<Category>(
+            onChanged: (category) {
               setState(() {
-                this._activity = activity;
+                this._category = category;
               });
             },
-            items: activities
-                .map((activity) => DropdownMenuItem(
-                      child: Text('${activity.nameEn} - ${activity.nameAr}'),
-                      value: activity,
+            items: categories
+                .map((category) => DropdownMenuItem(
+                      child: Text('${category.nameEn} - ${category.nameAr}'),
+                      value: category,
                     ))
                 .toList(),
-            value: _activity,
+            value: _category,
             validator: (_activity) {
               if (_activity == null)
                 return 'Select main activity';
@@ -424,7 +427,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           visible: error,
           child: OutlineButton(
               onPressed: () {
-                _activityBloc.dispatch(LoadActivities());
+                _categoryBloc.dispatch(LoadCategories());
               },
               child: Text(
                 AppLocalizations.of(context).retryButton,

@@ -15,5 +15,4 @@ class Either<First, Second> {
   bool get hasSecond => second != null;
 
   bool get hasFirst => first != null && second == null;
-
 }

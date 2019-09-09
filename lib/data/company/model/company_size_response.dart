@@ -28,5 +28,3 @@ class CompanySizeResponse {
     return data;
   }
 }
-
-

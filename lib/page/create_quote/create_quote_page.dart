@@ -73,7 +73,7 @@ class _CreateQuotePageState extends State<CreateQuotePage> {
                 style: Theme.of(context).textTheme.subhead,
               ),
               Container(
-                height: SizeConfig.blockSizeVertical*20,
+                height: SizeConfig.blockSizeVertical * 20,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {

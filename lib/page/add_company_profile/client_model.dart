@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:meta/meta.dart';
+
 class FeaturedClient {
   final String name;
   final File logo;

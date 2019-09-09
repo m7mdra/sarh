@@ -50,7 +50,6 @@ class User {
     return data;
   }
 
-
   bool get isAccountVerified => isVerified == 1;
   @override
   String toString() {

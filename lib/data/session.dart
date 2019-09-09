@@ -10,7 +10,6 @@ const KEY_COMPANY = 'company';
 class Session {
   final SharedPreferences _preferences;
 
-
   Session(this._preferences);
 
   Future<bool> saveUser(String token, User user, Company company) async {
@@ -28,9 +27,9 @@ class Session {
   User get user => User.fromJson(jsonDecode(_preferences.getString(KEY_USER)));
 
   Company get company =>
-      _companyFromPreference != null && _companyFromPreference
-          .isNotEmpty ?
-      Company.fromJson(jsonDecode(_companyFromPreference)) : null;
+      _companyFromPreference != null && _companyFromPreference.isNotEmpty
+          ? Company.fromJson(jsonDecode(_companyFromPreference))
+          : null;
 
   String get _companyFromPreference => _preferences.getString(KEY_COMPANY);
 
@@ -40,7 +39,7 @@ class Session {
     return _preferences.clear();
   }
 
- Future<void> reload() {
+  Future<void> reload() {
     return _preferences.reload();
- }
+  }
 }

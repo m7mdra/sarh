@@ -74,14 +74,14 @@ class _MessagePageState extends State<MessagePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 8,left: 8,right: 8),
+            padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
             child: TextField(
               controller: _chatController,
               keyboardType: TextInputType.multiline,
               textInputAction: TextInputAction.newline,
               maxLines: 2,
               decoration: InputDecoration(
-                hintText: 'Type here...',
+                  hintText: 'Type here...',
                   border: OutlineInputBorder(borderRadius: BorderRadius.zero),
                   contentPadding: const EdgeInsets.all(10)),
             ),
@@ -92,9 +92,10 @@ class _MessagePageState extends State<MessagePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 RaisedButton.icon(
-
-                    icon: Icon(FontAwesomeIcons.paperPlane),
-                    label: Text('Submit'), onPressed: () {},),
+                  icon: Icon(FontAwesomeIcons.paperPlane),
+                  label: Text('Submit'),
+                  onPressed: () {},
+                ),
                 FlatButton.icon(
                     onPressed: () {
                       showModalBottomSheet(
@@ -156,7 +157,6 @@ class _MessagePageState extends State<MessagePage> {
               ],
             ),
           )
-
         ],
       )),
     );

@@ -123,8 +123,8 @@ class _LoginPageState extends State<LoginPage> with Validators {
                               reason: SnackBarClosedReason.dismiss)
                           ..showSnackBar(SnackBar(
                             behavior: SnackBarBehavior.floating,
-                            content:
-                                Text(AppLocalizations.of(context).noNetworkError),
+                            content: Text(
+                                AppLocalizations.of(context).noNetworkError),
                             action: SnackBarAction(
                                 label: AppLocalizations.of(context).retryButton,
                                 onPressed: () {
@@ -163,9 +163,10 @@ class _LoginPageState extends State<LoginPage> with Validators {
                               tag: 'screenName',
                               child: Text(
                                 '${AppLocalizations.of(context).login}   ',
-                                style: Theme.of(context).textTheme.title.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                style:
+                                    Theme.of(context).textTheme.title.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                               ),
                             ),
                           ),
@@ -223,8 +224,8 @@ class _LoginPageState extends State<LoginPage> with Validators {
                                 onPressed: () {
                                   if (isFormValid()) attemptLogin();
                                 },
-                                child:
-                                    Text(AppLocalizations.of(context).signInButton),
+                                child: Text(
+                                    AppLocalizations.of(context).signInButton),
                               ),
                               width: double.infinity,
                               height: 40,
@@ -250,8 +251,8 @@ class _LoginPageState extends State<LoginPage> with Validators {
                             alignment: ALIGN.Start,
                             child: Text.rich(
                               TextSpan(
-                                text:
-                                    AppLocalizations.of(context).iDontHaveAnAccount,
+                                text: AppLocalizations.of(context)
+                                    .iDontHaveAnAccount,
                                 children: [
                                   TextSpan(
                                       text:

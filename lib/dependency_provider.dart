@@ -47,7 +47,7 @@ class DependencyProvider {
     CountryRepository countryRepository = CountryRepository(client);
     ActivityRepository activityRepository = ActivityRepository(client);
     CompanyRepository companyRepository = CompanyRepository(client);
-    QuotationRepository quotationRepository=QuotationRepository(client);
+    QuotationRepository quotationRepository = QuotationRepository(client);
     _registrar.registerSingleton<Dio>(client);
     _registrar.registerSingleton<Session>(session);
     _registrar.registerFactory<UserRepository>(() => userRepository);

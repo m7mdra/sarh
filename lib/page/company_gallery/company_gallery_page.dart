@@ -20,7 +20,6 @@ class _CompanyGalleryPageState extends State<CompanyGalleryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -136,8 +135,9 @@ class CompanyGalleryItem extends StatelessWidget {
                                       ),
                                       title: Text('Send a message'),
                                     ),
-                                    const Divider(height: 1,),
-
+                                    const Divider(
+                                      height: 1,
+                                    ),
                                     ListTile(
                                       leading: Icon(
                                         FontAwesomeIcons.share,
@@ -145,14 +145,17 @@ class CompanyGalleryItem extends StatelessWidget {
                                       ),
                                       title: Text('Share the photo'),
                                     ),
-                                    const Divider(height: 1,),
-
+                                    const Divider(
+                                      height: 1,
+                                    ),
                                     ListTile(
                                       leading: Icon(FontAwesomeIcons.star,
                                           color: Colors.yellow),
                                       title: Text('Add company to favorites'),
                                     ),
-                                    const Divider(height: 1,),
+                                    const Divider(
+                                      height: 1,
+                                    ),
                                     ListTile(
                                       leading: Icon(
                                         FontAwesomeIcons.flag,

@@ -24,6 +24,7 @@ class Client {
     data['account_id'] = this.accountId;
     return data;
   }
+
   @override
   String toString() {
     return toJson().toString();

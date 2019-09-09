@@ -21,6 +21,7 @@ class City {
     data['countryId'] = this.countryId;
     return data;
   }
+
   @override
   String toString() {
     return toJson().toString();

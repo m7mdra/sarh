@@ -16,8 +16,6 @@ class Ready extends TimerState {
   String toString() => 'Ready { duration: $duration }';
 }
 
-
-
 class Running extends TimerState {
   Running(int duration) : super(duration);
 

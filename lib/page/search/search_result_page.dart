@@ -364,7 +364,6 @@ class CompanyGridWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-
               child: Text(
                 'Sentinel Constructions',
                 overflow: TextOverflow.ellipsis,
@@ -376,12 +375,9 @@ class CompanyGridWidget extends StatelessWidget {
                     .copyWith(fontWeight: FontWeight.normal),
               ),
             ),
-
             Text(
               'Build and constriction',
-
             ),
-
             Row(
               children: <Widget>[
                 Icon(FontAwesomeIcons.solidStar, size: 15),

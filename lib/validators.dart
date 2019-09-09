@@ -6,6 +6,4 @@ mixin Validators {
   bool isValidEmailAddress(String input) {
     return regex.hasMatch(input);
   }
-
-
 }

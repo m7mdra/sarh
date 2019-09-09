@@ -28,7 +28,7 @@ class _AdCommunityPostPageState extends State<AdCommunityPostPage> {
             ),
             _sizedBox(),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 print('open activity picker screen');
               },
               child: AbsorbPointer(

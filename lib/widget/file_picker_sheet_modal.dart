@@ -117,10 +117,12 @@ class _FilePickerSheetModal<T> extends PopupRoute<T> {
                                 FontAwesomeIcons.solidFileImage,
                                 color: Theme.of(context).primaryColor,
                               ),
-                              title: Text(AppLocalizations.of(context).attachImage),
+                              title: Text(
+                                  AppLocalizations.of(context).attachImage),
                             ),
-                            Divider(height: 1,),
-
+                            Divider(
+                              height: 1,
+                            ),
                             ListTile(
                               onTap: () async {
                                 var file = await FilePicker.getFile(
@@ -133,9 +135,12 @@ class _FilePickerSheetModal<T> extends PopupRoute<T> {
                                 FontAwesomeIcons.solidFileVideo,
                                 color: Colors.green,
                               ),
-                              title: Text(AppLocalizations.of(context).attachVideo),
+                              title: Text(
+                                  AppLocalizations.of(context).attachVideo),
                             ),
-                            Divider(height: 1,),
+                            Divider(
+                              height: 1,
+                            ),
                             ListTile(
                               onTap: () async {
                                 var file = await FilePicker.getFile(
@@ -149,8 +154,10 @@ class _FilePickerSheetModal<T> extends PopupRoute<T> {
                                 FontAwesomeIcons.solidFilePdf,
                                 color: Colors.redAccent,
                               ),
-                              title: Text(AppLocalizations.of(context).attachDocument),
-                              subtitle: Text(AppLocalizations.of(context).attachDocumentOnlyPdf),
+                              title: Text(
+                                  AppLocalizations.of(context).attachDocument),
+                              subtitle: Text(AppLocalizations.of(context)
+                                  .attachDocumentOnlyPdf),
                             ),
                           ],
                         )),
@@ -160,7 +167,8 @@ class _FilePickerSheetModal<T> extends PopupRoute<T> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+                        child: Text(MaterialLocalizations.of(context)
+                            .cancelButtonLabel),
                         color: Colors.white,
                       ),
                     )

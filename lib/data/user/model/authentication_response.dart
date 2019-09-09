@@ -45,7 +45,7 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     token = json['token'];
     userInfo =
-    json['userInfo'] != null ? new User.fromJson(json['userInfo']) : null;
+        json['userInfo'] != null ? new User.fromJson(json['userInfo']) : null;
     companyInfo = json['companyInfo'] != null
         ? new Company.fromJson(json['companyInfo'])
         : null;

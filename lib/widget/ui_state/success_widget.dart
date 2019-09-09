@@ -22,12 +22,12 @@ class SuccessWidget extends StatelessWidget {
           ),
           Visibility(
               visible: title != null,
-              child: Text(title??'',
+              child: Text(title ?? '',
                   style: Theme.of(context)
                       .textTheme
                       .title
                       .copyWith(fontWeight: FontWeight.normal))),
-          Visibility(visible: subtitle != null, child: Text(subtitle??'')),
+          Visibility(visible: subtitle != null, child: Text(subtitle ?? '')),
         ],
       ),
     );

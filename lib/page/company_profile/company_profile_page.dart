@@ -279,7 +279,6 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
-
                     children: <Widget>[
                       InkWell(
                         onTap: () {
@@ -291,8 +290,8 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                         child: Hero(
                           tag: 'profile_image',
                           child: Container(
-                            width: SizeConfig.blockSizeHorizontal*30,
-                            height:  SizeConfig.blockSizeVertical*20,
+                            width: SizeConfig.blockSizeHorizontal * 30,
+                            height: SizeConfig.blockSizeVertical * 20,
                             child: Icon(
                               Icons.camera_alt,
                               size: 30,

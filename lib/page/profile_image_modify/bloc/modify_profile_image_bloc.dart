@@ -6,11 +6,11 @@ import 'package:Sarh/data/user/user_repository.dart';
 import 'package:Sarh/page/profile_image_modify/bloc/modify_profile_image_event.dart';
 import 'package:Sarh/page/profile_image_modify/bloc/modify_profile_image_state.dart';
 import 'package:bloc/bloc.dart';
+
 class ModifyProfileImageBloc
     extends Bloc<ModifyProfileImageEvent, ModifyProfileImageState> {
   final UserRepository _userRepository;
   final Session _session;
-
 
   ModifyProfileImageBloc(this._userRepository, this._session);
 

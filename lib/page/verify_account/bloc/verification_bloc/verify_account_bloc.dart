@@ -17,12 +17,14 @@ class VerifyAccountBloc extends Bloc<VerificationEvent, VerificationState> {
 
   @override
   get initialState => IdleState();
-@override
-  void onTransition(Transition<VerificationEvent, VerificationState> transition) {
+  @override
+  void onTransition(
+      Transition<VerificationEvent, VerificationState> transition) {
     // TODO: implement onTransition
     super.onTransition(transition);
     print(transition);
   }
+
   @override
   Stream<VerificationState> mapEventToState(VerificationEvent event) async* {
     if (event is VerifyAccount) {

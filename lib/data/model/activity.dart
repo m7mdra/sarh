@@ -33,6 +33,7 @@ class Activity {
     data['created_at'] = this.createdAt;
     return data;
   }
+
   @override
   String toString() {
     return toJson().toString();

@@ -3,28 +3,29 @@ import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_eve
 import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_state.dart';
 import 'package:bloc/bloc.dart';
 
-class CompanySizeBloc
-    extends Bloc<AddCompanyInfoEvent, AddCompanyInfoState> {
+class CompanySizeBloc extends Bloc<AddCompanyInfoEvent, AddCompanyInfoState> {
   final CompanyRepository _companyRepository;
 
   CompanySizeBloc(this._companyRepository);
 
   @override
   AddCompanyInfoState get initialState => AddCompanyInfoState();
-@override
-  void onTransition(Transition<AddCompanyInfoEvent, AddCompanyInfoState> transition) {
+  @override
+  void onTransition(
+      Transition<AddCompanyInfoEvent, AddCompanyInfoState> transition) {
     // TODO: implement onTransition
     super.onTransition(transition);
     print(transition);
   }
+
   @override
   Stream<AddCompanyInfoState> mapEventToState(
       AddCompanyInfoEvent event) async* {
-    if(event is LoadCompanySize){
-      try{
-        var response=await _companyRepository.getCompanySizeRanges();
+    if (event is LoadCompanySize) {
+      try {
+        var response = await _companyRepository.getCompanySizeRanges();
         yield CompanySizeLoaded(response.sizes);
-      }catch(error){
+      } catch (error) {
         yield CompanySizeFailed();
       }
     }

@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
+
 @immutable
 abstract class TimerEvent extends Equatable {
   TimerEvent([List props = const []]) : super(props);
@@ -8,12 +9,11 @@ abstract class TimerEvent extends Equatable {
 class Start extends TimerEvent {
   final int duration;
 
-  Start({ this.duration=60}) : super([duration]);
+  Start({this.duration = 60}) : super([duration]);
 
   @override
   String toString() => "Start { duration: $duration }";
 }
-
 
 class Reset extends TimerEvent {
   @override

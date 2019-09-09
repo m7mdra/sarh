@@ -1,7 +1,8 @@
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 
-class CenteredTitleAppbar extends StatelessWidget implements PreferredSizeWidget {
+class CenteredTitleAppbar extends StatelessWidget
+    implements PreferredSizeWidget {
   final String title;
 
   const CenteredTitleAppbar({Key key, this.title}) : super(key: key);
@@ -19,4 +20,3 @@ class CenteredTitleAppbar extends StatelessWidget implements PreferredSizeWidget
   // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
-

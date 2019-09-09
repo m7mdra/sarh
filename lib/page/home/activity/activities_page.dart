@@ -1,4 +1,3 @@
-
 import 'package:Sarh/data/model/activity.dart';
 import 'package:Sarh/page/home/activity/bloc/activity_bloc.dart';
 import 'package:Sarh/page/home/activity/bloc/activity_event.dart';

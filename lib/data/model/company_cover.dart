@@ -21,6 +21,7 @@ class CompanyCover {
     data['cover_type'] = this.coverType;
     return data;
   }
+
   @override
   String toString() {
     return toJson().toString();

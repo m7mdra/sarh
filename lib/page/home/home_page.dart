@@ -17,32 +17,31 @@ class _HomePageState extends State<HomePage>
     super.build(context);
     return Column(
       children: <Widget>[
-      Container(
-      height: 40,
-      child: ListView(
-        children: <Widget>[
-          CategoryShip(
-            category: 'Your favorite',
+        Container(
+          height: 40,
+          child: ListView(
+            children: <Widget>[
+              CategoryShip(
+                category: 'Your favorite',
+              ),
+              CategoryShip(
+                category: 'Interior Design',
+              ),
+              CategoryShip(
+                category: 'Plumbing',
+              ),
+              CategoryShip(
+                category: 'Carpentry',
+              ),
+              CategoryShip(
+                category: 'Others',
+              ),
+            ],
+            scrollDirection: Axis.horizontal,
           ),
-          CategoryShip(
-            category: 'Interior Design',
-          ),
-          CategoryShip(
-            category: 'Plumbing',
-          ),
-          CategoryShip(
-            category: 'Carpentry',
-          ),
-          CategoryShip(
-            category: 'Others',
-          ),
-        ],
-        scrollDirection: Axis.horizontal,
-      ),
-    ),
-
-    Expanded(
-      child: new StaggeredGridView.countBuilder(
+        ),
+        Expanded(
+          child: new StaggeredGridView.countBuilder(
             padding: const EdgeInsets.only(bottom: 80),
             crossAxisCount: 4,
             itemCount: 100,
@@ -59,7 +58,6 @@ class _HomePageState extends State<HomePage>
                 imageUrl:
                     'https://loremflickr.com/${Random().nextInt(500)}/${Random().nextInt(500)}/house,construction,workers',
                 placeholderFadeInDuration: Duration(milliseconds: 200),
-
               ),
             ),
             staggeredTileBuilder: (int index) =>
@@ -67,7 +65,7 @@ class _HomePageState extends State<HomePage>
             mainAxisSpacing: 4.0,
             crossAxisSpacing: 4.0,
           ),
-    ),
+        ),
       ],
     );
   }

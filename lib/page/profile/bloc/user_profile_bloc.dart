@@ -10,11 +10,8 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   @override
   UserProfileState get initialState => ProfileLoaded(_session.user);
 
-
   @override
   Stream<UserProfileState> mapEventToState(UserProfileEvent event) async* {
     yield ProfileLoaded(_session.user);
   }
-
-
 }

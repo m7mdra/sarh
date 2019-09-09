@@ -1,4 +1,3 @@
-
 import 'package:Sarh/data/model/activity.dart';
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/search/search_result_page.dart';

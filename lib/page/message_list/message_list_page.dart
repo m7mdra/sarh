@@ -1,4 +1,3 @@
-
 import 'package:Sarh/page/company_message/company_message_page.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +17,7 @@ class _MessageListPageState extends State<MessageListPage> {
         centerTitle: true,
         title: Text(
           'Messages',
-          style: TextStyle(
-          ),
+          style: TextStyle(),
         ),
         leading: BackButtonNoLabel(Colors.white),
       ),
@@ -71,7 +69,6 @@ class MessageListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-
       onTap: onTap,
       selected: newMessage,
       leading: CircleAvatar(

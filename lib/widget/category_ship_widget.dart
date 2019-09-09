@@ -10,7 +10,6 @@ class CategoryShip extends StatelessWidget {
       padding: const EdgeInsets.all(2.0),
       child: Chip(
         padding: const EdgeInsets.all(2.0),
-
         clipBehavior: Clip.antiAlias,
         label: Text(category),
         shape: RoundedRectangleBorder(

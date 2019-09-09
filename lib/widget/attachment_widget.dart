@@ -36,7 +36,7 @@ class AttachmentWidget extends StatelessWidget {
             },
           ),
           Visibility(
-            visible: file!=null,
+            visible: file != null,
             child: PositionedDirectional(
               start: 10,
               end: 10,
@@ -49,8 +49,8 @@ class AttachmentWidget extends StatelessWidget {
                     FontAwesomeIcons.solidTimesCircle,
                   ),
                   padding: const EdgeInsets.all(4),
-                  decoration:
-                      BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                  decoration: BoxDecoration(
+                      color: Colors.white, shape: BoxShape.circle),
                 ),
               ),
             ),
@@ -130,7 +130,7 @@ class _VideoAttachWidgetState extends State<VideoAttachWidget> {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         splashColor: Colors.red,
-        onTap: (){
+        onTap: () {
           if (!_isPlayling) {
             _controller.play();
           } else {
@@ -158,7 +158,6 @@ class _VideoAttachWidgetState extends State<VideoAttachWidget> {
                   }
                 },
               ),
-
             ],
           ),
         ),

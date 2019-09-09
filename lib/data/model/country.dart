@@ -37,9 +37,9 @@ class Country {
     }
     return data;
   }
+
   @override
   String toString() {
     return toJson().toString();
   }
 }
-

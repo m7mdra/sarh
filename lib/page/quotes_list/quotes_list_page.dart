@@ -65,10 +65,12 @@ class _QuoteListPageState extends State<QuoteListPage> {
               ),
             );
           }
-          if(state is Empty){
-            return Center(child: EmptyWidget(),);
+          if (state is Empty) {
+            return Center(
+              child: EmptyWidget(),
+            );
           }
-          if(state is Success){
+          if (state is Success) {
             return Icon(Icons.check);
           }
         },

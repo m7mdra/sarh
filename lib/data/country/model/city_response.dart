@@ -28,4 +28,3 @@ class CityResponse {
     return data;
   }
 }
-

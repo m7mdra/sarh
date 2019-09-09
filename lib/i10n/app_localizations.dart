@@ -217,15 +217,14 @@ class AppLocalizations {
   String get noDataFoundSubtitle =>
       Intl.message('Try to check after few minutes');
 
-
-  String get errorOccurredSubtitle => Intl.message('Thats all we know for now.');
+  String get errorOccurredSubtitle =>
+      Intl.message('Thats all we know for now.');
 
   String get noInternetConnection =>
       Intl.message('No active internet connection');
 
   String get noInternetConnectionSubtitle =>
       Intl.message('Try to change current wifi or contact your ISP');
-
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

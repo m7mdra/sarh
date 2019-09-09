@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:Sarh/i10n/app_localizations.dart';
+
 class MediaPickDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,9 +20,8 @@ class MediaPickDialog extends StatelessWidget {
               ),
               ListTile(
                 onTap: () async {
-
                   var file =
-                  await ImagePicker.pickImage(source: ImageSource.camera);
+                      await ImagePicker.pickImage(source: ImageSource.camera);
                   Navigator.pop(context, file);
                 },
                 title: Text(AppLocalizations.of(context).camera),
@@ -30,7 +30,7 @@ class MediaPickDialog extends StatelessWidget {
               ListTile(
                 onTap: () async {
                   var file =
-                  await ImagePicker.pickImage(source: ImageSource.gallery);
+                      await ImagePicker.pickImage(source: ImageSource.gallery);
                   Navigator.pop(context, file);
                 },
                 title: Text(AppLocalizations.of(context).gallery),
@@ -42,10 +42,9 @@ class MediaPickDialog extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child:
-                  Text(MaterialLocalizations.of(context).cancelButtonLabel))
+                      Text(MaterialLocalizations.of(context).cancelButtonLabel))
             ],
           ),
         ));
   }
 }
-

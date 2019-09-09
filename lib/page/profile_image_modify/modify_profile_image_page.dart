@@ -19,10 +19,11 @@ class _ModifyProfileImagePageState extends State<ModifyProfileImagePage> {
   @override
   void initState() {
     super.initState();
-    _bloc = ModifyProfileImageBloc(DependencyProvider.provide(),
-        DependencyProvider.provide());
+    _bloc = ModifyProfileImageBloc(
+        DependencyProvider.provide(), DependencyProvider.provide());
     _bloc.dispatch(Load());
   }
+
   @override
   void dispose() {
     super.dispose();

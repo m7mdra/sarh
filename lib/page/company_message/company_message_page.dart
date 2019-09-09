@@ -117,7 +117,6 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
                           messages.add(Message(
                               _chatController.value.text, true, 'Just now'));
                           _chatController.clear();
-
                         });
                       }),
                 )

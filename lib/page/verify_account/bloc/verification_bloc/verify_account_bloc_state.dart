@@ -19,6 +19,7 @@ class ResendRequested extends VerificationState {}
 class ResendFailed extends VerificationState {}
 
 class NavigateToCompleteProfilePage extends VerificationState {}
+
 class NavigateToInterestPickerPage extends VerificationState {}
 
 class PhoneNumberLoaded extends VerificationState {

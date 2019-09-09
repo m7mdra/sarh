@@ -3,7 +3,8 @@ import 'package:bloc/bloc.dart';
 import 'load_client_state.dart';
 import 'load_client_event.dart';
 import 'package:Sarh/data/exceptions/exceptions.dart';
-class LoadClientBloc extends Bloc<LoadClientEvent,LoadClientState>{
+
+class LoadClientBloc extends Bloc<LoadClientEvent, LoadClientState> {
   final CompanyRepository _companyRepository;
 
   LoadClientBloc(this._companyRepository);
@@ -13,16 +14,16 @@ class LoadClientBloc extends Bloc<LoadClientEvent,LoadClientState>{
   LoadClientState get initialState => LoadIdle();
 
   @override
-  Stream<LoadClientState> mapEventToState(LoadClientEvent event)async* {
-    if (event is LoadClients|| event is RetryLoad) {
+  Stream<LoadClientState> mapEventToState(LoadClientEvent event) async* {
+    if (event is LoadClients || event is RetryLoad) {
       yield LoadingClients();
       try {
         var response = await _companyRepository.getCompanyClients();
         if (response.success) {
           var clients = response.clients;
-          if(clients.isEmpty){
+          if (clients.isEmpty) {
             yield LoadEmpty();
-          }else{
+          } else {
             yield ClientsLoaded(clients);
           }
         } else {
@@ -40,5 +41,4 @@ class LoadClientBloc extends Bloc<LoadClientEvent,LoadClientState>{
       }
     }
   }
-
 }

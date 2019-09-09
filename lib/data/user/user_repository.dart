@@ -105,7 +105,7 @@ class UserRepository {
         default:
           throw error;
       }
-    }catch(error){
+    } catch (error) {
       print(error);
 
       throw error;

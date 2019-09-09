@@ -21,4 +21,3 @@ class LoadIdle extends LoadClientState {}
 class LoadError extends LoadClientState {}
 
 class LoadEmpty extends LoadClientState {}
-

@@ -36,11 +36,7 @@ class Data {
   List<CompanyQuotations> companyQuotations;
   List<String> attachment;
 
-  Data(
-      {this.id,
-        this.activity,
-        this.companyQuotations,
-        this.attachment});
+  Data({this.id, this.activity, this.companyQuotations, this.attachment});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -56,7 +52,7 @@ class Data {
     }
     if (json['attachment'] != null) {
       attachment = new List<Null>();
-    /*  json['attachment'].forEach((v) {
+      /*  json['attachment'].forEach((v) {
         attachment.add(new Null.fromJson(v));
       });*/
     }
@@ -73,14 +69,12 @@ class Data {
       data['companyQuotations'] =
           this.companyQuotations.map((v) => v.toJson()).toList();
     }
-   /* if (this.attachment != null) {
+    /* if (this.attachment != null) {
       data['attachment'] = this.attachment.map((v) => v.toJson()).toList();
     }*/
     return data;
   }
 }
-
-
 
 class CompanyQuotations {
   int id;
@@ -88,11 +82,12 @@ class CompanyQuotations {
   int companyId;
   bool isSeen;
 
-  CompanyQuotations(
-      {this.id,
-        this.requestId,
-        this.companyId,
-        this.isSeen,});
+  CompanyQuotations({
+    this.id,
+    this.requestId,
+    this.companyId,
+    this.isSeen,
+  });
 
   CompanyQuotations.fromJson(Map<String, dynamic> json) {
     id = json['id'];

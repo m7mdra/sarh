@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class UpdatesPage extends StatefulWidget {
   @override
   _UpdatesPageState createState() => _UpdatesPageState();
@@ -30,7 +31,10 @@ class _UpdatesPageState extends State<UpdatesPage> {
             children: <Widget>[
               Text(
                 days[index],
-                style: Theme.of(context).textTheme.title.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context)
+                    .textTheme
+                    .title
+                    .copyWith(fontWeight: FontWeight.bold),
               ),
               ListView.builder(
                 primary: false,
@@ -38,15 +42,15 @@ class _UpdatesPageState extends State<UpdatesPage> {
                   return Container(
                     margin: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: Color(0xffF3F4F5),
-                      borderRadius: BorderRadius.circular(8)
-                    ),
+                        color: Color(0xffF3F4F5),
+                        borderRadius: BorderRadius.circular(8)),
                     child: ListTile(
-                      onTap: (){
-
-                      },
+                      onTap: () {},
                       dense: true,
-                      trailing: Icon(FontAwesomeIcons.chevronRight,color: Colors.grey,),
+                      trailing: Icon(
+                        FontAwesomeIcons.chevronRight,
+                        color: Colors.grey,
+                      ),
                       title: Text('Notification title'),
                       subtitle: Text('${Random().nextInt(12)} am'),
                     ),

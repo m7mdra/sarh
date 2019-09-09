@@ -15,13 +15,14 @@ class _AuthorizersPageState extends State<AuthorizersPage> {
     SizeConfig().init(context);
     return Scaffold(
       body: GridView.builder(
-        padding: const EdgeInsets.only(bottom: 80,left: 16,right: 16,top: 16),
+        padding:
+            const EdgeInsets.only(bottom: 80, left: 16, right: 16, top: 16),
         itemBuilder: (context, index) {
           return AuthorizerWidget();
         },
         itemCount: 10,
-        gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,crossAxisSpacing: 4,mainAxisSpacing: 4),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, crossAxisSpacing: 4, mainAxisSpacing: 4),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -48,7 +49,6 @@ class AuthorizerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +67,9 @@ class AuthorizerWidget extends StatelessWidget {
           SizedBox(
             height: 4,
           ),
-          Divider(height: 1,),
+          Divider(
+            height: 1,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[

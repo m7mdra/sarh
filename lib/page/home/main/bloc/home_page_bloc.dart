@@ -9,12 +9,13 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
   @override
   HomePageState get initialState => HomePageIdle();
-@override
+  @override
   void onTransition(Transition<HomePageEvent, HomePageState> transition) {
     // TODO: implement onTransition
     super.onTransition(transition);
     print(transition);
   }
+
   @override
   Stream<HomePageState> mapEventToState(HomePageEvent event) async* {
     if (event is NavigateToProfile) {

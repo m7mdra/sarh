@@ -4,11 +4,12 @@ class Authorizer {
   String logo;
   int accountId;
 
-  Authorizer(
-      {this.id,
-        this.name,
-        this.logo,
-        this.accountId,});
+  Authorizer({
+    this.id,
+    this.name,
+    this.logo,
+    this.accountId,
+  });
 
   Authorizer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -25,6 +26,7 @@ class Authorizer {
     data['account_id'] = this.accountId;
     return data;
   }
+
   @override
   String toString() {
     return toJson().toString();

@@ -28,4 +28,3 @@ class CompanyClientsResponse {
     return data;
   }
 }
-

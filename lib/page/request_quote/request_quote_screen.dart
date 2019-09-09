@@ -99,7 +99,7 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
                           Text(AppLocalizations.of(context).requestMethodHint),
                       children: <Widget>[
                         RadioListTile(
-                          selected: _selectedMethod==0,
+                          selected: _selectedMethod == 0,
                           value: 0,
                           onChanged: (newValue) {
                             setState(() {
@@ -118,7 +118,7 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
                           height: 1,
                         ),
                         RadioListTile(
-                          selected: _selectedMethod==1,
+                          selected: _selectedMethod == 1,
                           controlAffinity: ListTileControlAffinity.leading,
                           value: 1,
                           groupValue: _selectedMethod,
@@ -137,7 +137,7 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
                           height: 1,
                         ),
                         RadioListTile(
-                          selected: _selectedMethod==2,
+                          selected: _selectedMethod == 2,
                           controlAffinity: ListTileControlAffinity.leading,
                           value: 2,
                           groupValue: _selectedMethod,

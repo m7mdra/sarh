@@ -28,4 +28,3 @@ class ActivityResponse {
     return data;
   }
 }
-

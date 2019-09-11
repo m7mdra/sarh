@@ -29,7 +29,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       try {
         var either = await userRepository.register(
             event.name,
-            event.username,
             event.phoneNumber,
             event.accountType,
             event.city,

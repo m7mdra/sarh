@@ -4,7 +4,6 @@ class LoadCities extends RegisterEvent {}
 
 class Register extends RegisterEvent {
   final String name;
-  final String username;
   final String email;
   final String phoneNumber;
   final String password;
@@ -14,7 +13,6 @@ class Register extends RegisterEvent {
 
   Register(
       {this.name,
-      this.username,
       this.email,
       this.phoneNumber,
       this.password,
@@ -22,8 +20,5 @@ class Register extends RegisterEvent {
       this.messagingToken,
       this.accountType});
 
-  @override
-  String toString() {
-    return 'Register{name: $name, email: $email, phoneNumber: $phoneNumber, password: $password, city: $city, accountType: $accountType, messagingToken: $messagingToken}';
-  }
+
 }

@@ -1,0 +1,1 @@
+class AccountNotFoundException extends Error {}

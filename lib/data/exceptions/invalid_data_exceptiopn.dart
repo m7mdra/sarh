@@ -1,0 +1,1 @@
+class InvalidDataException extends Error {}

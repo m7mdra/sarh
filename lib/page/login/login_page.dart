@@ -1,4 +1,5 @@
 import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/account_reset/account_reset_page.dart';
 import 'package:Sarh/page/account_type/account_type_page.dart';
 import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
 import 'package:Sarh/page/home/main/main_page.dart';
@@ -233,18 +234,14 @@ class _LoginPageState extends State<LoginPage> with Validators {
                           ),
                           buildSizedBox(),
                           RelativeAlign(
+                            
                             alignment: ALIGN.Start,
-                            child: Text.rich(
-                              TextSpan(
-                                  text: AppLocalizations.of(context)
-                                      .forgetMyPasswordButton,
-                                  recognizer: new TapGestureRecognizer()
-                                    ..onTap = () => print('Tap Here onTap'),
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                  )),
-                              textAlign: TextAlign.start,
-                            ),
+                            child: FlatButton(
+                            padding: const EdgeInsets.all(0),
+                                onPressed: () =>
+                                    _navigatedToResetAccountPage(context),
+                                child: Text(AppLocalizations.of(context)
+                                    .forgetMyPasswordButton)),
                           ),
                           buildSizedBox(),
                           RelativeAlign(
@@ -300,4 +297,9 @@ class _LoginPageState extends State<LoginPage> with Validators {
   }
 
   bool isFormValid() => _formKey.currentState.validate();
+
+  _navigatedToResetAccountPage(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ResetAccountPage()));
+  }
 }

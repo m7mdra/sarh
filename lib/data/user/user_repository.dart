@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:Sarh/data/either.dart';
+import 'package:Sarh/data/exceptions/account_not_found_error.dart';
+import 'package:Sarh/data/exceptions/exceptions.dart';
 import 'package:Sarh/data/exceptions/timeout_exception.dart';
 import 'package:Sarh/data/exceptions/unable_to_connect_exception.dart';
 import 'package:Sarh/data/response_status.dart';
@@ -53,28 +55,8 @@ class UserRepository {
     try {
       var response = await _client.post('customer/verificationresend');
       return ResendVerificationCodeResponse.fromJson(response.data);
-    } on DioError catch (error) {
-      switch (error.type) {
-        case DioErrorType.CONNECT_TIMEOUT:
-        case DioErrorType.SEND_TIMEOUT:
-        case DioErrorType.RECEIVE_TIMEOUT:
-          throw TimeoutException();
-          break;
-        case DioErrorType.RESPONSE:
-          if (error.response.statusCode == HTTP_UNAUTHORIZED)
-            throw SessionExpiredException();
-          else
-            throw error;
-          break;
-        case DioErrorType.CANCEL:
-          throw error;
-          break;
-        case DioErrorType.DEFAULT:
-          throw UnableToConnectException();
-          break;
-        default:
-          throw error;
-      }
+    }catch(error){
+      throw error;
     }
   }
 
@@ -112,9 +94,18 @@ class UserRepository {
     }
   }
 
+  Future<ResponseStatus> requestResetLink(String phoneNumber) async {
+    try {
+      var response = await _client
+          .post('password_resets', data: {'accountKey': phoneNumber});
+      return ResponseStatus.fromJson(response.data);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   Future<Either<AuthenticationResponse, AuthenticationResponseError>> register(
       String fullName,
-      String username,
       String phone,
       int accountType,
       int city,
@@ -123,7 +114,6 @@ class UserRepository {
     try {
       var response = await _client.post('customer/register', data: {
         'fullname': fullName,
-        'username': username,
         'phone': phone,
         'account_type': accountType,
         'city': city,

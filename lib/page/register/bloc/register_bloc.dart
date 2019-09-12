@@ -33,7 +33,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
             event.accountType,
             event.city,
             event.password,
-            event.messagingToken);
+            event.messagingToken,
+          event.email,
+        );
         if (either.hasFirst) {
           var successResponse = either.first;
           if (successResponse.success) {

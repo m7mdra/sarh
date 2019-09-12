@@ -110,7 +110,8 @@ class UserRepository {
       int accountType,
       int city,
       String password,
-      String messagingToken) async {
+      String messagingToken,
+      String email) async {
     try {
       var response = await _client.post('customer/register', data: {
         'fullname': fullName,
@@ -119,7 +120,8 @@ class UserRepository {
         'city': city,
         'password': password,
         'c_password': password,
-        'firebaseToken': messagingToken
+        'firebaseToken': messagingToken,
+        'username':email
       });
       return Either.withSuccess(AuthenticationResponse.fromJson(response.data));
     } on DioError catch (error) {

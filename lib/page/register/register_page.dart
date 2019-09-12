@@ -56,6 +56,7 @@ class _RegisterPageState extends State<RegisterPage> with Validators {
         DependencyProvider.provide(), DependencyProvider.provide());
     _registerBloc.dispatch(LoadCities());
     _nameTextEditingController = TextEditingController();
+    _emailTextEditingController = TextEditingController();
     _phoneTextEditingController = TextEditingController();
     _passwordTextEditingController = TextEditingController();
     _confirmPasswordTextEditingController = TextEditingController();
@@ -184,9 +185,10 @@ class _RegisterPageState extends State<RegisterPage> with Validators {
                                     ? AppLocalizations.of(context).registerUser
                                     : AppLocalizations.of(context)
                                         .registerServiceProvider,
-                                style: Theme.of(context).textTheme.title.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                style:
+                                    Theme.of(context).textTheme.title.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                               ),
                             ),
                           ),
@@ -262,7 +264,8 @@ class _RegisterPageState extends State<RegisterPage> with Validators {
                                 return null;
                             },
                             decoration: buildInputDecoration(
-                                AppLocalizations.of(context).phoneNumberFieldHint,
+                                AppLocalizations.of(context)
+                                    .phoneNumberFieldHint,
                                 FontAwesomeIcons.phone),
                           ),
                           _sizedBox,
@@ -315,14 +318,14 @@ class _RegisterPageState extends State<RegisterPage> with Validators {
                                                     : city.name));
                                       }).toList() ??
                                       [],
-                                  hint: Text(
-                                      AppLocalizations.of(context).cityFieldHint),
+                                  hint: Text(AppLocalizations.of(context)
+                                      .cityFieldHint),
                                   decoration: dropDownDecoration,
                                 );
                               return DropdownButtonFormField(
                                   items: [],
-                                  hint: Text(
-                                      AppLocalizations.of(context).cityFieldHint),
+                                  hint: Text(AppLocalizations.of(context)
+                                      .cityFieldHint),
                                   decoration: dropDownDecoration);
                             },
                           ),
@@ -336,8 +339,8 @@ class _RegisterPageState extends State<RegisterPage> with Validators {
                                 onPressed: () async {
                                   if (form.validate()) await _attemptRegister();
                                 },
-                                child:
-                                    Text(AppLocalizations.of(context).nextButton),
+                                child: Text(
+                                    AppLocalizations.of(context).nextButton),
                               ),
                               width: double.infinity,
                               height: 40,

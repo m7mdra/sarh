@@ -219,16 +219,9 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           break;
         case 1:
           if (companyDetailsForm.validate()) {
-            if (_logoFile == null) {
-              scaffold.showSnackBar(SnackBar(
-                content: Text('Please selected company logo first'),
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: Colors.orange,
-              ));
-              return;
-            } else {
+
               _moveToNextStep();
-            }
+
           }
           break;
         case 2:

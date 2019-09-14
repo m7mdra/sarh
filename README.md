@@ -183,3 +183,15 @@
     '-- video_player 0.10.2+1  
         |-- flutter...  
         '-- meta...
+
+How to Build?
+first clone the project:
+
+```git clone https://github.com/m7mdra/sarh.git```
+cd to the project directory
+
+
+```cd /justcost```
+run flutter packages get to update dependencies.
+
+```flutter packages get```

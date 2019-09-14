@@ -5,4 +5,5 @@ InputDecoration buildInputDecoration(String label, IconData prefixIcon) =>
         labelText: label,
         prefixIcon: Icon(prefixIcon),
         filled: true,
+        border: UnderlineInputBorder(),
         fillColor: Color(0xffECECEC));

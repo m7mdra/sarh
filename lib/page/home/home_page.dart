@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:math' show Random;
+import 'package:Sarh/image.json.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -44,24 +45,24 @@ class _HomePageState extends State<HomePage>
           child: new StaggeredGridView.countBuilder(
             padding: const EdgeInsets.only(bottom: 80),
             crossAxisCount: 4,
-            itemCount: 100,
+            primary: true,
+            itemCount: imageList.length,
             itemBuilder: (BuildContext context, int index) => InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return CompanyGalleryPage(
-                    image:
-                        'https://loremflickr.com/${Random().nextInt(500)}/${Random().nextInt(500)}/house,construction,workers',
+                    images: imageList.sublist(
+                        0, Random().nextInt(imageList.length - 1)),
                   );
                 }));
               },
               child: CachedNetworkImage(
-                imageUrl:
-                    'https://loremflickr.com/${Random().nextInt(500)}/${Random().nextInt(500)}/house,construction,workers',
+                imageUrl: imageList[index],
+                fit: BoxFit.cover,
                 placeholderFadeInDuration: Duration(milliseconds: 200),
               ),
             ),
-            staggeredTileBuilder: (int index) =>
-                new StaggeredTile.count(2, index.isEven ? 2 : 1),
+            staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
             mainAxisSpacing: 4.0,
             crossAxisSpacing: 4.0,
           ),

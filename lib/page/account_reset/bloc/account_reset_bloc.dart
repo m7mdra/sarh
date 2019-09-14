@@ -27,7 +27,7 @@ class AccountResetBloc extends Bloc<AccountResetEvent, AccountResetState> {
         var responseStatus =
             await userRepository.requestResetLink(event.phoneNumber);
         if (responseStatus.success) {
-          yield RequestSuccess();
+          yield RequestSuccess(event.phoneNumber);
         } else {
           yield Error();
         }

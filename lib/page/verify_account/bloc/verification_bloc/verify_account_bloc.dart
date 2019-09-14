@@ -17,13 +17,7 @@ class VerifyAccountBloc extends Bloc<VerificationEvent, VerificationState> {
 
   @override
   get initialState => IdleState();
-  @override
-  void onTransition(
-      Transition<VerificationEvent, VerificationState> transition) {
-    // TODO: implement onTransition
-    super.onTransition(transition);
-    print(transition);
-  }
+
 
   @override
   Stream<VerificationState> mapEventToState(VerificationEvent event) async* {
@@ -57,6 +51,7 @@ class VerifyAccountBloc extends Bloc<VerificationEvent, VerificationState> {
         print(error);
       }
     }
+
     if (event is ResentVerificationCode) {
       yield ResendLoading();
       try {

@@ -2,7 +2,11 @@ class AccountResetState {}
 
 class Loading extends AccountResetState {}
 
-class RequestSuccess extends AccountResetState {}
+class RequestSuccess extends AccountResetState {
+  final String phoneNumber;
+
+  RequestSuccess(this.phoneNumber);
+}
 
 class AccountNotFound extends AccountResetState {}
 

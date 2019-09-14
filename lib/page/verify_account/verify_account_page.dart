@@ -16,10 +16,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/timer/ticker.dart';
 import 'bloc/verification_bloc/verify_account_bloc.dart';
 
+enum Type { resetAccount, newAccount }
+
 class VerifyAccountPage extends StatefulWidget {
   final AccountType accountType;
 
-  const VerifyAccountPage({Key key, this.accountType}) : super(key: key);
+  const VerifyAccountPage(
+      {Key key, this.accountType})
+      : super(key: key);
 
   @override
   _VerifyAccountPageState createState() => _VerifyAccountPageState();
@@ -51,8 +55,6 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       body: SafeArea(
         child: BlocListener(
@@ -78,14 +80,14 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
             }
             if (state is Failed) {
               _hideProgressDialog(context);
-              scaffold.hideCurrentSnackBar();
+              _hideCurrentSnackbar();
               scaffold.showSnackBar(SnackBar(
                   content: Text(AppLocalizations.of(context).verifyFailed),
                   behavior: SnackBarBehavior.floating));
             }
             if (state is InvalidCode) {
               _hideProgressDialog(context);
-              scaffold.hideCurrentSnackBar();
+              _hideCurrentSnackbar();
               scaffold.showSnackBar(SnackBar(
                 content:
                     Text(AppLocalizations.of(context).invalidVerificationCode),
@@ -113,6 +115,8 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
             }
             if (state is ResendRequested) {
               _hideProgressDialog(context);
+              _hideCurrentSnackbar();
+
               scaffold.showSnackBar(SnackBar(
                 content:
                     Text(AppLocalizations.of(context).verificationCodeRequest),
@@ -122,13 +126,24 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
             }
             if (state is SessionExpired) {
               _hideProgressDialog(context);
+
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => LoginPage()));
             }
             if (state is Timeout) {
               _hideProgressDialog(context);
+              _hideCurrentSnackbar();
               scaffold.showSnackBar(SnackBar(
                 content: Text(AppLocalizations.of(context).requestTimeout),
+                behavior: SnackBarBehavior.floating,
+              ));
+            }
+            if (state is ResendFailed) {
+              _hideProgressDialog(context);
+              _hideCurrentSnackbar();
+              scaffold.showSnackBar(SnackBar(
+                backgroundColor: Colors.redAccent,
+                content: Text("Failed to resend verification code."),
                 behavior: SnackBarBehavior.floating,
               ));
             }
@@ -252,6 +267,8 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
       ),
     );
   }
+
+  void _hideCurrentSnackbar() => scaffold.hideCurrentSnackBar();
 
   bool _hideProgressDialog(BuildContext context) => Navigator.pop(context);
 

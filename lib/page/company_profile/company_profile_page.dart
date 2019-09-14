@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/company_profile/bloc/bloc.dart';
+import 'package:Sarh/page/company_profile/bloc/company_profile_event.dart';
 import 'package:Sarh/page/edit_company_profile/edit_company_profile_page.dart';
 import 'package:Sarh/page/profile_image_modify/modify_profile_image_page.dart';
 import 'package:Sarh/size_config.dart';
@@ -7,6 +10,8 @@ import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/bloc.dart';
 
 class CompanyProfilePage extends StatefulWidget {
   @override
@@ -15,219 +20,240 @@ class CompanyProfilePage extends StatefulWidget {
 
 class _CompanyProfilePageState extends State<CompanyProfilePage>
     with TickerProviderStateMixin {
+  CompanyProfileBloc _companyProfileBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _companyProfileBloc = CompanyProfileBloc(DependencyProvider.provide());
+    _companyProfileBloc.dispatch(LoadProfile());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _companyProfileBloc.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            _appbarAndHeader(context),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.all(16),
+        child: BlocBuilder(
+          bloc: _companyProfileBloc,
+          // ignore: missing_return
+          builder: (context, state) {
+            if (state is ProfileLoaded)
+              return Column(
                 children: <Widget>[
-                  Text(
-                    'About',
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                  Text(
-                      '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem industry's standard dummy text ever since the 1500stext ever since the 1500stext.'''),
-                  _divider,
-                  Text(
-                    'Company activites',
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                  Wrap(
-                    spacing: 1,
-                    runSpacing: 0,
-                    direction: Axis.horizontal,
-                    alignment: WrapAlignment.center,
-                    children: <Widget>[
-                      Chip(label: Text('Construction')),
-                      Chip(label: Text('Anything')),
-                      Chip(label: Text('Anything')),
-                      Chip(label: Text('Anything')),
-                      Chip(label: Text('Anything')),
-                      Chip(label: Text('Anything')),
-                    ],
-                  ),
-                  _divider,
-                  Text(
-                    'Contact information',
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                  ListTile(
-                    dense: true,
-                    contentPadding: const EdgeInsets.all(0),
-                    leading: Icon(
-                      FontAwesomeIcons.mobile,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    title: Text('+971 56 887 8888'),
-                  ),
-                  ListTile(
-                    dense: true,
-                    contentPadding: const EdgeInsets.all(0),
-                    leading: Icon(
-                      FontAwesomeIcons.phone,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    title: Text('+971 21 887 8888'),
-                  ),
-                  ListTile(
-                    dense: true,
-                    contentPadding: const EdgeInsets.all(0),
-                    leading: Icon(
-                      FontAwesomeIcons.solidEnvelope,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    title: Text('info@takween.com'),
-                  ),
-                  ListTile(
-                    dense: true,
-                    contentPadding: const EdgeInsets.all(0),
-                    leading: Icon(
-                      FontAwesomeIcons.solidMap,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    title: Text('Hotel Sofitel, Abu Dhabi\n23100 Abu Dhabi '),
-                  ),
-                  ListTile(
-                    dense: true,
-                    contentPadding: const EdgeInsets.all(0),
-                    leading: Icon(
-                      FontAwesomeIcons.globe,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    title: Text('www.takweeneng.com'),
-                  ),
-                  _heightSizedBox(),
-                  Row(
-                    children: <Widget>[
-                      SocialMediaTile(
-                        backgroundColor: Color(0xff20b4f5),
-                        iconData: FontAwesomeIcons.twitter,
-                      ),
-                      SocialMediaTile(
-                        backgroundColor: Color(0xff4a90fa),
-                        iconData: FontAwesomeIcons.facebook,
-                      ),
-                      SocialMediaTile(
-                        backgroundColor: Color(0xffff9898),
-                        iconData: FontAwesomeIcons.instagram,
-                      ),
-                      SocialMediaTile(
-                        backgroundColor: Color(0xff0066ff),
-                        iconData: FontAwesomeIcons.behance,
-                      ),
-                      SocialMediaTile(
-                        backgroundColor: Color(0xff37c2ff),
-                        iconData: FontAwesomeIcons.linkedin,
-                      ),
-                    ],
-                  ),
-                  _divider,
-                  Text(
-                    'Authorized from',
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                  Container(
-                    height: 110,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(
-                              'assets/logo/logo.png',
+                  _appbarAndHeader(context, state),
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.all(16),
+                      children: <Widget>[
+                        Text(
+                          'About',
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                        Text(state.company.about),
+                        _divider,
+                        Text(
+                          'Company activites',
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                        Wrap(
+                          spacing: 1,
+                          runSpacing: 0,
+                          direction: Axis.horizontal,
+                          alignment: WrapAlignment.center,
+                          children: <Widget>[
+                            Chip(label: Text('Construction')),
+                            Chip(label: Text('Anything')),
+                            Chip(label: Text('Anything')),
+                            Chip(label: Text('Anything')),
+                            Chip(label: Text('Anything')),
+                            Chip(label: Text('Anything')),
+                          ],
+                        ),
+                        _divider,
+                        Text(
+                          'Contact information',
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                        ListTile(
+                          dense: true,
+                          contentPadding: const EdgeInsets.all(0),
+                          leading: Icon(
+                            FontAwesomeIcons.mobile,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          title: Text(state.user.phone),
+                        ),
+                        ListTile(
+                          dense: true,
+                          contentPadding: const EdgeInsets.all(0),
+                          leading: Icon(
+                            FontAwesomeIcons.phone,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          title: Text(state.company.landPhone),
+                        ),
+                        ListTile(
+                          dense: true,
+                          contentPadding: const EdgeInsets.all(0),
+                          leading: Icon(
+                            FontAwesomeIcons.solidEnvelope,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          title: Text('info@takween.com'),
+                        ),
+                        ListTile(
+                          dense: true,
+                          contentPadding: const EdgeInsets.all(0),
+                          leading: Icon(
+                            FontAwesomeIcons.solidMap,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          title: Text(state.company.address),
+                        ),
+                        ListTile(
+                          dense: true,
+                          contentPadding: const EdgeInsets.all(0),
+                          leading: Icon(
+                            FontAwesomeIcons.globe,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          title: Text(state.company.website),
+                        ),
+                        _heightSizedBox(),
+                        Row(
+                          children: <Widget>[
+                            SocialMediaTile(
+                              backgroundColor: Color(0xff20b4f5),
+                              iconData: FontAwesomeIcons.twitter,
+                            ),
+                            SocialMediaTile(
+                              backgroundColor: Color(0xff4a90fa),
+                              iconData: FontAwesomeIcons.facebook,
+                            ),
+                            SocialMediaTile(
+                              backgroundColor: Color(0xffff9898),
+                              iconData: FontAwesomeIcons.instagram,
+                            ),
+                            SocialMediaTile(
+                              backgroundColor: Color(0xff0066ff),
+                              iconData: FontAwesomeIcons.behance,
+                            ),
+                            SocialMediaTile(
+                              backgroundColor: Color(0xff37c2ff),
+                              iconData: FontAwesomeIcons.linkedin,
+                            ),
+                          ],
+                        ),
+                        _divider,
+                        Text(
+                          'Authorized from',
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                        Container(
+                          height: 110,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    'assets/logo/logo.png',
+                                    width: 120,
+                                    height: 100,
+                                  ),
+                                ),
+                              );
+                            },
+                            itemCount: 5,
+                          ),
+                        ),
+                        _divider,
+                        Text(
+                          'Featured projects',
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                        _heightSizedBox(),
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 4,
+                          runSpacing: 4,
+                          direction: Axis.horizontal,
+                          children: <Widget>[
+                            Container(
                               width: 120,
                               height: 100,
+                              color: Colors.red,
                             ),
-                          ),
-                        );
-                      },
-                      itemCount: 5,
+                            Container(
+                              width: 120,
+                              height: 100,
+                              color: Colors.red,
+                            ),
+                            Container(
+                              width: 120,
+                              height: 100,
+                              color: Colors.red,
+                            ),
+                            Container(
+                              width: 120,
+                              height: 100,
+                              color: Colors.red,
+                            ),
+                            Container(
+                              width: 120,
+                              height: 100,
+                              color: Colors.red,
+                            ),
+                            Container(
+                              width: 120,
+                              height: 100,
+                              color: Colors.red,
+                            ),
+                          ],
+                        ),
+                        _divider,
+                        Text(
+                          'Customers Reviews',
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('12 Reviews'),
+                            RaisedButton.icon(
+                              onPressed: () {},
+                              label: Text('Add a review'),
+                              icon: Icon(FontAwesomeIcons.paperPlane),
+                            ),
+                          ],
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ReviewTileWidget();
+                          },
+                          itemCount: 4,
+                        ),
+                        RaisedButton(
+                          onPressed: () {},
+                          child: Text('More & Add comments'),
+                        )
+                      ],
                     ),
                   ),
-                  _divider,
-                  Text(
-                    'Featured projects',
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                  _heightSizedBox(),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 4,
-                    runSpacing: 4,
-                    direction: Axis.horizontal,
-                    children: <Widget>[
-                      Container(
-                        width: 120,
-                        height: 100,
-                        color: Colors.red,
-                      ),
-                      Container(
-                        width: 120,
-                        height: 100,
-                        color: Colors.red,
-                      ),
-                      Container(
-                        width: 120,
-                        height: 100,
-                        color: Colors.red,
-                      ),
-                      Container(
-                        width: 120,
-                        height: 100,
-                        color: Colors.red,
-                      ),
-                      Container(
-                        width: 120,
-                        height: 100,
-                        color: Colors.red,
-                      ),
-                      Container(
-                        width: 120,
-                        height: 100,
-                        color: Colors.red,
-                      ),
-                    ],
-                  ),
-                  _divider,
-                  Text(
-                    'Customers Reviews',
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text('12 Reviews'),
-                      RaisedButton.icon(
-                        onPressed: () {},
-                        label: Text('Add a review'),
-                        icon: Icon(FontAwesomeIcons.paperPlane),
-                      ),
-                    ],
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    primary: false,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ReviewTileWidget();
-                    },
-                    itemCount: 4,
-                  ),
-                  RaisedButton(
-                    onPressed: () {},
-                    child: Text('More & Add comments'),
-                  )
                 ],
-              ),
-            ),
-          ],
+              );
+          },
         ),
       ),
     );
@@ -237,7 +263,9 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
         color: Colors.black38,
       );
 
-  Card _appbarAndHeader(BuildContext context) {
+  Card _appbarAndHeader(BuildContext context, ProfileLoaded state) {
+    print(state.user);
+    print(state.company);
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.all(0),
@@ -290,16 +318,28 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                         child: Hero(
                           tag: 'profile_image',
                           child: Container(
-                            width: SizeConfig.blockSizeHorizontal * 30,
-                            height: SizeConfig.blockSizeVertical * 20,
-                            child: Icon(
-                              Icons.camera_alt,
-                              size: 30,
-                              color: Colors.grey,
-                            ),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
+                            child: ClipOval(
+                              child: Container(
+                                color: Colors.white,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: <Widget>[
+                                    Image.network(
+                                      state.user.image,
+                                      width:
+                                          SizeConfig.blockSizeHorizontal * 30,
+                                      height:
+                                          SizeConfig.blockSizeHorizontal * 30,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Icon(
+                                      Icons.camera_alt,
+                                      size: 50,
+                                      color: Colors.grey,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -310,7 +350,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            'Takween Enginering',
+                            state.user.fullName,
                             style: Theme.of(context)
                                 .textTheme
                                 .title

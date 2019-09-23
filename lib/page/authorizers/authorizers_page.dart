@@ -1,8 +1,14 @@
 import 'package:Sarh/data/model/authorizer.dart';
+import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/company_profile/bloc/authorizer/authorizer_bloc.dart';
+import 'package:Sarh/page/company_profile/bloc/authorizer/bloc.dart';
 import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
+import 'package:Sarh/widget/ui_state.dart';
+import 'package:Sarh/widget/ui_state/progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthorizersPage extends StatefulWidget {
   @override
@@ -10,19 +16,63 @@ class AuthorizersPage extends StatefulWidget {
 }
 
 class _AuthorizersPageState extends State<AuthorizersPage> {
+  AuthorizersBloc _authorizersBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _authorizersBloc = AuthorizersBloc(DependencyProvider.provide());
+    _authorizersBloc.dispatch(LoadAuthroizers());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _authorizersBloc.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      body: GridView.builder(
-        padding:
-            const EdgeInsets.only(bottom: 80, left: 16, right: 16, top: 16),
-        itemBuilder: (context, index) {
-          return AuthorizerWidget();
+      body: BlocBuilder(
+        bloc: _authorizersBloc,
+        builder: (context, state) {
+          if (state is AuthorizerLoading) {
+            return Center(
+              child: ProgressBar(),
+            );
+          }
+          if (state is AuthorizersFailed) {
+            return Center(
+              child: GeneralErrorWidget(
+                onRetry: () {
+                  _authorizersBloc.dispatch(LoadAuthroizers());
+                },
+              ),
+            );
+          }
+          if(state is AuthorizersEmpty){
+            return Center(child: EmptyWidget());
+          }
+          if (state is AuthorizersLoaded) {
+            var authorizers = state.authorizers;
+            return GridView.builder(
+              padding: const EdgeInsets.only(
+                  bottom: 80, left: 16, right: 16, top: 16),
+              itemBuilder: (context, index) {
+                return AuthorizerWidget(
+                    authorizer: authorizers[index],
+                    onDelete: (value) {},
+                    onEdit: (value) {});
+              },
+              itemCount: authorizers.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, crossAxisSpacing: 4, mainAxisSpacing: 4),
+            );
+          }
+          return Container();
         },
-        itemCount: 10,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, crossAxisSpacing: 4, mainAxisSpacing: 4),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -53,8 +103,8 @@ class AuthorizerWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image.asset(
-            'assets/logo/logo.png',
+          Image.network(
+            authorizer.logo,
             width: SizeConfig.blockSizeHorizontal * 50,
             fit: BoxFit.fitWidth,
           ),
@@ -62,7 +112,7 @@ class AuthorizerWidget extends StatelessWidget {
             height: 4,
           ),
           Text(
-            'Authorizer name',
+            authorizer.name,
           ),
           SizedBox(
             height: 4,
@@ -78,32 +128,7 @@ class AuthorizerWidget extends StatelessWidget {
                 icon: Icon(FontAwesomeIcons.solidEdit),
               ),
               IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          title: Text('Delete record'),
-                          content: Text('Are your sure?'),
-                          actions: <Widget>[
-                            FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context, true);
-                                },
-                                child: Text('DELETE')),
-                            FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context, false);
-                                },
-                                child: Text(MaterialLocalizations.of(context)
-                                    .cancelButtonLabel))
-                          ],
-                        );
-                      });
-                },
+                onPressed: () => onDelete(authorizer),
                 icon: Icon(FontAwesomeIcons.solidTrashAlt),
               ),
             ],

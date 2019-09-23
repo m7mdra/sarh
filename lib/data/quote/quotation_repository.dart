@@ -32,7 +32,6 @@ class QuotationRepository {
             .toList()
       });
 
-      print(formData.toString());
       var response = await _client.post('quotation_requests');
 
       return ResponseStatus.fromJson(response.data);

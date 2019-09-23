@@ -1,5 +1,6 @@
 import 'package:Sarh/data/activity/activity_repository.dart';
 import 'package:Sarh/data/category/category_repository.dart';
+import 'package:Sarh/data/client/client_repository.dart';
 import 'package:Sarh/data/country/city_repository.dart';
 import 'package:Sarh/data/session.dart';
 import 'package:Sarh/data/user/user_repository.dart';
@@ -7,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'data/authorizers/authorizer_repository.dart';
 import 'data/company/company_repository.dart';
 import 'data/quote/quotation_repository.dart';
 import 'data/token_interceptor.dart';
@@ -49,11 +51,16 @@ class DependencyProvider {
     ActivityRepository activityRepository = ActivityRepository(client);
     CompanyRepository companyRepository = CompanyRepository(client);
     QuotationRepository quotationRepository = QuotationRepository(client);
+    ClientRepository clientRepository = ClientRepository(client);
     CategoryRepository categoryRepository = CategoryRepository(client);
+    AuthorizersRepository authorizersRepository = AuthorizersRepository(client);
     _registrar.registerSingleton<Dio>(client);
     _registrar.registerSingleton<Session>(session);
     _registrar.registerFactory<UserRepository>(() => userRepository);
+    _registrar.registerFactory<ClientRepository>(() => clientRepository);
     _registrar.registerFactory<CountryRepository>(() => countryRepository);
+    _registrar
+        .registerFactory<AuthorizersRepository>(() => authorizersRepository);
     _registrar.registerFactory<CategoryRepository>(() => categoryRepository);
     _registrar.registerFactory<QuotationRepository>(() => quotationRepository);
     _registrar.registerFactory<ActivityRepository>(() => activityRepository);

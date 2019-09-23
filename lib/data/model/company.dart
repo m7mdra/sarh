@@ -1,5 +1,6 @@
 import 'package:Sarh/data/model/activity.dart';
 import 'package:Sarh/data/model/client.dart';
+import 'package:Sarh/data/model/soical_media.dart';
 
 import 'company_cover.dart';
 
@@ -16,6 +17,7 @@ class Company {
   int employees;
   List<Client> clients;
   List<CompanyCover> companyCover;
+  List<SocialMedia> socialMediaList;
   int projectsDone;
   int createdAt;
 
@@ -31,6 +33,7 @@ class Company {
       this.location,
       this.employees,
       this.clients,
+      this.socialMediaList,
       this.companyCover,
       this.projectsDone,
       this.createdAt});
@@ -50,6 +53,12 @@ class Company {
       clients = new List<Client>();
       json['clients'].forEach((v) {
         clients.add(new Client.fromJson(v));
+      });
+    }
+    if (json['socialMedia'] != null) {
+      socialMediaList = new List<SocialMedia>();
+      json['socialMedia'].forEach((v) {
+        socialMediaList.add(new SocialMedia.fromJson(v));
       });
     }
     if (json['companyCover'] != null) {
@@ -80,6 +89,11 @@ class Company {
     if (this.companyCover != null) {
       data['companyCover'] = this.companyCover.map((v) => v.toJson()).toList();
     }
+    if (this.socialMediaList != null) {
+      data['socialMedia'] =
+          this.socialMediaList.map((v) => v.toJson()).toList();
+    }
+
     data['projects_done'] = this.projectsDone;
     data['created_at'] = this.createdAt;
     return data;

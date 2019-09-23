@@ -1,15 +1,12 @@
 import 'dart:io';
 
 import 'package:Sarh/data/either.dart';
-import 'package:Sarh/data/exceptions/account_not_found_error.dart';
 import 'package:Sarh/data/exceptions/exceptions.dart';
-import 'package:Sarh/data/exceptions/timeout_exception.dart';
-import 'package:Sarh/data/exceptions/unable_to_connect_exception.dart';
 import 'package:Sarh/data/response_status.dart';
 import 'package:dio/dio.dart';
+import 'model/account_reset_verification_response.dart';
 import 'model/authentication_response_error.dart';
 import 'model/authentication_response.dart';
-import 'package:Sarh/data/exceptions/session_expired_exception.dart';
 
 import 'model/resend_verification_response.dart';
 
@@ -55,7 +52,7 @@ class UserRepository {
     try {
       var response = await _client.post('customer/verificationresend');
       return ResendVerificationCodeResponse.fromJson(response.data);
-    }catch(error){
+    } catch (error) {
       throw error;
     }
   }
@@ -104,6 +101,47 @@ class UserRepository {
     }
   }
 
+  Future requestResetCode(String phoneNumber) async {}
+
+  Future<AccountResetVerificationResponse> verifyResetCode(String code) async {
+    try {
+      var response = await _client
+          .post('password_resets_cheack', data: {'activation_code': code});
+      return AccountResetVerificationResponse.fromJson(response.data);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<ResponseStatus> submitNewPassword(
+      String phoneNumber, String resetToken, String newPassword) async {
+    try {
+      var response = await _client.post('resets', data: {
+        'accountKey': phoneNumber,
+        'password': newPassword,
+        'token': resetToken
+      });
+      return ResponseStatus.fromJson(response.data);
+    } on DioError catch (error) {
+      switch (error.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+        case DioErrorType.SEND_TIMEOUT:
+        case DioErrorType.RECEIVE_TIMEOUT:
+          throw TimeoutException();
+          break;
+        case DioErrorType.DEFAULT:
+          throw UnableToConnectException();
+          break;
+        default:
+          throw error;
+      }
+    } catch (error) {
+      print(error);
+
+      throw error;
+    }
+  }
+
   Future<Either<AuthenticationResponse, AuthenticationResponseError>> register(
       String fullName,
       String phone,
@@ -121,7 +159,7 @@ class UserRepository {
         'password': password,
         'c_password': password,
         'firebaseToken': messagingToken,
-        'username':email
+        'username': email
       });
       return Either.withSuccess(AuthenticationResponse.fromJson(response.data));
     } on DioError catch (error) {

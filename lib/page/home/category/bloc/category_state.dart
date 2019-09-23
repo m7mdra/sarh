@@ -22,3 +22,4 @@ class CategoryIdle extends CategoryState {}
 class CategoryTimeout extends CategoryState {}
 
 class CategorySessionExpired extends CategoryState {}
+

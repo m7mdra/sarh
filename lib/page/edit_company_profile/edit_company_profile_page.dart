@@ -37,6 +37,7 @@ class _EditCompanyProfilePageState extends State<EditCompanyProfilePage> {
             ),
             title: Text('Contact information'),
           ),
+
           _divder,
           ListTile(
             onTap: () {

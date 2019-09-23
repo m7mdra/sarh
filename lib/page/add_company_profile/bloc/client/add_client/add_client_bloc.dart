@@ -1,3 +1,4 @@
+import 'package:Sarh/data/client/client_repository.dart';
 import 'package:Sarh/data/exceptions/exceptions.dart';
 import 'package:Sarh/data/session.dart';
 import 'package:Sarh/page/add_company_profile/bloc/client/add_client/add_client_state.dart';
@@ -10,12 +11,12 @@ import 'package:bloc/bloc.dart';
 import 'package:Sarh/data/company/company_repository.dart';
 
 class AddClientBloc extends Bloc<AddClientEvent, AddClientState> {
-  final CompanyRepository _companyRepository;
+  final ClientRepository _clientRepository;
   final Session _session;
   final LoadClientBloc _loadClientBloc;
   FeaturedClient _lastClient;
 
-  AddClientBloc(this._companyRepository, this._session, this._loadClientBloc);
+  AddClientBloc(this._clientRepository, this._session, this._loadClientBloc);
 
   @override
   AddClientState get initialState => AddIdle();
@@ -33,7 +34,7 @@ class AddClientBloc extends Bloc<AddClientEvent, AddClientState> {
   Stream<AddClientState> _add(FeaturedClient client) async* {
     yield LoadingAdd();
     try {
-      var response = await _companyRepository.addClient(
+      var response = await _clientRepository.addClient(
           clientName: client.name,
           accountId: _session.user.id,
           websiteUrl: client.website,

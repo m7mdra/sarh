@@ -1,9 +1,11 @@
 import 'package:Sarh/data/model/category.dart';
 import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/activity/activity_page.dart';
 import 'package:Sarh/page/home/Category/bloc/category_bloc.dart';
 import 'package:Sarh/page/home/category/bloc/category_event.dart';
 import 'package:Sarh/page/home/category/bloc/category_state.dart';
 import 'package:Sarh/page/login/login_page.dart';
+import 'package:Sarh/page/sub_category/sub_category_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Sarh/widget/ui_state.dart';
@@ -70,6 +72,7 @@ class _CategoryPageState extends State<CategoryPage>
                 },
               ));
             }
+
             if (state is CategoryEmpty) {
               return Center(child: EmptyWidget());
             }
@@ -89,7 +92,19 @@ class _CategoryPageState extends State<CategoryPage>
                   itemBuilder: (BuildContext context, int index) {
                     return CategoryWidget(
                       state.categoryList[index],
-                      onCategoryTap: (Category) {},
+                      onCategoryTap: (category) {
+                        if (category.hasDescendant) {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return SubCategoryPage(parentCategory: category);
+                          }));
+                        } else {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ActivityPage(parentCategory: category);
+                          }));
+                        }
+                      },
                     );
                   },
                   itemCount: state.categoryList.length,
@@ -127,8 +142,8 @@ class CategoryWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.network(
-              category.img,
+            Image.asset(
+              'assets/logo/logo.png',
               width: 120,
             ),
             SizedBox(
@@ -139,6 +154,7 @@ class CategoryWidget extends StatelessWidget {
                     ? category.nameAr
                     : category.nameEn,
                 maxLines: 2),
+            Text('(${category.companyCount})'),
             SizedBox(
               height: 2,
             ),

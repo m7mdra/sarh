@@ -7,3 +7,4 @@ InputDecoration buildInputDecoration(String label, IconData prefixIcon) =>
         filled: true,
         border: UnderlineInputBorder(),
         fillColor: Color(0xffECECEC));
+

@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../home_page.dart';
+import 'package:preload_page_view/preload_page_view.dart';
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
@@ -31,7 +32,7 @@ class _MainPageState extends State<MainPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   GlobalKey<UserDrawerState> _drawerKey = GlobalKey();
   GlobalKey<FABBottomAppBarState> _bottomBarKey = GlobalKey();
-  PageController _pageController = PageController(initialPage: 0);
+  PreloadPageController _pageController = PreloadPageController();
   HomePageBloc _homePageBloc;
 
   @override
@@ -129,7 +130,8 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             Expanded(
-              child: PageView(
+              child: PreloadPageView(
+                preloadPagesCount: 4,
                 controller: _pageController,
                 children: <Widget>[
                   HomePage(),
@@ -197,12 +199,15 @@ class UserDrawerState extends State<UserDrawer> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _userProfileBloc = UserProfileBloc(DependencyProvider.provide());
     _userProfileBloc.dispatch(LoadProfile());
   }
-
+@override
+  void dispose() {
+    super.dispose();
+    _userProfileBloc.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -232,7 +237,11 @@ class UserDrawerState extends State<UserDrawer> {
                                   radius: 40,
                                   backgroundColor: Colors.white,
                                   child: ClipOval(
-                                      child: Image.network(user.image)),
+                                      child: user.image != null &&
+                                              user.image.isNotEmpty
+                                          ? Image.network(user.image)
+                                          : Icon(FontAwesomeIcons.user,
+                                              size: 50)),
                                 ),
                               ),
                               SizedBox(

@@ -1,3 +1,4 @@
+import 'package:Sarh/data/client/client_repository.dart';
 import 'package:Sarh/data/company/company_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'load_client_state.dart';
@@ -5,9 +6,9 @@ import 'load_client_event.dart';
 import 'package:Sarh/data/exceptions/exceptions.dart';
 
 class LoadClientBloc extends Bloc<LoadClientEvent, LoadClientState> {
-  final CompanyRepository _companyRepository;
+  final ClientRepository _clientRepository;
 
-  LoadClientBloc(this._companyRepository);
+  LoadClientBloc(this._clientRepository);
 
   @override
   // TODO: implement initialState
@@ -18,7 +19,7 @@ class LoadClientBloc extends Bloc<LoadClientEvent, LoadClientState> {
     if (event is LoadClients || event is RetryLoad) {
       yield LoadingClients();
       try {
-        var response = await _companyRepository.getCompanyClients();
+        var response = await _clientRepository.getCompanyClients();
         if (response.success) {
           var clients = response.clients;
           if (clients.isEmpty) {

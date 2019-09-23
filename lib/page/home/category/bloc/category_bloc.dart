@@ -38,5 +38,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         yield CategoryError();
       }
     }
+
   }
 }

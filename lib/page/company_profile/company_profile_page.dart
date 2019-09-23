@@ -1,17 +1,23 @@
 import 'dart:math';
 
+import 'package:Sarh/data/model/authorizer.dart';
 import 'package:Sarh/dependency_provider.dart';
-import 'package:Sarh/page/company_profile/bloc/bloc.dart';
-import 'package:Sarh/page/company_profile/bloc/company_profile_event.dart';
+import 'package:Sarh/i10n/app_localizations.dart';
+import 'package:Sarh/page/company_profile/bloc/authorizer/authorizer_bloc.dart';
+import 'package:Sarh/page/company_profile/bloc/authorizer/authorizer_event.dart';
+import 'package:Sarh/page/company_profile/bloc/authorizer/authorizer_state.dart';
+import 'package:Sarh/page/company_profile/bloc/profile/bloc.dart';
+import 'package:Sarh/page/company_profile/bloc/profile/company_profile_event.dart';
 import 'package:Sarh/page/edit_company_profile/edit_company_profile_page.dart';
 import 'package:Sarh/page/profile_image_modify/modify_profile_image_page.dart';
 import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
+import 'package:Sarh/widget/ui_state.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bloc/bloc.dart';
+import 'bloc/profile/bloc.dart';
 
 class CompanyProfilePage extends StatefulWidget {
   @override
@@ -21,18 +27,22 @@ class CompanyProfilePage extends StatefulWidget {
 class _CompanyProfilePageState extends State<CompanyProfilePage>
     with TickerProviderStateMixin {
   CompanyProfileBloc _companyProfileBloc;
+  AuthorizersBloc _authorizersBloc;
 
   @override
   void initState() {
     super.initState();
     _companyProfileBloc = CompanyProfileBloc(DependencyProvider.provide());
+    _authorizersBloc = AuthorizersBloc(DependencyProvider.provide());
     _companyProfileBloc.dispatch(LoadProfile());
+    _authorizersBloc.dispatch(LoadAuthroizers());
   }
 
   @override
   void dispose() {
     super.dispose();
     _companyProfileBloc.dispose();
+    _authorizersBloc.dispose();
   }
 
   @override
@@ -156,27 +166,55 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                           'Authorized from',
                           style: Theme.of(context).textTheme.title,
                         ),
-                        Container(
-                          height: 110,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                    'assets/logo/logo.png',
-                                    width: 120,
-                                    height: 100,
-                                  ),
+                        BlocBuilder(
+                          bloc: _authorizersBloc,
+                          builder: (context, state) {
+                            if (state is AuthorizersLoaded) {
+                              return Container(
+                                height: SizeConfig.blockSizeVertical * 22,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return new AuthorizerWidget(
+                                      authorizer: state.authorizers[index],
+                                    );
+                                  },
+                                  itemCount: state.authorizers.length,
                                 ),
                               );
-                            },
-                            itemCount: 5,
-                          ),
+                            }
+                            if (state is AuthorizersFailed) {
+                             return Padding(
+                               padding: const EdgeInsets.all(8.0),
+                               child: Column(children: <Widget>[
+                                 Text('Failed to load Authorizers'),
+                                 OutlineButton(onPressed: (){
+                                   _authorizersBloc.dispatch(LoadAuthroizers());
+
+                                 },child: Text(AppLocalizations.of(context).retryButton),)
+                               ],),
+                             );
+                            }
+                            if (state is AuthorizerLoading) {
+                              return Center(child: ProgressBar());
+                            }
+                            if (state is AuthorizersEmpty) {
+                              return Column(
+                                children: <Widget>[
+                                  Text(
+                                    'No Authorizers added',
+                                    style: Theme.of(context).textTheme.title,
+                                  )
+                                ],
+                              );
+                            }
+                            return Container();
+                          },
                         ),
-                        _divider,
+                        Divider(
+                          height: 1,
+                        ),
                         Text(
                           'Featured projects',
                           style: Theme.of(context).textTheme.title,
@@ -264,8 +302,6 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
       );
 
   Card _appbarAndHeader(BuildContext context, ProfileLoaded state) {
-    print(state.user);
-    print(state.company);
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.all(0),
@@ -439,6 +475,37 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
   SizedBox _widthSizedBox() {
     return const SizedBox(
       width: 8,
+    );
+  }
+}
+
+class AuthorizerWidget extends StatelessWidget {
+  final Authorizer authorizer;
+
+  const AuthorizerWidget({
+    Key key,
+    this.authorizer,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Image.network(
+              authorizer.logo,
+              width: 120,
+              height: 100,
+            ),
+            Text(
+              authorizer.name,
+              maxLines: 1,
+            )
+          ],
+        ),
+      ),
     );
   }
 }

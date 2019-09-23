@@ -4,7 +4,7 @@ import 'package:Sarh/page/account_reset_verification/account_reset_verification.
 import 'package:Sarh/page/verify_account/verify_account_page.dart';
 import 'package:Sarh/widget/progress_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:Sarh/form_commons.dart';
+import 'package:Sarh/commons.dart';
 import 'package:flutter/services.dart';
 import 'bloc/bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -63,6 +63,7 @@ class _ResetAccountPageState extends State<ResetAccountPage> {
                   backgroundColor: Colors.green,
                   content: Text('Reset account requested successfully'),
                   behavior: SnackBarBehavior.floating));
+              //TODO: replace with pushReplacement
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return AccountResetVerificationPage(
                   phoneNumber: state.phoneNumber,

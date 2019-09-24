@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:Sarh/data/model/activity.dart';
 import 'package:Sarh/data/model/category.dart';
 import 'package:Sarh/data/model/company_size.dart';
 import 'package:Sarh/dependency_provider.dart';
@@ -74,6 +73,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   LoadClientBloc _loadClientBloc;
   AddClientBloc _addClientBloc;
   CategoryBloc _categoryBloc;
+
   ModifyProfileImageBloc _modifyProfileImageBloc;
   CompleteRegisterBloc _completeRegisterBloc;
   Category _category;
@@ -281,32 +281,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
             'Company details.',
             style: Theme.of(context).textTheme.title,
           ),
-          _sizedBox,
-          BlocBuilder(
-            bloc: _categoryBloc,
-            builder: (BuildContext context, state) {
-              print(state);
-              if (state is CategorySuccess) {
-                return _activityPickerWidget(state.categoryList);
-              }
 
-              if (state is CategoryTimeout ||
-                  state is CategoryNetworkError ||
-                  state is CategoryError) {
-                return _activityPickerWidget([], true);
-              }
-
-              return Column(
-                children: <Widget>[
-                  _activityPickerWidget([]),
-                  SizedBox(
-                    child: LinearProgressIndicator(),
-                    height: 1,
-                  )
-                ],
-              );
-            },
-          ),
           _sizedBox,
           GestureDetector(
             onTap: () async {
@@ -391,6 +366,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
               setState(() {
                 this._category = category;
               });
+
             },
             items: categories
                 .map((category) => DropdownMenuItem(
@@ -441,6 +417,35 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
               nextEnabled: _nextEnable,
               steps: [
                 WeeStep(content: _acceptTermsStep(context)),
+                WeeStep(content: Column(children: <Widget>[
+                  Text('Company Activity',style: Theme.of(context).textTheme.title,),
+                  _sizedBox,
+                  BlocBuilder(
+                    bloc: _categoryBloc,
+                    builder: (BuildContext context, state) {
+                      print(state);
+                      if (state is CategorySuccess) {
+                        return _activityPickerWidget(state.categoryList);
+                      }
+
+                      if (state is CategoryTimeout ||
+                          state is CategoryNetworkError ||
+                          state is CategoryError) {
+                        return _activityPickerWidget([], true);
+                      }
+
+                      return Column(
+                        children: <Widget>[
+                          _activityPickerWidget([]),
+                          SizedBox(
+                            child: LinearProgressIndicator(),
+                            height: 1,
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                ],crossAxisAlignment: CrossAxisAlignment.start,)),
                 WeeStep(content: _buildCompanyDetailsWidgetStep()),
                 WeeStep(content: _buildContactInformationStep()),
                 WeeStep(content: _buildFeatureClientStep(context)),

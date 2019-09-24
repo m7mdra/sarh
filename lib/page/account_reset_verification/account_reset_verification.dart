@@ -55,24 +55,24 @@ class _AccountResetVerificationPageState
           padding: const EdgeInsets.all(16.0),
           child: Center(
             child: BlocListener(
-            bloc: _verifyResetAccountBloc,
-              listener:(context, state) {
+              bloc: _verifyResetAccountBloc,
+              listener: (context, state) {
                 if (state is Loading) {
                   showDialog(
                       context: context,
                       builder: (context) => ProgressDialog(
-                        message: AppLocalizations.of(context)
-                            .verifyAccountProgressDialogTitle,
-                      ),
+                            message: AppLocalizations.of(context)
+                                .verifyAccountProgressDialogTitle,
+                          ),
                       barrierDismissible: false);
                 }
                 if (state is ResendLoading) {
                   showDialog(
                       context: context,
                       builder: (context) => ProgressDialog(
-                        message: AppLocalizations.of(context)
-                            .resendCodeProgressDialogTitle,
-                      ),
+                            message: AppLocalizations.of(context)
+                                .resendCodeProgressDialogTitle,
+                          ),
                       barrierDismissible: false);
                 }
                 if (state is Failed) {
@@ -86,8 +86,8 @@ class _AccountResetVerificationPageState
                   _hideProgressDialog(context);
                   _hideCurrentSnackbar();
                   scaffold.showSnackBar(SnackBar(
-                    content:
-                    Text(AppLocalizations.of(context).invalidVerificationCode),
+                    content: Text(
+                        AppLocalizations.of(context).invalidVerificationCode),
                     behavior: SnackBarBehavior.floating,
                   ));
                 }
@@ -97,20 +97,23 @@ class _AccountResetVerificationPageState
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => NewPasswordPage()));
+                          builder: (context) => NewPasswordPage(
+                                phoneNumber: widget.phoneNumber,
+                                resetToken: state.resetToken,
+                              )));
                 }
                 if (state is ResendRequested) {
                   _hideProgressDialog(context);
                   _hideCurrentSnackbar();
                   scaffold.showSnackBar(SnackBar(
-                    content:
-                    Text(AppLocalizations.of(context).verificationCodeRequest),
+                    content: Text(
+                        AppLocalizations.of(context).verificationCodeRequest),
                     behavior: SnackBarBehavior.floating,
                     backgroundColor: Colors.green,
                   ));
                 }
 
-               /* if (state is Timeout) {
+                /* if (state is Timeout) {
                   _hideProgressDialog(context);
                   _hideCurrentSnackbar();
                   scaffold.showSnackBar(SnackBar(
@@ -198,9 +201,9 @@ class _AccountResetVerificationPageState
                               _verifyResetAccountBloc
                                   .dispatch(VerifyAccount(codeWidget.codes));
                             }
-
                           },
-                          child: Text(AppLocalizations.of(context).verifyButton),
+                          child:
+                              Text(AppLocalizations.of(context).verifyButton),
                         ),
                       ),
                       BlocBuilder(
@@ -228,6 +231,7 @@ class _AccountResetVerificationPageState
           ),
         ));
   }
+
   void _hideCurrentSnackbar() => scaffold.hideCurrentSnackBar();
 
   bool _hideProgressDialog(BuildContext context) => Navigator.pop(context);

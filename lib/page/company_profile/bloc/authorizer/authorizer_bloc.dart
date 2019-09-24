@@ -23,7 +23,7 @@ class AuthorizersBloc extends Bloc<AuthorizerEvent, AuthorizerState> {
         if (response.success) {
           var list = response.data;
           if (list.isNotEmpty) {
-            yield AuthorizersLoaded(UnmodifiableListView([]));
+            yield AuthorizersLoaded(UnmodifiableListView(list));
           } else {
             yield AuthorizersEmpty();
           }

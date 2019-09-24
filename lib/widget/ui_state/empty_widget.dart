@@ -12,7 +12,6 @@ class EmptyWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          //TODO add translation
           SizedBox(
             height: 8,
           ),

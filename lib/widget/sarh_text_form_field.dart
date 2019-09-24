@@ -8,7 +8,6 @@ class SrahTextFormField extends StatefulWidget {
   final bool obscureText;
   final FocusNode focusNode;
 
-  //TODO add validator and other [TextFormField] fields
 
   const SrahTextFormField(
       {Key key,

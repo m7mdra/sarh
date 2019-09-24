@@ -85,8 +85,6 @@ class UserRepository {
           throw error;
       }
     } catch (error) {
-      print(error);
-
       throw error;
     }
   }

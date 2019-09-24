@@ -7,9 +7,11 @@ class ActivityRepository {
 
   ActivityRepository(this._client);
 
-  Future<ActivityResponse> getActivities() async {
+  Future<ActivityResponse> getActivitiesWithCategory(int categoryId) async {
     try {
-      var response = await _client.get('activities');
+      var response = await _client.get('get-activities',queryParameters: {
+        'category':categoryId
+      });
       return ActivityResponse.fromJson(response.data);
     } on DioError catch (error) {
       switch (error.type) {
@@ -19,11 +21,6 @@ class ActivityRepository {
           throw TimeoutException();
           break;
         case DioErrorType.RESPONSE:
-          if (error.response.statusCode == HTTP_UNAUTHORIZED)
-            throw SessionExpiredException();
-          else
-            throw error;
-          break;
         case DioErrorType.CANCEL:
           throw error;
           break;
@@ -38,35 +35,4 @@ class ActivityRepository {
     }
   }
 
-  Future<ActivityResponse> getSubActivities(int parentActivity) async {
-    try {
-      var response = await _client
-          .get('sub_activities', queryParameters: {'main': parentActivity});
-      return ActivityResponse.fromJson(response.data);
-    } on DioError catch (error) {
-      switch (error.type) {
-        case DioErrorType.CONNECT_TIMEOUT:
-        case DioErrorType.SEND_TIMEOUT:
-        case DioErrorType.RECEIVE_TIMEOUT:
-          throw TimeoutException();
-          break;
-        case DioErrorType.RESPONSE:
-          if (error.response.statusCode == HTTP_UNAUTHORIZED)
-            throw SessionExpiredException();
-          else
-            throw error;
-          break;
-        case DioErrorType.CANCEL:
-          throw error;
-          break;
-        case DioErrorType.DEFAULT:
-          throw UnableToConnectException();
-          break;
-        default:
-          throw error;
-      }
-    } catch (error) {
-      throw error;
-    }
-  }
 }

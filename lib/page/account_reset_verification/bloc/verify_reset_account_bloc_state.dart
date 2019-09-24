@@ -6,7 +6,12 @@ class ResendLoading extends ResetVerificationState {}
 
 class NetworkError extends ResetVerificationState {}
 
-class Success extends ResetVerificationState {}
+class Success extends ResetVerificationState {
+  final String resetToken;
+
+  Success(this.resetToken);
+
+}
 
 class InvalidCode extends ResetVerificationState {}
 

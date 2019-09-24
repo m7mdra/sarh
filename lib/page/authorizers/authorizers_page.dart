@@ -1,5 +1,6 @@
 import 'package:Sarh/data/model/authorizer.dart';
 import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/add_authorizer/add_authorizer_page.dart';
 import 'package:Sarh/page/company_profile/bloc/authorizer/authorizer_bloc.dart';
 import 'package:Sarh/page/company_profile/bloc/authorizer/bloc.dart';
 import 'package:Sarh/size_config.dart';
@@ -52,7 +53,7 @@ class _AuthorizersPageState extends State<AuthorizersPage> {
               ),
             );
           }
-          if(state is AuthorizersEmpty){
+          if (state is AuthorizersEmpty) {
             return Center(child: EmptyWidget());
           }
           if (state is AuthorizersLoaded) {
@@ -75,7 +76,10 @@ class _AuthorizersPageState extends State<AuthorizersPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddAuthorizerPage()));
+        },
         child: Icon(FontAwesomeIcons.plus),
       ),
       backgroundColor: Colors.white,
@@ -103,10 +107,12 @@ class AuthorizerWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image.network(
-            authorizer.logo,
-            width: SizeConfig.blockSizeHorizontal * 50,
-            fit: BoxFit.fitWidth,
+          Expanded(
+            child: Image.network(
+              authorizer.logo,
+              width: SizeConfig.blockSizeHorizontal * 50,
+              fit: BoxFit.fitWidth,
+            ),
           ),
           SizedBox(
             height: 4,

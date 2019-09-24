@@ -205,7 +205,8 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                                   Text(
                                     'No Authorizers added',
                                     style: Theme.of(context).textTheme.title,
-                                  )
+                                  ),
+                                  FlatButton(onPressed: (){},child: Text('Add now'),)
                                 ],
                               );
                             }

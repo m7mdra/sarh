@@ -25,7 +25,7 @@ class VerifyResetAccountBloc extends Bloc<ResetVerificationEvent, ResetVerificat
       try {
         var response = await userRepository.verifyResetCode(event.code);
         if (response.success) {
-          yield Success();
+          yield Success(response.data.token);
         } else {
           yield InvalidCode();
         }

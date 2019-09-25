@@ -34,5 +34,5 @@ class Category {
     return data;
   }
 
-  bool get hasDescendant => _hasActivity == 1;
+  bool get hasDescendant => _hasActivity == 0;
 }

@@ -14,7 +14,8 @@ class CompleteRegistrationModel {
   final String address;
   final String website;
   final String postCode;
-  final Category activity;
+  final Category category;
+  final List<ActivityId> activities;
   final List<File> companyAttachments;
   final List<SocialMedia> socialMediaList;
 
@@ -23,10 +24,11 @@ class CompleteRegistrationModel {
       this.about,
       this.companySize,
       this.landPhone,
+      this.activities,
       this.postCode,
       this.address,
       this.website,
-      this.activity,
+      this.category,
       this.companyAttachments,
       this.socialMediaList});
 }
@@ -58,4 +60,19 @@ class SocialMediaId {
   final int value;
 
   SocialMediaId._(this.value);
+}
+
+class ActivityId {
+   int id;
+
+  ActivityId(this.id);
+  ActivityId.fromJson(Map<String, dynamic> json) {
+    id = json['activity'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['activity'] = this.id;
+    return data;
+  }
 }

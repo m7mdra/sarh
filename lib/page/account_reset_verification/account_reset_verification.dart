@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../widget/progress_dialog.dart';
 import 'bloc/verify_reset_account_bloc.dart';
-
+const NUMBER_OF_CODE_BLOCKS=4;
 class AccountResetVerificationPage extends StatefulWidget {
   final String phoneNumber;
 
@@ -170,7 +170,7 @@ class _AccountResetVerificationPageState
                   SizedBox(height: 8),
                   Directionality(
                     child: VerificationCodeWidget(
-                      6,
+                      NUMBER_OF_CODE_BLOCKS,
                       key: _codeWidgetKey,
                       // ignore: missing_return
                       onCodeChange: (code) {},
@@ -188,7 +188,7 @@ class _AccountResetVerificationPageState
                         child: RaisedButton(
                           onPressed: () {
                             if (codeWidget.codes == null ||
-                                codeWidget.codes.length < 6) {
+                                codeWidget.codes.length < NUMBER_OF_CODE_BLOCKS) {
                               scaffold.hideCurrentSnackBar(
                                   reason: SnackBarClosedReason.hide);
                               scaffold.showSnackBar(SnackBar(

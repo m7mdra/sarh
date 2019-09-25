@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:Sarh/data/model/activity.dart';
 import 'package:Sarh/data/model/category.dart';
 import 'package:Sarh/data/model/company_size.dart';
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/i10n/app_localizations.dart';
+import 'package:Sarh/page/activity/bloc/bloc.dart';
 import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_bloc.dart';
 import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_event.dart';
 import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_state.dart';
@@ -12,11 +14,13 @@ import 'package:Sarh/page/home/category/bloc/category_bloc.dart';
 import 'package:Sarh/page/home/category/bloc/category_event.dart';
 import 'package:Sarh/page/home/category/bloc/category_state.dart';
 import 'package:Sarh/page/home/main/main_page.dart';
+import 'package:Sarh/page/login/bloc/login_event_state.dart';
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/page/privacy_policy/privacy_policy_page.dart';
 import 'package:Sarh/page/profile_image_modify/bloc/bloc.dart';
 import 'package:Sarh/page/profile_image_modify/bloc/modify_profile_image_bloc.dart';
 import 'package:Sarh/page/profile_image_modify/bloc/modify_profile_image_event.dart';
+import 'package:Sarh/page/sub_category/bloc/bloc.dart';
 import 'package:Sarh/page/tos/tos_page.dart';
 import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/media_picker_dialog.dart';
@@ -73,12 +77,16 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   LoadClientBloc _loadClientBloc;
   AddClientBloc _addClientBloc;
   CategoryBloc _categoryBloc;
-
+  ActivityBloc _activityBloc;
+  SubCategoryBloc _subCategoryBloc;
   ModifyProfileImageBloc _modifyProfileImageBloc;
   CompleteRegisterBloc _completeRegisterBloc;
   Category _category;
+  Category _subCategory;
   GlobalKey<FormState> _companyDetailsFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> _companyContactFormKey = GlobalKey<FormState>();
+
+  Map<int, Activity> _selectedActivities = {};
 
   FormState get companyDetailsForm => _companyDetailsFormKey.currentState;
 
@@ -88,12 +96,15 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   void initState() {
     super.initState();
     _companySizeBloc = CompanySizeBloc(DependencyProvider.provide());
+    _activityBloc = ActivityBloc(DependencyProvider.provide());
+    _subCategoryBloc = SubCategoryBloc(DependencyProvider.provide());
     _completeRegisterBloc = CompleteRegisterBloc(DependencyProvider.provide(),
         DependencyProvider.provide(), DependencyProvider.provide());
     _modifyProfileImageBloc = ModifyProfileImageBloc(
         DependencyProvider.provide(), DependencyProvider.provide());
     _modifyProfileImageBloc.dispatch(Load());
-    _categoryBloc = CategoryBloc(DependencyProvider.provide());
+    _categoryBloc = CategoryBloc(DependencyProvider.provide(),
+        subCategoryBloc: _subCategoryBloc, activityBloc: _activityBloc);
     _categoryBloc.dispatch(LoadCategories());
     _loadClientBloc = LoadClientBloc(DependencyProvider.provide());
     _addClientBloc = AddClientBloc(DependencyProvider.provide(),
@@ -119,6 +130,8 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     _companySizeBloc.dispose();
     _loadClientBloc.dispose();
     _categoryBloc.dispose();
+    _activityBloc.dispose();
+    _subCategoryBloc.dispose();
     _completeRegisterBloc.dispose();
     _addClientBloc.dispose();
     _startDateController.dispose();
@@ -138,6 +151,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
+      backgroundColor: Colors.white,
       key: _scaffoldKey,
       body: BlocListener(
         bloc: _completeRegisterBloc,
@@ -212,28 +226,35 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   }
 
   void _onNextClicked() {
-    if (_currentStep != 6) {
+    if (_currentStep != 7) {
       switch (_currentStep) {
         case 0:
           _moveToNextStep();
           break;
         case 1:
-          if (companyDetailsForm.validate()) {
-
-              _moveToNextStep();
-
+          if (_selectedActivities.isEmpty) {
+            scaffold.showSnackBar(SnackBar(
+              content: Text('Selected atleast one activity'),
+            ));
+          } else {
+            _moveToNextStep();
           }
           break;
         case 2:
-          if (companyContactForm.validate()) {
+          if (companyDetailsForm.validate()) {
             _moveToNextStep();
           }
           break;
         case 3:
+          if (companyContactForm.validate()) {
+            _moveToNextStep();
+          }
+          break;
         case 4:
+        case 5:
           _moveToNextStep();
           break;
-        case 5:
+        case 6:
           _attemptRegister();
           break;
       }
@@ -241,13 +262,16 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   }
 
   void _attemptRegister() {
-    _completeRegisterBloc.dispatch(CompleteRegister(CompleteRegistrationModel(
+    var model = CompleteRegistrationModel(
       startFromDate: _startDateController.value.text,
       about: _companyDescriptionController.value.text,
       companySize: companySize,
       landPhone: _landLineController.value.text,
       website: _websiteController.value.text,
-      activity: _category,
+      category: _category,
+      activities: _selectedActivities.values
+          .map((activity) => ActivityId(activity.id))
+          .toList(),
       postCode: _zipController.value.text,
       companyAttachments: [_tradeLicenseFile],
       socialMediaList: [
@@ -268,7 +292,8 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
             id: SocialMediaId.BEHANCE.value),
       ],
       address: _addressController.value.text,
-    )));
+    );
+    _completeRegisterBloc.dispatch(CompleteRegister(model));
   }
 
   Widget _buildCompanyDetailsWidgetStep() {
@@ -281,7 +306,6 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
             'Company details.',
             style: Theme.of(context).textTheme.title,
           ),
-
           _sizedBox,
           GestureDetector(
             onTap: () async {
@@ -364,9 +388,11 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
         DropdownButtonFormField<Category>(
             onChanged: (category) {
               setState(() {
+                _category = null;
+                _subCategory = null;
                 this._category = category;
               });
-
+              _categoryBloc.dispatch(OnCategorySelectedEvent(category));
             },
             items: categories
                 .map((category) => DropdownMenuItem(
@@ -377,7 +403,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
             value: _category,
             validator: (_activity) {
               if (_activity == null)
-                return 'Select main activity';
+                return 'Select main category';
               else
                 return null;
             },
@@ -385,7 +411,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
                 contentPadding: const EdgeInsets.all(_kFormFieldPadding),
                 hintStyle: _hintTextStyle,
                 labelStyle: _labelTextStyle,
-                hintText: 'Main activiy',
+                hintText: 'Category',
                 border: OutlineInputBorder())),
         Visibility(
           visible: error,
@@ -406,6 +432,57 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
     );
   }
 
+  Widget _subActivityPickerWidget(List<Category> categories,
+      [bool error = false]) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        DropdownButtonFormField<Category>(
+            onChanged: (category) {
+              setState(() {
+                _subCategory = null;
+                this._subCategory = category;
+              });
+              _activityBloc.dispatch(LoadActivitiesFromCategory(category.id));
+            },
+            items: categories
+                .map((category) => DropdownMenuItem(
+                      child: Text('${category.nameEn} - ${category.nameAr}'),
+                      value: category,
+                    ))
+                .toList(),
+            value: _subCategory,
+            validator: (_activity) {
+              if (_activity == null)
+                return 'Select sub category';
+              else
+                return null;
+            },
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(_kFormFieldPadding),
+                hintStyle: _hintTextStyle,
+                labelStyle: _labelTextStyle,
+                hintText: 'Sub Category',
+                border: OutlineInputBorder())),
+        Visibility(
+          visible: error,
+          child: Text('Failed to load categories',
+              style: TextStyle(color: Theme.of(context).errorColor)),
+        ),
+        Visibility(
+          visible: error,
+          child: OutlineButton(
+              onPressed: () {
+                _subCategoryBloc.dispatch(LoadSubCategories(_category.id));
+              },
+              child: Text(
+                AppLocalizations.of(context).retryButton,
+              )),
+        )
+      ],
+    );
+  }
+
   Column _registerStepper(BuildContext context) {
     return Column(
       children: <Widget>[
@@ -417,35 +494,148 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
               nextEnabled: _nextEnable,
               steps: [
                 WeeStep(content: _acceptTermsStep(context)),
-                WeeStep(content: Column(children: <Widget>[
-                  Text('Company Activity',style: Theme.of(context).textTheme.title,),
-                  _sizedBox,
-                  BlocBuilder(
-                    bloc: _categoryBloc,
-                    builder: (BuildContext context, state) {
-                      print(state);
-                      if (state is CategorySuccess) {
-                        return _activityPickerWidget(state.categoryList);
-                      }
+                WeeStep(
+                    content: Column(
+                  children: <Widget>[
+                    Text(
+                      'Company Activity',
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                    _sizedBox,
+                    BlocListener(
+                      bloc: _activityBloc,
+                      listener: (context, state) {
+                        if (state is HideActivityState) {
+                          _selectedActivities.clear();
+                        }
+                        if (state is ActivitiesLoadedState) {
+                          _selectedActivities.clear();
+                        }
+                      },
+                      child: BlocListener(
+                        bloc: _subCategoryBloc,
+                        listener: (context, state) {
+                          if (state is HideSubCategoryState) {
+                            _selectedActivities.clear();
+                          }
+                        },
+                        child: BlocBuilder(
+                          bloc: _categoryBloc,
+                          builder: (BuildContext context, state) {
+                            if (state is CategorySuccess) {
+                              return _activityPickerWidget(state.categoryList);
+                            }
 
-                      if (state is CategoryTimeout ||
-                          state is CategoryNetworkError ||
-                          state is CategoryError) {
-                        return _activityPickerWidget([], true);
-                      }
+                            if (state is CategoryTimeout ||
+                                state is CategoryNetworkError ||
+                                state is CategoryError) {
+                              return _activityPickerWidget([], true);
+                            }
 
-                      return Column(
-                        children: <Widget>[
-                          _activityPickerWidget([]),
-                          SizedBox(
-                            child: LinearProgressIndicator(),
-                            height: 1,
-                          )
-                        ],
-                      );
-                    },
-                  ),
-                ],crossAxisAlignment: CrossAxisAlignment.start,)),
+                            return Column(
+                              children: <Widget>[
+                                _activityPickerWidget([]),
+                                SizedBox(
+                                  child: LinearProgressIndicator(),
+                                  height: 1,
+                                )
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    _sizedBox,
+                    BlocBuilder(
+                      bloc: _subCategoryBloc,
+                      builder: (context, state) {
+                        if (state is SubCategorySuccess) {
+                          return _subActivityPickerWidget(state.categoryList);
+                        }
+                        if (state is SubCategoryTimeout ||
+                            state is SubCategoryNetworkError ||
+                            state is SubCategoryError) {
+                          return _subActivityPickerWidget([], true);
+                        }
+                        if (state is SubCategoryEmpty) {
+                          return _subActivityPickerWidget([]);
+                        }
+                        if (state is SubCategoryLoading) {
+                          return Column(
+                            children: <Widget>[
+                              _subActivityPickerWidget([]),
+                              SizedBox(
+                                child: LinearProgressIndicator(),
+                                height: 1,
+                              )
+                            ],
+                          );
+                        }
+                        if (state is HideSubCategoryState) {
+                          return Container();
+                        }
+                        return Container();
+                      },
+                    ),
+                    _sizedBox,
+                    BlocBuilder(
+                      bloc: _activityBloc,
+                      builder: (context, state) {
+                        if (state is ActivityLoadingState) {
+                          return Center(
+                            child: ProgressBar(),
+                          );
+                        }
+                        if (state is ActivitiesLoadedState) {
+                          return Wrap(
+                            spacing: 2,
+
+                            children: state.activities
+                                .toList()
+                                .map((activity) => ActivityWidget(
+                                      activity: activity,
+                                      onSelect: (activity) {
+                                        setState(() {
+                                          if (_selectedActivities
+                                              .containsKey(activity.id))
+                                            _selectedActivities
+                                                .remove(activity.id);
+                                          else
+                                            _selectedActivities[activity.id] =
+                                                activity;
+                                        });
+
+                                      },
+                                      selected: _selectedActivities
+                                          .containsKey(activity.id),
+                                    ))
+                                .toList(),
+                          );
+                        }
+                        if (state is ActivityEmptyState) {}
+                        if (state is ActivityTimeoutState ||
+                            state is ActivityNetworkErrorState ||
+                            state is ActivityErrorState) {
+                          return Center(
+                            child: GeneralErrorWidget(
+                              onRetry: () {
+                                int id;
+                                if (_subCategory != null)
+                                  id = _subCategory.id;
+                                else
+                                  id = _category.id;
+                                _activityBloc
+                                    .dispatch(LoadActivitiesFromCategory(id));
+                              },
+                            ),
+                          );
+                        }
+                        return Container();
+                      },
+                    )
+                  ],
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                )),
                 WeeStep(content: _buildCompanyDetailsWidgetStep()),
                 WeeStep(content: _buildContactInformationStep()),
                 WeeStep(content: _buildFeatureClientStep(context)),
@@ -1232,6 +1422,35 @@ class _AddClientPageState extends State<AddClientPage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ActivityWidget extends StatelessWidget {
+  final Activity activity;
+  final bool selected;
+  final ValueSetter<Activity> onSelect;
+
+  const ActivityWidget({Key key, this.activity, this.selected, this.onSelect})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(32),
+      onTap: () => onSelect(activity),
+      child: Chip(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+        padding: const EdgeInsets.all(2),
+
+        label: Text(
+          Localizations.localeOf(context).languageCode == 'ar'
+              ? activity.nameAr
+              : activity.nameEn,
+          style: TextStyle(color: selected ? Colors.white : Colors.black),
+        ),
+        backgroundColor: selected ? Colors.blue : Colors.grey,
       ),
     );
   }

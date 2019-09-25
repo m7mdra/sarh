@@ -15,7 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/timer/ticker.dart';
 import 'bloc/verification_bloc/verify_account_bloc.dart';
-
+const NUMBER_OF_CODE_BLOCKS=4;
 enum Type { resetAccount, newAccount }
 
 class VerifyAccountPage extends StatefulWidget {
@@ -205,7 +205,7 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
                   SizedBox(height: 8),
                   Directionality(
                     child: VerificationCodeWidget(
-                      6,
+                      NUMBER_OF_CODE_BLOCKS,
                       key: _codeWidgetKey,
                       // ignore: missing_return
                       onCodeChange: (code) {},
@@ -223,7 +223,7 @@ class _VerifyAccountPageState extends State<VerifyAccountPage> {
                         child: RaisedButton(
                           onPressed: () {
                             if (codeWidget.codes == null ||
-                                codeWidget.codes.length < 6) {
+                                codeWidget.codes.length < NUMBER_OF_CODE_BLOCKS) {
                               scaffold.hideCurrentSnackBar(
                                   reason: SnackBarClosedReason.hide);
                               scaffold.showSnackBar(SnackBar(

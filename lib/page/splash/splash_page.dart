@@ -97,12 +97,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          animate();
-        },
-        child: Icon(Icons.replay),
-      ),
       backgroundColor: Colors.grey,
       body: SafeArea(
         child: BlocListener(

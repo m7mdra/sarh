@@ -6,3 +6,4 @@ class LoadActivitiesFromCategory extends ActivityEvent{
 
   LoadActivitiesFromCategory(this.categoryId);
 }
+class HideActivities extends ActivityEvent{}

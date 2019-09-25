@@ -6,3 +6,4 @@ class LoadSubCategories extends SubCategoryEvent {
 
   LoadSubCategories(this.categoryId);
 }
+class HideSubCategories extends SubCategoryEvent{}

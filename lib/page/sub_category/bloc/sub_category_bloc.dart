@@ -38,6 +38,8 @@ class SubCategoryBloc extends Bloc<SubCategoryEvent, SubCategoryState> {
         yield SubCategoryError();
       }
     }
-
+    if(event is HideSubCategories){
+      yield HideSubCategoryState();
+    }
   }
 }

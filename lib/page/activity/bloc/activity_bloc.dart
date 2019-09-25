@@ -22,7 +22,7 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
   @override
   Stream<ActivityState> mapEventToState(ActivityEvent event) async* {
     if (event is LoadActivitiesFromCategory) {
-      yield LoadingState();
+      yield ActivityLoadingState();
       try {
         var activityResponse = await _activityRepository
             .getActivitiesWithCategory(event.categoryId);
@@ -31,19 +31,22 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
           if (activities.isNotEmpty) {
             yield ActivitiesLoadedState(UnmodifiableListView(activities));
           } else {
-            yield EmptyState();
+            yield ActivityEmptyState();
           }
         } else {
-          yield ErrorState();
+          yield ActivityErrorState();
         }
       } on TimeoutException {
-        yield TimeoutState();
+        yield ActivityTimeoutState();
       } on UnableToConnectException {
-        yield NetworkErrorState();
+        yield ActivityNetworkErrorState();
       } catch (error) {
         print(error);
-        yield ErrorState();
+        yield ActivityErrorState();
       }
+    }
+    if(event is HideActivities){
+      yield HideActivityState();
     }
   }
 }

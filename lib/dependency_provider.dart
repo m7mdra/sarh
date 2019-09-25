@@ -2,6 +2,7 @@ import 'package:Sarh/data/activity/activity_repository.dart';
 import 'package:Sarh/data/category/category_repository.dart';
 import 'package:Sarh/data/client/client_repository.dart';
 import 'package:Sarh/data/country/city_repository.dart';
+import 'package:Sarh/data/gallery/gallery_repository.dart';
 import 'package:Sarh/data/session.dart';
 import 'package:Sarh/data/user/user_repository.dart';
 import 'package:get_it/get_it.dart';
@@ -54,9 +55,12 @@ class DependencyProvider {
     ClientRepository clientRepository = ClientRepository(client);
     CategoryRepository categoryRepository = CategoryRepository(client);
     AuthorizersRepository authorizersRepository = AuthorizersRepository(client);
+    GalleryRepository galleryRepository = GalleryRepository(client);
+
     _registrar.registerSingleton<Dio>(client);
     _registrar.registerSingleton<Session>(session);
     _registrar.registerFactory<UserRepository>(() => userRepository);
+    _registrar.registerFactory<GalleryRepository>(() => galleryRepository);
     _registrar.registerFactory<ClientRepository>(() => clientRepository);
     _registrar.registerFactory<CountryRepository>(() => countryRepository);
     _registrar

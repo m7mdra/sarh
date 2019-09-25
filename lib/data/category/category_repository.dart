@@ -9,7 +9,8 @@ class CategoryRepository {
 
   Future<CategoryResponse> getCategories() async {
     try {
-      var response = await _client.get('categories');
+      var response =
+          await _client.get('categories', queryParameters: {'flag': 'main'});
       return CategoryResponse.fromJson(response.data);
     } on DioError catch (error) {
       switch (error.type) {
@@ -40,8 +41,8 @@ class CategoryRepository {
 
   Future<CategoryResponse> getSubCategoriesFromParent(int categoryId) async {
     try {
-      var response = await _client
-          .get('categories?flag=sub', queryParameters: {'main_id': categoryId});
+      var response = await _client.get('categories',
+          queryParameters: {'main_id': categoryId, 'flag': 'sub'});
       return CategoryResponse.fromJson(response.data);
     } on DioError catch (error) {
       switch (error.type) {

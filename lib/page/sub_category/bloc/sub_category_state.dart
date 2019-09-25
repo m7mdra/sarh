@@ -21,4 +21,5 @@ class SubCategoryIdle extends SubCategoryState {}
 class SubCategoryTimeout extends SubCategoryState {}
 
 class SubCategorySessionExpired extends SubCategoryState {}
+class HideSubCategoryState extends SubCategoryState{}
 

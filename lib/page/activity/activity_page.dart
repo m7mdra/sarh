@@ -47,12 +47,12 @@ class _ActivityPageState extends State<ActivityPage> {
       body: BlocBuilder(
         bloc: _activityBloc,
         builder: (context, state) {
-          if (state is LoadingState) {
+          if (state is ActivityLoadingState) {
             return Center(
               child: ProgressBar(),
             );
           }
-          if (state is NetworkErrorState || state is TimeoutState) {
+          if (state is ActivityNetworkErrorState || state is ActivityTimeoutState) {
             return Center(
               child: NetworkErrorWidget(onRetry: () => _loadData()),
             );
@@ -60,10 +60,10 @@ class _ActivityPageState extends State<ActivityPage> {
           if (state is ActivitiesLoadedState) {
             return Center(child: Text(state.activities.join()));
           }
-          if (state is EmptyState) {
+          if (state is ActivityEmptyState) {
             return Center(child: EmptyWidget());
           }
-          if (state is ErrorState) {
+          if (state is ActivityErrorState) {
             return Center(child: GeneralErrorWidget(onRetry: () => _loadData()));
           }
 

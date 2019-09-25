@@ -47,10 +47,6 @@ class CompanyRepository {
     }
   }
 
-
-
-
-
   Future<ResponseStatus> completeRegister(
       CompleteRegistrationModel model) async {
     try {
@@ -65,6 +61,8 @@ class CompanyRepository {
         'address': model.address,
         'website': model.website,
         'post_code': model.postCode,
+        'activities':
+            model.activities.map((activity) => activity.toJson()).toList(),
         'main_category': 1, //TODO remove hardcoded activity value
         'company_attachments': model.companyAttachments
             .map((attachment) => UploadFileInfo(attachment,

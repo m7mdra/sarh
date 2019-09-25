@@ -4,11 +4,11 @@ import 'package:Sarh/data/model/activity.dart';
 
 class ActivityState {}
 
-class LoadingState extends ActivityState {}
+class ActivityLoadingState extends ActivityState {}
 
-class EmptyState extends ActivityState {}
+class ActivityEmptyState extends ActivityState {}
 
-class NetworkErrorState extends ActivityState {}
+class ActivityNetworkErrorState extends ActivityState {}
 
 class ActivitiesLoadedState extends ActivityState {
   final UnmodifiableListView<Activity> activities;
@@ -16,6 +16,7 @@ class ActivitiesLoadedState extends ActivityState {
   ActivitiesLoadedState(this.activities);
 }
 
-class TimeoutState extends ActivityState {}
+class ActivityTimeoutState extends ActivityState {}
 
-class ErrorState extends ActivityState {}
+class ActivityErrorState extends ActivityState {}
+class HideActivityState extends ActivityState{}

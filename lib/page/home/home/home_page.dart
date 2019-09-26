@@ -3,28 +3,35 @@ import 'package:Sarh/page/company_gallery/company_gallery_page.dart';
 import 'package:Sarh/widget/category_ship_widget.dart';
 import 'package:Sarh/widget/ui_state.dart';
 import 'package:Sarh/widget/ui_state/progress_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'dart:math' show Random;
-import 'package:Sarh/image.json.dart';
-import 'bloc/gallery/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import 'bloc/gallery/bloc.dart';
 
 class HomePage extends StatefulWidget {
+
+  const HomePage({Key key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
+
+
 }
 
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
   GalleryBloc _galleryBloc;
+  ScrollController _scrollController;
+
 
   @override
   void initState() {
     super.initState();
     _galleryBloc = GalleryBloc(DependencyProvider.provide());
     _loadGalleries();
+    _scrollController = ScrollController();
   }
 
   void _loadGalleries() => _galleryBloc.dispatch(LoadGalleries());
@@ -33,6 +40,7 @@ class _HomePageState extends State<HomePage>
   void dispose() {
     super.dispose();
     _galleryBloc.dispose();
+    _scrollController.dispose();
   }
 
   @override
@@ -78,33 +86,35 @@ class _HomePageState extends State<HomePage>
                   child: NetworkErrorWidget(onRetry: () => _loadGalleries()),
                 );
               }
-              if(state is GalleryEmptyState){
+              if (state is GalleryEmptyState) {
                 return Center(child: EmptyWidget());
               }
-              if(state is GalleryLoadedState){
+              if (state is GalleryLoadedState) {
                 var galleryItems = state.galleryItems;
-               return Expanded(
+                return Expanded(
                   child: new StaggeredGridView.countBuilder(
+                    key: PageStorageKey(10),
+                    controller: _scrollController,
                     padding: const EdgeInsets.only(bottom: 80),
                     crossAxisCount: 4,
-                    primary: true,
                     itemCount: galleryItems.length,
                     itemBuilder: (BuildContext context, int index) => InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return CompanyGalleryPage(
-                            images: imageList.sublist(
-                                0, Random().nextInt(imageList.length - 1)),
-                          );
-                        }));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                              return CompanyGalleryPage(
+                                  galleryItem: state.galleryItems[index]);
+                            }));
                       },
                       child: CachedNetworkImage(
+                        key: ObjectKey(galleryItems[index].id),
                         imageUrl: galleryItems[index].img,
                         fit: BoxFit.cover,
                         placeholderFadeInDuration: Duration(milliseconds: 200),
                       ),
                     ),
-                    staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
+                    staggeredTileBuilder: (int index) =>
+                    new StaggeredTile.fit(2),
                     mainAxisSpacing: 4.0,
                     crossAxisSpacing: 4.0,
                   ),
@@ -113,7 +123,6 @@ class _HomePageState extends State<HomePage>
               return Container();
             },
           ),
-
         ],
       ),
     );

@@ -1,17 +1,19 @@
 import 'package:Sarh/data/model/category.dart';
 import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/locale.dart';
 import 'package:Sarh/page/activity/activity_page.dart';
 import 'package:Sarh/page/home/Category/bloc/category_bloc.dart';
 import 'package:Sarh/page/home/category/bloc/category_event.dart';
 import 'package:Sarh/page/home/category/bloc/category_state.dart';
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/page/sub_category/sub_category_page.dart';
+import 'package:Sarh/widget/ui_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Sarh/widget/ui_state.dart';
-import 'package:Sarh/locale.dart';
 
 class CategoryPage extends StatefulWidget {
+  const CategoryPage({Key key}) : super(key: key);
+
   @override
   _CategoryPageState createState() => _CategoryPageState();
 }

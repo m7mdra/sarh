@@ -1,24 +1,55 @@
-import 'dart:math';
-
+import 'package:Sarh/data/model/gallery_item.dart';
+import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/company_gallery/bloc/bloc.dart';
+import 'package:Sarh/page/company_gallery/bloc/company_gallery_bloc.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/relative_align.dart';
 import 'package:Sarh/widget/sliver_header_delegate.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:Sarh/widget/ui_state.dart';
+import 'package:Sarh/widget/ui_state/progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-class CompanyGalleryPage extends StatefulWidget {
-  final List<String> images;
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
-  const CompanyGalleryPage({Key key, this.images}) : super(key: key);
+class CompanyGalleryPage extends StatefulWidget {
+  final GalleryItem galleryItem;
+
+  const CompanyGalleryPage({Key key, this.galleryItem}) : super(key: key);
 
   @override
   _CompanyGalleryPageState createState() => _CompanyGalleryPageState();
 }
 
 class _CompanyGalleryPageState extends State<CompanyGalleryPage> {
+  GalleryItem galleryItem;
+  CompanyGalleryBloc _galleryBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    galleryItem = widget.galleryItem;
+    _galleryBloc = CompanyGalleryBloc(DependencyProvider.provide());
+    _dispatch();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _galleryBloc.dispose();
+  }
+
+  void _dispatch() => _galleryBloc.dispatch(LoadCompanyGallery(galleryItem.id));
+
+  ///TODO: The getter 'visible' was called on null.
+  ///Receiver: null
+  ///Tried calling: visible
   @override
   Widget build(BuildContext context) {
+    var company = galleryItem.company;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
@@ -43,11 +74,13 @@ class _CompanyGalleryPageState extends State<CompanyGalleryPage> {
                         child: Row(
                           children: <Widget>[
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(35),
-                              child: Image.asset(
-                                'assets/logo/logo-light.png',
-                              ),
-                            ),
+                                borderRadius: BorderRadius.circular(35),
+                                child: company.companyImage != null &&
+                                    company.companyImage.isNotEmpty
+                                    ? Image.network(company.companyImage)
+                                    : Image.asset(
+                                  'assets/logo/logo-light.png',
+                                )),
                             SizedBox(
                               width: 8,
                             ),
@@ -56,7 +89,7 @@ class _CompanyGalleryPageState extends State<CompanyGalleryPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Text('Company name here'),
+                                Text('${company.companyName}'),
                                 Text(
                                   'tap to view profile',
                                   style: Theme.of(context).textTheme.caption,
@@ -67,12 +100,43 @@ class _CompanyGalleryPageState extends State<CompanyGalleryPage> {
                         ),
                       ),
                     ))),
-            SliverList(
-                delegate: SliverChildListDelegate(widget.images
-                    .map((image) => CompanyGalleryItem(
-                          imageUrl: image,
-                        ))
-                    .toList()))
+            SliverToBoxAdapter(
+              child: BlocBuilder(
+                  bloc: _galleryBloc,
+                  builder: (context, state) {
+                    print(state);
+                    if (state is CompanyGalleryLoading) {
+                      return Center(child: ProgressBar());
+                    }
+                    if (state is CompanyGalleryNetworkError) {
+                      return Center(
+                          child:
+                          NetworkErrorWidget(onRetry: () => _dispatch()));
+                    }
+                    if (state is CompanyGalleryError) {
+                      return Center(
+                          child:
+                          GeneralErrorWidget(onRetry: () => _dispatch()));
+                    }
+                    if (state is CompanyGalleryEmpty) {
+                      return Center(
+                        child: EmptyWidget(),
+                      );
+                    }
+                    if (state is CompanyGalleryLoaded) {
+                      List galleryItems = state.galleryItems;
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          itemBuilder: (context, index) {
+                            return CompanyGalleryItemWidget(
+                                galleryItem: galleryItems[index]);
+                          },
+                          itemCount: galleryItems.length);
+                    }
+                    return Container();
+                  }),
+            )
           ],
         ),
       ),
@@ -80,11 +144,10 @@ class _CompanyGalleryPageState extends State<CompanyGalleryPage> {
   }
 }
 
+class CompanyGalleryItemWidget extends StatelessWidget {
+  final GalleryItem galleryItem;
 
-class CompanyGalleryItem extends StatelessWidget {
-  final String imageUrl;
-
-  const CompanyGalleryItem({Key key, this.imageUrl}) : super(key: key);
+  const CompanyGalleryItemWidget({Key key, this.galleryItem}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -167,27 +230,36 @@ class CompanyGalleryItem extends StatelessWidget {
           ),
         ),
         CachedNetworkImage(
-          imageUrl: imageUrl,
+          imageUrl: galleryItem.img,
           fit: BoxFit.fitWidth,
           width: MediaQuery.of(context).size.width,
-          height: 250,
           placeholderFadeInDuration: Duration(milliseconds: 200),
         ),
         SizedBox(
           height: 8,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 16,right: 16,top: 4),
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 4),
           child: Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-            ' Curabitur augue lectus, egestas quis commodo a, auctor in eros.'
-            ' Curabitur facilisis egestas erat, mattis sagittis turpis sodales vitae.',
+            galleryItem.title,
+            style: Theme
+                .of(context)
+                .textTheme
+                .subhead,
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 16,right: 16,top: 4),
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 4),
           child: Text(
-            '${Random().nextInt(24)} hour ago',
+            galleryItem.description,
+
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 4),
+          child: Text(
+            DateFormat.ms().format(
+                DateTime.fromMillisecondsSinceEpoch(galleryItem.createdAt)),
             style: Theme.of(context).textTheme.caption,
           ),
         ),

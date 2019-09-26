@@ -3,6 +3,8 @@ import 'package:Sarh/page/search/search_result_page.dart';
 import 'package:flutter/material.dart';
 
 class FavoritePage extends StatefulWidget {
+  const FavoritePage({Key key}) : super(key: key);
+
   @override
   _FavoritePageState createState() => _FavoritePageState();
 }

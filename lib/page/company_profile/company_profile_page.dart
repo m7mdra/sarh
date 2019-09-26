@@ -14,9 +14,10 @@ import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/ui_state.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'bloc/profile/bloc.dart';
 
 class CompanyProfilePage extends StatefulWidget {
@@ -216,50 +217,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
                         Divider(
                           height: 1,
                         ),
-                        Text(
-                          'Featured projects',
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                        _heightSizedBox(),
-                        Wrap(
-                          alignment: WrapAlignment.center,
-                          spacing: 4,
-                          runSpacing: 4,
-                          direction: Axis.horizontal,
-                          children: <Widget>[
-                            Container(
-                              width: 120,
-                              height: 100,
-                              color: Colors.red,
-                            ),
-                            Container(
-                              width: 120,
-                              height: 100,
-                              color: Colors.red,
-                            ),
-                            Container(
-                              width: 120,
-                              height: 100,
-                              color: Colors.red,
-                            ),
-                            Container(
-                              width: 120,
-                              height: 100,
-                              color: Colors.red,
-                            ),
-                            Container(
-                              width: 120,
-                              height: 100,
-                              color: Colors.red,
-                            ),
-                            Container(
-                              width: 120,
-                              height: 100,
-                              color: Colors.red,
-                            ),
-                          ],
-                        ),
-                        _divider,
+
                         Text(
                           'Customers Reviews',
                           style: Theme.of(context).textTheme.title,

@@ -1,13 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
 
-import 'package:Sarh/data/authorizers/model/authorizers_response.dart';
-import 'package:Sarh/data/client/model/company_clients_response.dart';
 import 'package:Sarh/data/company/model/company_size_response.dart';
 import 'package:Sarh/data/exceptions/exceptions.dart';
 import 'package:Sarh/data/response_status.dart';
-import 'package:Sarh/data/user/model/authentication_response.dart';
 import 'package:Sarh/page/add_company_profile/bloc/complete_register/bloc.dart';
 import 'package:dio/dio.dart';
 
@@ -61,9 +56,10 @@ class CompanyRepository {
         'address': model.address,
         'website': model.website,
         'post_code': model.postCode,
+        'location': '0.0,0.0', //TODO remove hardcoded location.
         'activities':
             model.activities.map((activity) => activity.toJson()).toList(),
-        'main_category': 1, //TODO remove hardcoded activity value
+        'main_category': model.category.id,
         'company_attachments': model.companyAttachments
             .map((attachment) => UploadFileInfo(attachment,
                 'attachment${DateTime.now().millisecondsSinceEpoch})'))

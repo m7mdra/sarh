@@ -9,8 +9,8 @@ class GalleryRepository {
 
   Future<GalleryResponse> getGalleries() async {
     try {
-    var response=  await _client.get('company_gallareys');
-    return GalleryResponse.fromJson(response.data);
+      var response = await _client.get('company_gallareys');
+      return GalleryResponse.fromJson(response.data);
     } on DioError catch (error) {
       switch (error.type) {
         case DioErrorType.CONNECT_TIMEOUT:
@@ -38,5 +38,35 @@ class GalleryRepository {
     }
   }
 
-  Future getCompanyGallery(int companyId) {}
+  Future<GalleryResponse> getCompanyGallery(int companyId) async {
+    try {
+      var response = await _client
+          .get('company_gallareys', queryParameters: {'company': companyId});
+      return GalleryResponse.fromJson(response.data);
+    } on DioError catch (error) {
+      switch (error.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+        case DioErrorType.SEND_TIMEOUT:
+        case DioErrorType.RECEIVE_TIMEOUT:
+          throw TimeoutException();
+          break;
+        case DioErrorType.RESPONSE:
+          if (error.response.statusCode == HTTP_UNAUTHORIZED)
+            throw SessionExpiredException();
+          else
+            throw error;
+          break;
+        case DioErrorType.CANCEL:
+          throw error;
+          break;
+        case DioErrorType.DEFAULT:
+          throw UnableToConnectException();
+          break;
+        default:
+          throw error;
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 }

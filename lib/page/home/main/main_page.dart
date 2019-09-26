@@ -1,8 +1,6 @@
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/community/community_page.dart';
 import 'package:Sarh/page/company_profile/company_profile_page.dart';
-import 'package:Sarh/page/home/category/bloc/category_bloc.dart';
-import 'package:Sarh/page/home/category/bloc/category_event.dart';
 import 'package:Sarh/page/home/category/category_page.dart';
 import 'package:Sarh/page/home/favorite/favorites_page.dart';
 import 'package:Sarh/page/home/main/bloc/bloc.dart';
@@ -19,16 +17,18 @@ import 'package:Sarh/page/search/search_page.dart';
 import 'package:Sarh/page/settings/settings_page.dart';
 import 'package:Sarh/widget/fab_bottom_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../home/home_page.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+
+import '../home/home_page.dart';
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage>
+    with AutomaticKeepAliveClientMixin {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   GlobalKey<UserDrawerState> _drawerKey = GlobalKey();
   GlobalKey<FABBottomAppBarState> _bottomBarKey = GlobalKey();
@@ -134,10 +134,10 @@ class _MainPageState extends State<MainPage> {
                 preloadPagesCount: 4,
                 controller: _pageController,
                 children: <Widget>[
-                  HomePage(),
-                  CategoryPage(),
-                  UpdatesPage(),
-                  FavoritePage()
+                  HomePage(key: PageStorageKey(0),),
+                  CategoryPage(key: PageStorageKey(1),),
+                  UpdatesPage(key: PageStorageKey(2),),
+                  FavoritePage(key: PageStorageKey(3),)
                 ],
               ),
             ),
@@ -179,8 +179,12 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-}
 
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+}
+//TODO: FIX EMAIL OVERFLOW
 class UserDrawer extends StatefulWidget {
   const UserDrawer({
     Key key,

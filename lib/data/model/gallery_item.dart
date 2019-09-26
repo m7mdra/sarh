@@ -42,7 +42,7 @@ class GalleryItem {
 class CompanyReference {
   int companyId;
   String companyName;
-  String companyImage;
+  String companyImage = "";
 
   CompanyReference({this.companyId, this.companyName, this.companyImage});
 

@@ -48,8 +48,8 @@ class CompanyRepository {
       model.socialMediaList.removeWhere((media) {
         return media.link == null || media.link.isEmpty;
       });
-var form=FormData();
-      model.activities.map((activity)=>activity.id).forEach((activity){
+      var form = FormData();
+      model.activities.map((activity) => activity.id).forEach((activity) {
         form.add('activities[0]', activity);
       });
       var formData = FormData.from({
@@ -60,10 +60,9 @@ var form=FormData();
         'address': model.address,
         'website': model.website,
         'post_code': model.postCode,
-        'location': '0.0,0.0', //TODO remove hardcoded location.
+        'location': model.location.toString(),
         'activities':
             model.activities.map((activity) => activity.toJson()).toList(),
-
         'main_category': model.category.id,
         'company_attachments': model.companyAttachments
             .map((attachment) => UploadFileInfo(attachment,

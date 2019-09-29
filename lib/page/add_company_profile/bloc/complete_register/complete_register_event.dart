@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:Sarh/data/model/activity.dart';
 import 'package:Sarh/data/model/category.dart';
 import 'package:Sarh/data/model/company_size.dart';
+import 'package:Sarh/page/location_picker/location_picker_page.dart';
 
 class CompleteRegisterEvent {}
 
@@ -14,6 +15,7 @@ class CompleteRegistrationModel {
   final String address;
   final String website;
   final String postCode;
+  final Location location;
   final Category category;
   final List<ActivityId> activities;
   final List<File> companyAttachments;
@@ -25,6 +27,7 @@ class CompleteRegistrationModel {
       this.companySize,
       this.landPhone,
       this.activities,
+      this.location,
       this.postCode,
       this.address,
       this.website,
@@ -63,9 +66,10 @@ class SocialMediaId {
 }
 
 class ActivityId {
-   int id;
+  int id;
 
   ActivityId(this.id);
+
   ActivityId.fromJson(Map<String, dynamic> json) {
     id = json['activity'];
   }

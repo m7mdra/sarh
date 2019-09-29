@@ -28,6 +28,7 @@ import 'package:Sarh/widget/media_picker_dialog.dart';
 import 'package:Sarh/widget/progress_dialog.dart';
 import 'package:Sarh/widget/stepper.dart';
 import 'package:Sarh/widget/ui_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -88,6 +89,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   GlobalKey<FormState> _companyContactFormKey = GlobalKey<FormState>();
   Location _location;
   Map<int, Activity> _selectedActivities = {};
+  bool _showLocationError = false;
 
   FormState get companyDetailsForm => _companyDetailsFormKey.currentState;
 
@@ -227,28 +229,35 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
   }
 
   void _onNextClicked() {
-    _moveToNextStep();
-    /*if (_currentStep != 7) {
+    if (_currentStep != 7) {
       switch (_currentStep) {
         case 0:
           _moveToNextStep();
           break;
         case 1:
-          if (_selectedActivities.isEmpty) {
+           if (_selectedActivities.isEmpty) {
             scaffold.showSnackBar(SnackBar(
               content: Text('Selected atleast one activity'),
             ));
           } else {
             _moveToNextStep();
           }
+
           break;
         case 2:
-          if (companyDetailsForm.validate()) {
+           if (companyDetailsForm.validate()) {
             _moveToNextStep();
           }
+
           break;
         case 3:
           if (companyContactForm.validate()) {
+            if (_location == null) {
+              setState(() {
+                _showLocationError = true;
+              });
+              return;
+            }
             _moveToNextStep();
           }
           break;
@@ -260,7 +269,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           _attemptRegister();
           break;
       }
-    }*/
+    }
   }
 
   void _attemptRegister() {
@@ -275,6 +284,7 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           .map((activity) => ActivityId(activity.id))
           .toList(),
       postCode: _zipController.value.text,
+      location: _location,
       companyAttachments: [_tradeLicenseFile],
       socialMediaList: [
         SocialMedia(
@@ -1125,12 +1135,29 @@ class _AddCompanyInfoPageState extends State<AddCompanyInfoPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
-                _isLocationSelected()
-                    ? 'Location not selected'
-                    : 'Location Selected',
-                style: TextStyle(
-                    color: _isLocationSelected() ? Colors.red : Colors.green),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    _isLocationSelected()
+                        ? 'Location not selected'
+                        : 'Location selected',
+                    style: TextStyle(
+                        color: _isLocationSelected()
+                            ? Colors.black
+                            : Colors.green),
+                  ),
+                  Visibility(
+                    child: Text(
+                      'Selected location first',
+                      style: Theme.of(context)
+                          .textTheme
+                          .caption
+                          .copyWith(color: Theme.of(context).errorColor),
+                    ),
+                    visible: _isLocationSelected() && _showLocationError,
+                  ),
+                ],
               ),
               RaisedButton(
                 onPressed: () async {

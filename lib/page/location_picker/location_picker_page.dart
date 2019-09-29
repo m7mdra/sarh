@@ -35,6 +35,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                 Navigator.pop(context, Location.fromLatLng(_marker.position));
               },
         label: Text('Select current location'),
+        disabledElevation: 0,
         icon: Icon(Icons.check),
       ),
       body: SafeArea(
@@ -79,4 +80,9 @@ class Location {
 
   factory Location.fromLatLng(LatLng latLng) =>
       Location(latLng.latitude, latLng.longitude);
+
+  @override
+  String toString() {
+    return '$latitude,$longitude';
+  }
 }

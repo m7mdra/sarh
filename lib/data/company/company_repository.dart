@@ -48,6 +48,10 @@ class CompanyRepository {
       model.socialMediaList.removeWhere((media) {
         return media.link == null || media.link.isEmpty;
       });
+var form=FormData();
+      model.activities.map((activity)=>activity.id).forEach((activity){
+        form.add('activities[0]', activity);
+      });
       var formData = FormData.from({
         'start_from': model.startFromDate,
         'about': model.about,
@@ -59,6 +63,7 @@ class CompanyRepository {
         'location': '0.0,0.0', //TODO remove hardcoded location.
         'activities':
             model.activities.map((activity) => activity.toJson()).toList(),
+
         'main_category': model.category.id,
         'company_attachments': model.companyAttachments
             .map((attachment) => UploadFileInfo(attachment,

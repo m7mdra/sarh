@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/authorizers/authorizer_repository.dart';
+import 'data/community/post_repository.dart';
 import 'data/company/company_repository.dart';
 import 'data/quote/quotation_repository.dart';
 import 'data/token_interceptor.dart';
@@ -56,10 +57,12 @@ class DependencyProvider {
     CategoryRepository categoryRepository = CategoryRepository(client);
     AuthorizersRepository authorizersRepository = AuthorizersRepository(client);
     GalleryRepository galleryRepository = GalleryRepository(client);
+    PostRepository postRepository = PostRepository(client);
 
     _registrar.registerSingleton<Dio>(client);
     _registrar.registerSingleton<Session>(session);
     _registrar.registerFactory<UserRepository>(() => userRepository);
+    _registrar.registerFactory<PostRepository>(() => postRepository);
     _registrar.registerFactory<GalleryRepository>(() => galleryRepository);
     _registrar.registerFactory<ClientRepository>(() => clientRepository);
     _registrar.registerFactory<CountryRepository>(() => countryRepository);

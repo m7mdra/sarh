@@ -93,6 +93,7 @@ class _HomePageState extends State<HomePage>
                 var galleryItems = state.galleryItems;
                 return Expanded(
                   child: new StaggeredGridView.countBuilder(
+                    addAutomaticKeepAlives: true,
                     key: PageStorageKey(10),
                     controller: _scrollController,
                     padding: const EdgeInsets.only(bottom: 80),
@@ -101,10 +102,8 @@ class _HomePageState extends State<HomePage>
                     itemBuilder: (BuildContext context, int index) => InkWell(
                       onTap: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                              return CompanyGalleryPage(
-                                  galleryItem: state.galleryItems[index]);
-                            }));
+                            MaterialPageRoute(builder: (context) => CompanyGalleryPage(
+                                  galleryItem: state.galleryItems[index])));
                       },
                       child: CachedNetworkImage(
                         key: ObjectKey(galleryItems[index].id),

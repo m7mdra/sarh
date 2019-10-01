@@ -1,8 +1,14 @@
+import 'package:Sarh/data/model/post.dart';
+import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
+import 'package:Sarh/widget/ui_state.dart';
+import 'package:Sarh/widget/ui_state/progress_bar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/bloc.dart';
 import 'package:Sarh/page/add_community_post/add_community_post_page.dart';
 
 class CommunityPage extends StatefulWidget {
@@ -11,9 +17,27 @@ class CommunityPage extends StatefulWidget {
 }
 
 class _CommunityPageState extends State<CommunityPage> {
+  PostBloc _postBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _postBloc = PostBloc(DependencyProvider.provide());
+    _loadPosts();
+  }
+
+  void _loadPosts() => _postBloc.dispatch(LoadPosts());
+
+  @override
+  void dispose() {
+    super.dispose();
+    _postBloc.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Community'),
         centerTitle: true,
@@ -67,17 +91,57 @@ class _CommunityPageState extends State<CommunityPage> {
               itemCount: 10,
             ),
           ),
-          ListView.builder(
-            itemBuilder: (context, index) {
-              return CommunityPostWidget(
-                key: ValueKey(index),
-              );
+          BlocListener(
+            bloc: _postBloc,
+            listener: (context, state) {
+              if (state is PostsSessionExpired) {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+              }
             },
-            itemCount: 10,
-            shrinkWrap: true,
-            primary: false,
-            padding: const EdgeInsets.only(bottom: 64),
-          )
+            child: BlocBuilder(
+              builder: (context, state) {
+                print(state);
+                if (state is PostsLoaded) {
+                  var posts = state.posts;
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      return CommunityPostWidget(
+                        key: ValueKey(index),
+                        post: posts[index],
+                      );
+                    },
+                    itemCount: posts.length,
+                    shrinkWrap: true,
+                    primary: false,
+                    padding: const EdgeInsets.only(bottom: 64),
+                  );
+                }
+                if (state is PostsLoading) {
+                  return Center(
+                    child: ProgressBar(),
+                  );
+                }
+                if (state is PostsNetworkError || state is PostsTimeout) {
+                  return Center(
+                    child: NetworkErrorWidget(onRetry: () => _loadPosts()),
+                  );
+                }
+                if (state is PostsError) {
+                  return Center(
+                    child: GeneralErrorWidget(onRetry: () => _loadPosts()),
+                  );
+                }
+                if (state is PostsEmpty) {
+                  return Center(
+                    child: EmptyWidget(),
+                  );
+                }
+                return Container();
+              },
+              bloc: _postBloc,
+            ),
+          ),
         ],
       )),
     );
@@ -86,12 +150,15 @@ class _CommunityPageState extends State<CommunityPage> {
 
 class CommunityPostWidget extends StatelessWidget {
   final bool showBottomActionButtons;
+  final Post post;
 
-  const CommunityPostWidget({Key key, this.showBottomActionButtons = true})
+  const CommunityPostWidget(
+      {Key key, this.showBottomActionButtons = true, this.post})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var author = post.author;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -100,14 +167,18 @@ class CommunityPostWidget extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                CircleAvatar(),
+                author.image != null && author.image.isNotEmpty
+                    ? Image.network(author.image)
+                    : CircleAvatar(
+                        child: Text(author.fullName.substring(0, 1)),
+                      ),
                 SizedBox(
                   width: 8,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('Mohamed Sed'),
+                    Text(author.fullName),
                     Text(
                       'Construction/supply materials',
                       style: Theme.of(context).textTheme.caption,
@@ -116,23 +187,18 @@ class CommunityPostWidget extends StatelessWidget {
                 )
               ],
             ),
-            DescriptionTextWidget(
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-                " Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of "
-                "type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,"
-                " remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,"
-                " and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."),
+            DescriptionTextWidget(post.post),
             Row(
               children: <Widget>[
                 Text(
-                  '690 likes',
+                  '${post.postLikes.length} likes',
                   style: Theme.of(context).textTheme.caption,
                 ),
                 SizedBox(
                   width: 8,
                 ),
                 Text(
-                  '2k comments',
+                  '${post.allCommentsCount} comments',
                   style: Theme.of(context).textTheme.caption,
                 ),
               ],

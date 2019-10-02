@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2019.
+ *           ______             _
+ *          |____  |           | |
+ *  _ __ ___    / / __ ___   __| |_ __ __ _
+ * | '_ ` _ \  / / '_ ` _ \ / _` | '__/ _` |
+ * | | | | | |/ /| | | | | | (_| | | | (_| |
+ * |_| |_| |_/_/ |_| |_| |_|\__,_|_|  \__,_|
+ *
+ *
+ *
+ *
+ */
+
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/i10n/app_localizations.dart';
 import 'package:Sarh/page/account_reset_verification/bloc/verify_reset_account_bloc_event.dart';

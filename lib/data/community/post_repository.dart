@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2019.
+ *           ______             _
+ *          |____  |           | |
+ *  _ __ ___    / / __ ___   __| |_ __ __ _
+ * | '_ ` _ \  / / '_ ` _ \ / _` | '__/ _` |
+ * | | | | | |/ /| | | | | | (_| | | | (_| |
+ * |_| |_| |_/_/ |_| |_| |_|\__,_|_|  \__,_|
+ *
+ *
+ *
+ *
+ */
+
 import 'package:Sarh/data/community/model/post_response.dart';
 import 'package:Sarh/data/response_status.dart';
 import 'package:dio/dio.dart';
@@ -13,6 +27,8 @@ class PostRepository {
       var response = await _client.get('posts');
       return PostResponse.fromJson(response.data);
     } on DioError catch (error) {
+      print(error);
+
       switch (error.type) {
         case DioErrorType.CONNECT_TIMEOUT:
         case DioErrorType.SEND_TIMEOUT:
@@ -35,11 +51,9 @@ class PostRepository {
           throw error;
       }
     } catch (error) {
-      print(error);
-
       throw error;
     }
-
   }
-
 }
+
+

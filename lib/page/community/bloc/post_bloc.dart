@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2019.
+ *           ______             _
+ *          |____  |           | |
+ *  _ __ ___    / / __ ___   __| |_ __ __ _
+ * | '_ ` _ \  / / '_ ` _ \ / _` | '__/ _` |
+ * | | | | | |/ /| | | | | | (_| | | | (_| |
+ * |_| |_| |_/_/ |_| |_| |_|\__,_|_|  \__,_|
+ *
+ *
+ *
+ *
+ */
+
 import 'dart:collection';
 
 import 'bloc.dart';
@@ -22,7 +36,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         if (response.success) {
           var posts = response.posts;
           if (posts.isNotEmpty) {
-            yield PostsLoaded(UnmodifiableListView(posts));
+            yield PostsLoaded(posts);
           } else {
             yield PostsEmpty();
           }
@@ -37,6 +51,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         yield PostsNetworkError();
       } catch (error) {
         yield PostsError();
+
+        print(error);
       }
     }
   }

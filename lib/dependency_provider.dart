@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2019.
+ *           ______             _
+ *          |____  |           | |
+ *  _ __ ___    / / __ ___   __| |_ __ __ _
+ * | '_ ` _ \  / / '_ ` _ \ / _` | '__/ _` |
+ * | | | | | |/ /| | | | | | (_| | | | (_| |
+ * |_| |_| |_/_/ |_| |_| |_|\__,_|_|  \__,_|
+ *
+ *
+ *
+ *
+ */
+
 import 'package:Sarh/data/activity/activity_repository.dart';
 import 'package:Sarh/data/category/category_repository.dart';
 import 'package:Sarh/data/client/client_repository.dart';
@@ -13,6 +27,7 @@ import 'data/authorizers/authorizer_repository.dart';
 import 'data/community/post_repository.dart';
 import 'data/company/company_repository.dart';
 import 'data/quote/quotation_repository.dart';
+import 'data/tag/tags_repository.dart';
 import 'data/token_interceptor.dart';
 
 GetIt _registrar = GetIt();
@@ -58,10 +73,12 @@ class DependencyProvider {
     AuthorizersRepository authorizersRepository = AuthorizersRepository(client);
     GalleryRepository galleryRepository = GalleryRepository(client);
     PostRepository postRepository = PostRepository(client);
+    TagRepository tagRepository = TagRepository(client);
 
     _registrar.registerSingleton<Dio>(client);
     _registrar.registerSingleton<Session>(session);
     _registrar.registerFactory<UserRepository>(() => userRepository);
+    _registrar.registerFactory<TagRepository>(() => tagRepository);
     _registrar.registerFactory<PostRepository>(() => postRepository);
     _registrar.registerFactory<GalleryRepository>(() => galleryRepository);
     _registrar.registerFactory<ClientRepository>(() => clientRepository);

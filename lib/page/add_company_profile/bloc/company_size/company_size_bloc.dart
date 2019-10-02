@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2019.
+ *           ______             _
+ *          |____  |           | |
+ *  _ __ ___    / / __ ___   __| |_ __ __ _
+ * | '_ ` _ \  / / '_ ` _ \ / _` | '__/ _` |
+ * | | | | | |/ /| | | | | | (_| | | | (_| |
+ * |_| |_| |_/_/ |_| |_| |_|\__,_|_|  \__,_|
+ *
+ *
+ *
+ *
+ */
+
 import 'package:Sarh/data/company/company_repository.dart';
 import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_event.dart';
 import 'package:Sarh/page/add_company_profile/bloc/company_size/company_size_state.dart';

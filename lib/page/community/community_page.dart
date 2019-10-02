@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2019.
+ *           ______             _
+ *          |____  |           | |
+ *  _ __ ___    / / __ ___   __| |_ __ __ _
+ * | '_ ` _ \  / / '_ ` _ \ / _` | '__/ _` |
+ * | | | | | |/ /| | | | | | (_| | | | (_| |
+ * |_| |_| |_/_/ |_| |_| |_|\__,_|_|  \__,_|
+ *
+ *
+ *
+ *
+ */
+
 import 'package:Sarh/data/model/post.dart';
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/login/login_page.dart';
@@ -101,7 +115,6 @@ class _CommunityPageState extends State<CommunityPage> {
             },
             child: BlocBuilder(
               builder: (context, state) {
-                print(state);
                 if (state is PostsLoaded) {
                   var posts = state.posts;
                   return ListView.builder(
@@ -159,6 +172,7 @@ class CommunityPostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var author = post.author;
+    var tags = post.tags;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -188,6 +202,20 @@ class CommunityPostWidget extends StatelessWidget {
               ],
             ),
             DescriptionTextWidget(post.post),
+            Container(
+              height: tags.isEmpty ? 0 : 30,
+              child: ListView.builder(
+                padding: const EdgeInsets.only(left: 4, right: 4),
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 2, right: 2),
+                    child: Chip(label: Text("#${tags[index].name}")),
+                  );
+                },
+                itemCount: tags.length,
+                scrollDirection: Axis.horizontal,
+              ),
+            ),
             Row(
               children: <Widget>[
                 Text(
@@ -255,9 +283,11 @@ class IconText extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
+          textBaseline: TextBaseline.alphabetic,
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -265,6 +295,7 @@ class IconText extends StatelessWidget {
             Icon(
               icon,
               color: Colors.black,
+              size: 20,
             ),
             SizedBox(
               width: 4,

@@ -1,1 +1,0 @@
-var imageList=[]..shuffle()..shuffle();

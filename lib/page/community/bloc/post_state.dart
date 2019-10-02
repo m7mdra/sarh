@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2019.
+ *           ______             _
+ *          |____  |           | |
+ *  _ __ ___    / / __ ___   __| |_ __ __ _
+ * | '_ ` _ \  / / '_ ` _ \ / _` | '__/ _` |
+ * | | | | | |/ /| | | | | | (_| | | | (_| |
+ * |_| |_| |_/_/ |_| |_| |_|\__,_|_|  \__,_|
+ *
+ *
+ *
+ *
+ */
+
 import 'dart:collection';
 
 import 'package:Sarh/data/model/post.dart';
@@ -13,7 +27,7 @@ class PostsError extends PostState {}
 class PostsEmpty extends PostState {}
 
 class PostsLoaded extends PostState {
-  final UnmodifiableListView<Post> posts;
+  final List<Post> posts;
 
   PostsLoaded(this.posts);
 }
@@ -21,3 +35,4 @@ class PostsLoaded extends PostState {
 class PostsSessionExpired extends PostState {}
 
 class PostsTimeout extends PostState {}
+

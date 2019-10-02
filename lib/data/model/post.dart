@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2019.
+ *           ______             _
+ *          |____  |           | |
+ *  _ __ ___    / / __ ___   __| |_ __ __ _
+ * | '_ ` _ \  / / '_ ` _ \ / _` | '__/ _` |
+ * | | | | | |/ /| | | | | | (_| | | | (_| |
+ * |_| |_| |_/_/ |_| |_| |_|\__,_|_|  \__,_|
+ *
+ *
+ *
+ *
+ */
+
 import 'category.dart';
 
 class Post {
@@ -6,7 +20,7 @@ class Post {
   String post;
   String title;
   String slug;
-  List<Tags> tags;
+  List<Tag> tags;
   List<PostAttachments> postAttachments;
   List<PostComments> postComments;
   int allCommentsCount;
@@ -14,33 +28,43 @@ class Post {
   List<PostLikes> postLikes;
   int createdAt;
 
-
   Post.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    author = json['author'] != null ? new Author.fromJson(json['author']) : null;
+    author =
+        json['author'] != null ? new Author.fromJson(json['author']) : null;
     post = json['post'];
     title = json['title'];
     slug = json['slug'];
     if (json['tags'] != null) {
-      tags = new List<Tags>();
-      json['tags'].forEach((v) { tags.add(new Tags.fromJson(v)); });
+      tags = new List<Tag>();
+      json['tags'].forEach((v) {
+        tags.add(new Tag.fromJson(v));
+      });
     }
     if (json['postAttachments'] != null) {
       postAttachments = new List<PostAttachments>();
-      json['postAttachments'].forEach((v) { postAttachments.add(new PostAttachments.fromJson(v)); });
+      json['postAttachments'].forEach((v) {
+        postAttachments.add(new PostAttachments.fromJson(v));
+      });
     }
     if (json['postComments'] != null) {
       postComments = new List<PostComments>();
-      json['postComments'].forEach((v) { postComments.add(new PostComments.fromJson(v)); });
+      json['postComments'].forEach((v) {
+        postComments.add(new PostComments.fromJson(v));
+      });
     }
     allCommentsCount = json['allCommentsCount'];
     if (json['postFavorites'] != null) {
       postFavorites = new List<PostFavorites>();
-      json['postFavorites'].forEach((v) { postFavorites.add(new PostFavorites.fromJson(v)); });
+      json['postFavorites'].forEach((v) {
+        postFavorites.add(new PostFavorites.fromJson(v));
+      });
     }
     if (json['postLikes'] != null) {
       postLikes = new List<PostLikes>();
-      json['postLikes'].forEach((v) { postLikes.add(new PostLikes.fromJson(v)); });
+      json['postLikes'].forEach((v) {
+        postLikes.add(new PostLikes.fromJson(v));
+      });
     }
     createdAt = json['created_at'];
   }
@@ -58,14 +82,16 @@ class Post {
       data['tags'] = this.tags.map((v) => v.toJson()).toList();
     }
     if (this.postAttachments != null) {
-      data['postAttachments'] = this.postAttachments.map((v) => v.toJson()).toList();
+      data['postAttachments'] =
+          this.postAttachments.map((v) => v.toJson()).toList();
     }
     if (this.postComments != null) {
       data['postComments'] = this.postComments.map((v) => v.toJson()).toList();
     }
     data['allCommentsCount'] = this.allCommentsCount;
     if (this.postFavorites != null) {
-      data['postFavorites'] = this.postFavorites.map((v) => v.toJson()).toList();
+      data['postFavorites'] =
+          this.postFavorites.map((v) => v.toJson()).toList();
     }
     if (this.postLikes != null) {
       data['postLikes'] = this.postLikes.map((v) => v.toJson()).toList();
@@ -108,16 +134,14 @@ class PostAttachments {
   String fileType;
   String createdAt;
   String updatedAt;
-  Null deletedAt;
 
   PostAttachments(
       {this.id,
-        this.postId,
-        this.fileUrl,
-        this.fileType,
-        this.createdAt,
-        this.updatedAt,
-        this.deletedAt});
+      this.postId,
+      this.fileUrl,
+      this.fileType,
+      this.createdAt,
+      this.updatedAt});
 
   PostAttachments.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -126,7 +150,6 @@ class PostAttachments {
     fileType = json['file_type'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    deletedAt = json['deleted_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -137,7 +160,6 @@ class PostAttachments {
     data['file_type'] = this.fileType;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['deleted_at'] = this.deletedAt;
     return data;
   }
 }
@@ -212,12 +234,12 @@ class SubComments {
 
   SubComments(
       {this.id,
-        this.postId,
-        this.comment,
-        this.tblAccountId,
-        this.parentCommentId,
-        this.createdAt,
-        this.updatedAt});
+      this.postId,
+      this.comment,
+      this.tblAccountId,
+      this.parentCommentId,
+      this.createdAt,
+      this.updatedAt});
 
   SubComments.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -251,10 +273,10 @@ class PostFavorites {
 
   PostFavorites(
       {this.id,
-        this.postId,
-        this.tblAccountId,
-        this.createdAt,
-        this.updatedAt});
+      this.postId,
+      this.tblAccountId,
+      this.createdAt,
+      this.updatedAt});
 
   PostFavorites.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -284,10 +306,10 @@ class PostLikes {
 
   PostLikes(
       {this.id,
-        this.postId,
-        this.tblAccountId,
-        this.createdAt,
-        this.updatedAt});
+      this.postId,
+      this.tblAccountId,
+      this.createdAt,
+      this.updatedAt});
 
   PostLikes.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -307,7 +329,8 @@ class PostLikes {
     return data;
   }
 }
-class Tags {
+
+class Tag {
   int id;
   String name;
   int controllerId;
@@ -315,8 +338,9 @@ class Tags {
   int createdAt;
   int updatedAt;
 
+  Tag.name(this.name);
 
-  Tags.fromJson(Map<String, dynamic> json) {
+  Tag.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     controllerId = json['controller_id'];
@@ -335,4 +359,26 @@ class Tags {
     data['updated_at'] = this.updatedAt;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Tag &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          controllerId == other.controllerId &&
+          objectId == other.objectId &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      controllerId.hashCode ^
+      objectId.hashCode ^
+      createdAt.hashCode ^
+      updatedAt.hashCode;
+
 }

@@ -21,4 +21,3 @@ mixin Validators {
     return regex.hasMatch(input);
   }
 }
-\

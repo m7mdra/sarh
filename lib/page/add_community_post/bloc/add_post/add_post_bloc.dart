@@ -28,16 +28,15 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
   Stream<AddPostState> mapEventToState(AddPostEvent event) async* {
     if (event is SubmitPost) {
       yield LoadingState();
-      //TODO: handle all cases.
       try {
         var response = await _postRepository.addPost(body: event.body,
             attachments: event.attachments,
             tags: event.tags,
             title: event.title);
         if(response.success){
-
+          yield SuccessState(response.post);
         }else{
-
+          yield ErrorState();
         }
       }
       on UnableToConnectException {

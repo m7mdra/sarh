@@ -26,7 +26,14 @@ class Post {
   int allCommentsCount;
   List<PostFavorites> postFavorites;
   List<PostLikes> postLikes;
+  int _like;
   int createdAt;
+
+  set like(bool value) {
+    _like = value ? 1 : 0;
+  }
+
+  bool get isLiked => _like == 1;
 
   Post.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -34,6 +41,7 @@ class Post {
         json['author'] != null ? new Author.fromJson(json['author']) : null;
     post = json['post'];
     title = json['title'];
+    _like = json['isLikeIt'];
     slug = json['slug'];
     if (json['tags'] != null) {
       tags = new List<Tag>();
@@ -81,6 +89,7 @@ class Post {
     if (this.tags != null) {
       data['tags'] = this.tags.map((v) => v.toJson()).toList();
     }
+    data['isLikeIt'] = _like;
     if (this.postAttachments != null) {
       data['postAttachments'] =
           this.postAttachments.map((v) => v.toJson()).toList();
@@ -99,6 +108,39 @@ class Post {
     data['created_at'] = this.createdAt;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Post &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          author == other.author &&
+          post == other.post &&
+          title == other.title &&
+          slug == other.slug &&
+          tags == other.tags &&
+          postAttachments == other.postAttachments &&
+          postComments == other.postComments &&
+          allCommentsCount == other.allCommentsCount &&
+          postFavorites == other.postFavorites &&
+          postLikes == other.postLikes &&
+          createdAt == other.createdAt;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      author.hashCode ^
+      post.hashCode ^
+      title.hashCode ^
+      slug.hashCode ^
+      tags.hashCode ^
+      postAttachments.hashCode ^
+      postComments.hashCode ^
+      allCommentsCount.hashCode ^
+      postFavorites.hashCode ^
+      postLikes.hashCode ^
+      createdAt.hashCode;
 }
 
 class Author {
@@ -125,6 +167,19 @@ class Author {
     }
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Author &&
+          runtimeType == other.runtimeType &&
+          fullName == other.fullName &&
+          image == other.image &&
+          mainCategory == other.mainCategory;
+
+  @override
+  int get hashCode =>
+      fullName.hashCode ^ image.hashCode ^ mainCategory.hashCode;
 }
 
 class PostAttachments {
@@ -162,6 +217,27 @@ class PostAttachments {
     data['updated_at'] = this.updatedAt;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PostAttachments &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          postId == other.postId &&
+          fileUrl == other.fileUrl &&
+          fileType == other.fileType &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      postId.hashCode ^
+      fileUrl.hashCode ^
+      fileType.hashCode ^
+      createdAt.hashCode ^
+      updatedAt.hashCode;
 }
 
 class PostComments {
@@ -170,6 +246,25 @@ class PostComments {
   Customer customer;
   List<SubComments> subComments;
   int createdAt;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PostComments &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          comment == other.comment &&
+          customer == other.customer &&
+          subComments == other.subComments &&
+          createdAt == other.createdAt;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      comment.hashCode ^
+      customer.hashCode ^
+      subComments.hashCode ^
+      createdAt.hashCode;
 
   PostComments(
       {this.id, this.comment, this.customer, this.subComments, this.createdAt});
@@ -221,6 +316,17 @@ class Customer {
     data['image'] = this.image;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Customer &&
+          runtimeType == other.runtimeType &&
+          fullName == other.fullName &&
+          image == other.image;
+
+  @override
+  int get hashCode => fullName.hashCode ^ image.hashCode;
 }
 
 class SubComments {
@@ -262,6 +368,29 @@ class SubComments {
     data['updated_at'] = this.updatedAt;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SubComments &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          postId == other.postId &&
+          comment == other.comment &&
+          tblAccountId == other.tblAccountId &&
+          parentCommentId == other.parentCommentId &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      postId.hashCode ^
+      comment.hashCode ^
+      tblAccountId.hashCode ^
+      parentCommentId.hashCode ^
+      createdAt.hashCode ^
+      updatedAt.hashCode;
 }
 
 class PostFavorites {
@@ -295,6 +424,25 @@ class PostFavorites {
     data['updated_at'] = this.updatedAt;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PostFavorites &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          postId == other.postId &&
+          tblAccountId == other.tblAccountId &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      postId.hashCode ^
+      tblAccountId.hashCode ^
+      createdAt.hashCode ^
+      updatedAt.hashCode;
 }
 
 class PostLikes {
@@ -328,6 +476,25 @@ class PostLikes {
     data['updated_at'] = this.updatedAt;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PostLikes &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          postId == other.postId &&
+          tblAccountId == other.tblAccountId &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      postId.hashCode ^
+      tblAccountId.hashCode ^
+      createdAt.hashCode ^
+      updatedAt.hashCode;
 }
 
 class Tag {
@@ -380,5 +547,4 @@ class Tag {
       objectId.hashCode ^
       createdAt.hashCode ^
       updatedAt.hashCode;
-
 }

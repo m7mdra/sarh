@@ -12,6 +12,24 @@
  *
  */
 
+import 'package:Sarh/data/model/post.dart';
+
 class PostEvent {}
 
 class LoadPosts extends PostEvent {}
+
+class OnNewPostAdded extends PostEvent {
+  final Post post;
+
+  OnNewPostAdded(this.post);
+}
+class OnPostLiked extends PostEvent{
+  final int postId;
+
+  OnPostLiked(this.postId);
+}
+class OnPostUnLiked extends PostEvent{
+  final int postId;
+
+  OnPostUnLiked(this.postId);
+}

@@ -14,10 +14,13 @@
 
 import 'dart:collection';
 
-import 'bloc.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:bloc/bloc.dart';
 import 'package:Sarh/data/exceptions/exceptions.dart';
 import 'package:Sarh/data/community/post_repository.dart';
+
+import 'bloc.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
   final PostRepository _postRepository;
@@ -53,6 +56,33 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         yield PostsError();
 
         print(error);
+      }
+    }
+    if (event is OnNewPostAdded) {
+      if (currentState is PostsLoaded) {
+        var postLoadedState = currentState as PostsLoaded;
+
+        var postList = postLoadedState.posts;
+        print(event.post.toJson());
+        print(postList.map((post) => post.id).toList());
+        postList.insert(0, event.post);
+        yield PostsLoaded(postList);
+      }
+    }
+    if (event is OnPostLiked) {
+      if (currentState is PostsLoaded) {
+        var postLoadedState = currentState as PostsLoaded;
+        var posts = postLoadedState.posts;
+        posts.firstWhere((post) => post.id == event.postId).like = true;
+        yield postLoadedState;
+      }
+    }
+    if (event is OnPostUnLiked) {
+      if (currentState is PostsLoaded) {
+        var postLoadedState = currentState as PostsLoaded;
+        var posts = postLoadedState.posts;
+        posts.firstWhere((post) => post.id == event.postId).like = false;
+        yield postLoadedState;
       }
     }
   }

@@ -29,6 +29,7 @@ class Post {
   int _like;
   int createdAt;
 
+
   set like(bool value) {
     _like = value ? 1 : 0;
   }

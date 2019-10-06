@@ -27,9 +27,16 @@ class PostRepository {
 
   PostRepository(this._client);
 
-  Future<PostResponse> getPosts() async {
+  Future<PostResponse> getPosts({String tag = "", String filter = ""}) async {
     try {
-      var response = await _client.get('posts');
+      var query = <String, String>{};
+      if (tag.isNotEmpty) {
+        query['tag'] = tag;
+      }
+      if (filter.isNotEmpty) {
+        query['filter'] = filter;
+      }
+      var response = await _client.get('posts', queryParameters: query);
       return PostResponse.fromJson(response.data);
     } on DioError catch (error) {
       switch (error.type) {

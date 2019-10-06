@@ -33,3 +33,13 @@ class OnPostUnLiked extends PostEvent{
 
   OnPostUnLiked(this.postId);
 }
+class OnTagSelected extends PostEvent{
+  final Tag tag;
+
+  OnTagSelected(this.tag);
+}
+class FindPostByKeyword extends PostEvent{
+  final String keyword;
+
+  FindPostByKeyword(this.keyword);
+}

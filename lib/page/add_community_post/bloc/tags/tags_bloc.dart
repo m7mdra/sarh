@@ -41,7 +41,7 @@ class TagsBloc extends Bloc<TagsEvent, TagsState> {
     if (event is FindTagWithName) {
       yield TagsLoading();
       try {
-        var response = await _repository.getTags(event.name);
+        var response = await _repository.getTags(tag: event.name);
         if (response.success) {
           var tags = response.tags;
           if (tags.isNotEmpty) {

@@ -12,6 +12,7 @@
  *
  */
 
+import 'package:Sarh/data/session.dart';
 import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
 import 'package:Sarh/page/splash/bloc/session_bloc.dart';
 import 'package:Sarh/page/splash/splash_page.dart';

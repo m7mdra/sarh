@@ -39,18 +39,16 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
 
   @override
   void onTransition(Transition<SessionEvent, SessionState> transition) {
-    // TODO: implement onTransition
     super.onTransition(transition);
     print(transition);
   }
 
   @override
   Stream<SessionState> mapEventToState(SessionEvent event) async* {
-    if (state is Update) {
+    if (event is Update) {
       var profile = await _userRepository.profile();
       if (profile.success) {
         _session.saveUser(profile.token, profile.user, profile.company);
-        print(profile.toJson());
       }
     }
     await Future.delayed(Duration(seconds: 2));

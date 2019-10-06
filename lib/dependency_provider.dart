@@ -19,6 +19,7 @@ import 'package:Sarh/data/country/city_repository.dart';
 import 'package:Sarh/data/gallery/gallery_repository.dart';
 import 'package:Sarh/data/session.dart';
 import 'package:Sarh/data/user/user_repository.dart';
+import 'package:Sarh/page/login/bloc/login_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,6 +64,7 @@ class DependencyProvider {
       }
     }));
     client.interceptors.add(TokenInterceptor(session));
+
     UserRepository userRepository = UserRepository(client);
     CountryRepository countryRepository = CountryRepository(client);
     ActivityRepository activityRepository = ActivityRepository(client);
@@ -77,6 +79,7 @@ class DependencyProvider {
 
     _registrar.registerSingleton<Dio>(client);
     _registrar.registerSingleton<Session>(session);
+
     _registrar.registerFactory<UserRepository>(() => userRepository);
     _registrar.registerFactory<TagRepository>(() => tagRepository);
     _registrar.registerFactory<PostRepository>(() => postRepository);

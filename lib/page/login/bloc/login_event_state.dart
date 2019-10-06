@@ -13,6 +13,13 @@
  */
 
 class LoginEvent {}
+class AttemptLogin extends LoginEvent {
+  final String id;
+  final String password;
+
+  AttemptLogin(this.id, this.password);
+}
+
 
 class LoginState {}
 
@@ -38,9 +45,3 @@ class InvalidUsernameOrPassword extends LoginState {}
 
 class SuccessState extends LoginState {}
 
-class AttemptLogin extends LoginEvent {
-  final String id;
-  final String password;
-
-  AttemptLogin(this.id, this.password);
-}

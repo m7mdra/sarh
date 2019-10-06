@@ -19,15 +19,18 @@ import 'package:Sarh/data/exceptions/exceptions.dart';
 class TagRepository {
   final Dio _client;
 
-
   TagRepository(this._client);
 
-  Future<TagsResponse> getTags([String tag]) async {
+  Future<TagsResponse> getTags({String tag, bool hotTags = false}) async {
     try {
       var query = Map<String, dynamic>();
       if (tag != null && tag.isNotEmpty) {
         query['tagName'] = tag;
       }
+      if (hotTags) {
+        query['filter'] = 'hotTags';
+      }
+
       var response = await _client.get('tags', queryParameters: query);
       return TagsResponse.fromJson(response.data);
     } on DioError catch (error) {
@@ -57,4 +60,3 @@ class TagRepository {
     }
   }
 }
-

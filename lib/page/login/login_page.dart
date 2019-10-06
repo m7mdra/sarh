@@ -12,6 +12,7 @@
  *
  */
 
+import 'package:Sarh/data/session.dart';
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/account_reset/account_reset_page.dart';
 import 'package:Sarh/page/account_type/account_type_page.dart';
@@ -98,7 +99,6 @@ class _LoginPageState extends State<LoginPage> with Validators {
                   child: BlocListener(
                     bloc: _loginBloc,
                     listener: (context, state) {
-                      print(state);
                       if (state is LoadingState) {
                         showDialog(
                             context: context,

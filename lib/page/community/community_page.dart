@@ -14,6 +14,7 @@
 
 import 'package:Sarh/data/model/post.dart';
 import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/page/community/bloc/hot_tags/bloc.dart';
 import 'package:Sarh/page/community/bloc/like/bloc.dart';
 import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
@@ -36,12 +37,17 @@ class _CommunityPageState extends State<CommunityPage> {
   PostBloc _postBloc;
   bool _showFab = false;
   LikeBloc _likeBloc;
+  HotTagsBloc _hotTagsBloc;
+  TextEditingController _searchTextEditingController;
 
   @override
   void initState() {
     super.initState();
+    _searchTextEditingController = TextEditingController();
     _postBloc = PostBloc(DependencyProvider.provide());
     _likeBloc = LikeBloc(DependencyProvider.provide(), _postBloc);
+    _hotTagsBloc = HotTagsBloc(DependencyProvider.provide());
+    _hotTagsBloc.dispatch(LoadHotTags());
     _loadPosts();
   }
 
@@ -50,6 +56,9 @@ class _CommunityPageState extends State<CommunityPage> {
   @override
   void dispose() {
     super.dispose();
+    _searchTextEditingController.dispose();
+    _hotTagsBloc.dispose();
+    _likeBloc.dispose();
     _postBloc.dispose();
   }
 
@@ -98,6 +107,9 @@ class _CommunityPageState extends State<CommunityPage> {
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
               child: TextField(
+                  onChanged: (keyword) {
+                    _postBloc.dispatch(FindPostByKeyword(keyword));
+                  },
                   decoration: InputDecoration.collapsed(
                           hintText: 'Search ...',
                           filled: true,
@@ -105,8 +117,8 @@ class _CommunityPageState extends State<CommunityPage> {
                               borderRadius: BorderRadius.circular(16),
                               borderSide: BorderSide.none))
                       .copyWith(
-                contentPadding: const EdgeInsets.all(9),
-              )),
+                    contentPadding: const EdgeInsets.all(9),
+                  )),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16),
@@ -115,20 +127,30 @@ class _CommunityPageState extends State<CommunityPage> {
                 style: Theme.of(context).textTheme.title,
               ),
             ),
-            Container(
-              height: 50,
-              child: ListView.builder(
-                shrinkWrap: true,
-                padding: const EdgeInsetsDirectional.only(start: 16),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsetsDirectional.only(end: 4),
-                    child: Chip(label: Text('Category${index + 1}')),
+            BlocBuilder(
+              bloc: _hotTagsBloc,
+              builder: (context, state) {
+                if (state is HotTagsLoadingState) {
+                  return LinearProgressIndicator();
+                }
+                if (state is HotTagsLoadedState) {
+                  var tags = state.tags;
+
+                  return Container(
+                    height: 50,
+                    child: new TagList(
+                      tags: tags,
+                      onSelected: (tag) {
+                        _postBloc.dispatch(OnTagSelected(tag));
+                      },
+                      onUnselected: () {
+                        _postBloc.dispatch(LoadPosts());
+                      },
+                    ),
                   );
-                },
-                itemCount: 10,
-              ),
+                }
+                return Container();
+              },
             ),
             BlocListener(
               bloc: _postBloc,
@@ -190,6 +212,59 @@ class _CommunityPageState extends State<CommunityPage> {
           ],
         ),
       )),
+    );
+  }
+}
+
+class TagList extends StatefulWidget {
+  const TagList({
+    Key key,
+    @required this.tags,
+    this.onSelected,
+    this.onUnselected,
+  }) : super(key: key);
+
+  final List<Tag> tags;
+  final ValueChanged<Tag> onSelected;
+  final Function onUnselected;
+
+  @override
+  _TagListState createState() => _TagListState();
+}
+
+class _TagListState extends State<TagList> {
+  Tag _selectedTag;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      padding: const EdgeInsetsDirectional.only(start: 16),
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (BuildContext context, int index) {
+        var tag = widget.tags[index];
+        return Padding(
+          padding: const EdgeInsetsDirectional.only(end: 4),
+          child: ChoiceChip(
+            label: Text(tag.name),
+            onSelected: (selected) {
+              if (selected) {
+                widget.onSelected(tag);
+                setState(() {
+                  _selectedTag = tag;
+                });
+              } else {
+                widget.onUnselected();
+                setState(() {
+                  _selectedTag = null;
+                });
+              }
+            },
+            selected: _selectedTag != null && _selectedTag == tag,
+          ),
+        );
+      },
+      itemCount: widget.tags.length,
     );
   }
 }

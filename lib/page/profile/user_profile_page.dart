@@ -96,7 +96,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               'Last posts',
               style: Theme.of(context).textTheme.title,
             ),
-            ListView(
+/*            ListView(
               children: <Widget>[
                 CommunityPostWidget(
                   showBottomActionButtons: false,
@@ -107,7 +107,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               ],
               shrinkWrap: true,
               primary: false,
-            )
+            )*/
           ],
           padding: const EdgeInsets.all(16),
         )),

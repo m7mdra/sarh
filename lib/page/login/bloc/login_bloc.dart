@@ -23,7 +23,6 @@ import 'login_event_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final Session session;
-
   LoginBloc(this.userRepository, this.session);
 
   @override

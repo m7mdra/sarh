@@ -23,7 +23,6 @@ import 'model/authentication_response_error.dart';
 import 'model/authentication_response.dart';
 
 import 'model/resend_verification_response.dart';
-
 class UserRepository {
   final Dio _client;
 

@@ -70,6 +70,13 @@ class _FavoritePageState extends State<FavoritePage>
                   return Divider();
                 },
               ),
+
+              /*** Bloc Listener ****/
+
+
+
+              /*** Bloc Listener ****/
+
               ListView.builder(
                 padding: const EdgeInsets.all(16),
                 itemBuilder: (BuildContext context, int index) {

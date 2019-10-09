@@ -19,8 +19,7 @@ import 'package:flutter/cupertino.dart';
 import 'bloc.dart';
 import 'package:bloc/bloc.dart';
 
-
-class FavoritePostBloc extends Bloc<FavoritePostEvent,FavoriteState>{
+class FavoritePostBloc extends Bloc<FavoritePostEvent, FavoriteState> {
   final PostRepository _postRepository;
 
   FavoritePostBloc(this._postRepository);
@@ -30,23 +29,19 @@ class FavoritePostBloc extends Bloc<FavoritePostEvent,FavoriteState>{
   FavoriteState get initialState => FavoriteState();
 
   @override
-  Stream<FavoriteState> mapEventToState(FavoritePostEvent event)async* {
+  Stream<FavoriteState> mapEventToState(FavoritePostEvent event) async* {
     // TODO: implement mapEventToState
 
-    if(event is OnLoadingFavoritePost){
-
-      if(event is OnLoadingFavoritePost){
-        getPosts(filter: "getmy");
-      }
-
+    if (event is OnLoadingFavoritePost ) {
+      yield* getPosts();
     }
-
   }
 
-  Stream<FavoriteState> getPosts({String tag = "", String filter = ""}) async* {
+  Stream<FavoriteState> getPosts() async* {
     yield OnLoading();
     try {
-      var response = await _postRepository.getPosts(tag: tag, filter: filter);
+      var response = await _postRepository.getFavoritePost();
+      print(response.message);
       if (response.success) {
         var posts = response.posts;
         if (posts.isNotEmpty) {

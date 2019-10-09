@@ -12,6 +12,7 @@
  *
  */
 
+import 'package:Sarh/page/community/bloc/favorite/favorite_community_page.dart';
 import 'package:Sarh/page/community/community_page.dart';
 import 'package:Sarh/page/search/search_result_page.dart';
 import 'package:flutter/material.dart';
@@ -76,14 +77,7 @@ class _FavoritePageState extends State<FavoritePage>
 
 
               /*** Bloc Listener ****/
-
-              ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemBuilder: (BuildContext context, int index) {
-                  return CommunityPostWidget();
-                },
-                itemCount: 10,
-              ),
+              FavoriteCommunityPage()
             ],
             controller: _tabController,
           ),

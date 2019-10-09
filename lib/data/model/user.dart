@@ -22,19 +22,23 @@ class User {
   int accountType;
   City city;
   String image;
-  dynamic isVerified;
+  int smsVerifiedAt;
+  String verificationCode;
+  int isVerified;
   String firebaseToken;
 
   User(
       {this.id,
-      this.username,
-      this.fullName,
-      this.phone,
-      this.accountType,
-      this.city,
-      this.image,
-      this.isVerified,
-      this.firebaseToken});
+        this.username,
+        this.fullName,
+        this.phone,
+        this.accountType,
+        this.city,
+        this.image,
+        this.smsVerifiedAt,
+        this.verificationCode,
+        this.isVerified,
+        this.firebaseToken});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -44,6 +48,8 @@ class User {
     accountType = json['account_type'];
     city = json['city'] != null ? new City.fromJson(json['city']) : null;
     image = json['image'];
+    smsVerifiedAt = json['sms_verified_at'];
+    verificationCode = json['verificationCode'];
     isVerified = json['isVerified'];
     firebaseToken = json['firebaseToken'];
   }
@@ -59,14 +65,37 @@ class User {
       data['city'] = this.city.toJson();
     }
     data['image'] = this.image;
+    data['sms_verified_at'] = this.smsVerifiedAt;
+    data['verificationCode'] = this.verificationCode;
     data['isVerified'] = this.isVerified;
     data['firebaseToken'] = this.firebaseToken;
     return data;
   }
-
   bool get isAccountVerified => isVerified == 1;
-  @override
-  String toString() {
-    return toJson().toString();
+
+}
+
+class City {
+  int id;
+  String name;
+  String arName;
+  int countryId;
+
+  City({this.id, this.name, this.arName, this.countryId});
+
+  City.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    arName = json['arName'];
+    countryId = json['countryId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['arName'] = this.arName;
+    data['countryId'] = this.countryId;
+    return data;
   }
 }

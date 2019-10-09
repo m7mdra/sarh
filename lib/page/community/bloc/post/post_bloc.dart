@@ -36,6 +36,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       .debounceTime(Duration(milliseconds: 300))
       .switchMap(next);
   }
+
   @override
   Stream<PostState> mapEventToState(PostEvent event) async* {
     if (event is LoadPosts) {

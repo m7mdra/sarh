@@ -66,206 +66,218 @@ class _CompanyProfilePageState extends State<CompanyProfilePage>
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder(
-          bloc: _companyProfileBloc,
-          // ignore: missing_return
-          builder: (context, state) {
-            if (state is ProfileLoaded)
-              return Column(
-                children: <Widget>[
-                  _appbarAndHeader(context, state),
-                  Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.all(16),
-                      children: <Widget>[
-                        Text(
-                          'About',
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                        Text(state.company.about),
-                        _divider,
-                        Text(
-                          'Company activites',
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                        Wrap(
-                          spacing: 1,
-                          runSpacing: 0,
-                          direction: Axis.horizontal,
-                          alignment: WrapAlignment.center,
-                          children: <Widget>[
-                            Chip(label: Text('Construction')),
-                            Chip(label: Text('Anything')),
-                            Chip(label: Text('Anything')),
-                            Chip(label: Text('Anything')),
-                            Chip(label: Text('Anything')),
-                            Chip(label: Text('Anything')),
-                          ],
-                        ),
-                        _divider,
-                        Text(
-                          'Contact information',
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                        ListTile(
-                          dense: true,
-                          contentPadding: const EdgeInsets.all(0),
-                          leading: Icon(
-                            FontAwesomeIcons.mobile,
-                            color: Theme.of(context).accentColor,
-                          ),
-                          title: Text(state.user.phone),
-                        ),
-                        ListTile(
-                          dense: true,
-                          contentPadding: const EdgeInsets.all(0),
-                          leading: Icon(
-                            FontAwesomeIcons.phone,
-                            color: Theme.of(context).accentColor,
-                          ),
-                          title: Text(state.company.landPhone),
-                        ),
-                        ListTile(
-                          dense: true,
-                          contentPadding: const EdgeInsets.all(0),
-                          leading: Icon(
-                            FontAwesomeIcons.solidEnvelope,
-                            color: Theme.of(context).accentColor,
-                          ),
-                          title: Text('info@takween.com'),
-                        ),
-                        ListTile(
-                          dense: true,
-                          contentPadding: const EdgeInsets.all(0),
-                          leading: Icon(
-                            FontAwesomeIcons.solidMap,
-                            color: Theme.of(context).accentColor,
-                          ),
-                          title: Text(state.company.address),
-                        ),
-                        ListTile(
-                          dense: true,
-                          contentPadding: const EdgeInsets.all(0),
-                          leading: Icon(
-                            FontAwesomeIcons.globe,
-                            color: Theme.of(context).accentColor,
-                          ),
-                          title: Text(state.company.website),
-                        ),
-                        _heightSizedBox(),
-                        Row(
-                          children: <Widget>[
-                            SocialMediaTile(
-                              backgroundColor: Color(0xff20b4f5),
-                              iconData: FontAwesomeIcons.twitter,
-                            ),
-                            SocialMediaTile(
-                              backgroundColor: Color(0xff4a90fa),
-                              iconData: FontAwesomeIcons.facebook,
-                            ),
-                            SocialMediaTile(
-                              backgroundColor: Color(0xffff9898),
-                              iconData: FontAwesomeIcons.instagram,
-                            ),
-                            SocialMediaTile(
-                              backgroundColor: Color(0xff0066ff),
-                              iconData: FontAwesomeIcons.behance,
-                            ),
-                            SocialMediaTile(
-                              backgroundColor: Color(0xff37c2ff),
-                              iconData: FontAwesomeIcons.linkedin,
-                            ),
-                          ],
-                        ),
-                        _divider,
-                        Text(
-                          'Authorized from',
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                        BlocBuilder(
-                          bloc: _authorizersBloc,
-                          builder: (context, state) {
-                            if (state is AuthorizersLoaded) {
-                              return Container(
-                                height: SizeConfig.blockSizeVertical * 22,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    return new AuthorizerWidget(
-                                      authorizer: state.authorizers[index],
-                                    );
-                                  },
-                                  itemCount: state.authorizers.length,
-                                ),
-                              );
-                            }
-                            if (state is AuthorizersFailed) {
-                             return Padding(
-                               padding: const EdgeInsets.all(8.0),
-                               child: Column(children: <Widget>[
-                                 Text('Failed to load Authorizers'),
-                                 OutlineButton(onPressed: (){
-                                   _authorizersBloc.dispatch(LoadAuthroizers());
+            bloc: _companyProfileBloc,
+            // ignore: missing_return
+            builder: (context, state) {
+              if (state is ProfileLoaded) {
+                var company = state.company;
 
-                                 },child: Text(AppLocalizations.of(context).retryButton),)
-                               ],),
-                             );
-                            }
-                            if (state is AuthorizerLoading) {
-                              return Center(child: ProgressBar());
-                            }
-                            if (state is AuthorizersEmpty) {
-                              return Column(
-                                children: <Widget>[
-                                  Text(
-                                    'No Authorizers added',
-                                    style: Theme.of(context).textTheme.title,
+                return Column(
+                  children: <Widget>[
+                    _appbarAndHeader(context, state),
+                    Expanded(
+                      child: ListView(
+                        padding: const EdgeInsets.all(16),
+                        children: <Widget>[
+                          Text(
+                            'About',
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                          Text(company.about),
+                          _divider,
+                          Visibility(
+                            visible: company.activities.isNotEmpty,
+                            child: Text(
+                              'Company activites',
+                              style: Theme.of(context).textTheme.title,
+                            ),
+                          ),
+                          Wrap(
+                            spacing: 1,
+                            runSpacing: 0,
+                            direction: Axis.horizontal,
+                            alignment: WrapAlignment.center,
+                            children: company.activities
+                                .map((activity) =>
+                                    Chip(label: Text(activity.nameAr)))
+                                .toList(),
+                          ),
+                          Visibility(
+                            child: _divider,
+                            visible: company.activities.isNotEmpty,
+                          ),
+                          Text(
+                            'Contact information',
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                          ListTile(
+                            dense: true,
+                            contentPadding: const EdgeInsets.all(0),
+                            leading: Icon(
+                              FontAwesomeIcons.mobile,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            title: Text(state.user.phone),
+                          ),
+                          ListTile(
+                            dense: true,
+                            contentPadding: const EdgeInsets.all(0),
+                            leading: Icon(
+                              FontAwesomeIcons.phone,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            title: Text(company.landPhone),
+                          ),
+                          ListTile(
+                            dense: true,
+                            contentPadding: const EdgeInsets.all(0),
+                            leading: Icon(
+                              FontAwesomeIcons.solidEnvelope,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            title: Text('info@takween.com'),
+                          ),
+                          ListTile(
+                            dense: true,
+                            contentPadding: const EdgeInsets.all(0),
+                            leading: Icon(
+                              FontAwesomeIcons.solidMap,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            title: Text(company.address),
+                          ),
+                          ListTile(
+                            dense: true,
+                            contentPadding: const EdgeInsets.all(0),
+                            leading: Icon(
+                              FontAwesomeIcons.globe,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            title: Text(company.website),
+                          ),
+                          _heightSizedBox(),
+                          Row(
+                            children: <Widget>[
+                              SocialMediaTile(
+                                backgroundColor: Color(0xff20b4f5),
+                                iconData: FontAwesomeIcons.twitter,
+                              ),
+                              SocialMediaTile(
+                                backgroundColor: Color(0xff4a90fa),
+                                iconData: FontAwesomeIcons.facebook,
+                              ),
+                              SocialMediaTile(
+                                backgroundColor: Color(0xffff9898),
+                                iconData: FontAwesomeIcons.instagram,
+                              ),
+                              SocialMediaTile(
+                                backgroundColor: Color(0xff0066ff),
+                                iconData: FontAwesomeIcons.behance,
+                              ),
+                              SocialMediaTile(
+                                backgroundColor: Color(0xff37c2ff),
+                                iconData: FontAwesomeIcons.linkedin,
+                              ),
+                            ],
+                          ),
+                          _divider,
+                          Text(
+                            'Authorized from',
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                          BlocBuilder(
+                            bloc: _authorizersBloc,
+                            builder: (context, state) {
+                              if (state is AuthorizersLoaded) {
+                                return Container(
+                                  height: SizeConfig.blockSizeVertical * 22,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return new AuthorizerWidget(
+                                        authorizer: state.authorizers[index],
+                                      );
+                                    },
+                                    itemCount: state.authorizers.length,
                                   ),
-                                  FlatButton(onPressed: (){},child: Text('Add now'),)
-                                ],
-                              );
-                            }
-                            return Container();
-                          },
-                        ),
-                        Divider(
-                          height: 1,
-                        ),
-
-                        Text(
-                          'Customers Reviews',
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text('12 Reviews'),
-                            RaisedButton.icon(
-                              onPressed: () {},
-                              label: Text('Add a review'),
-                              icon: Icon(FontAwesomeIcons.paperPlane),
-                            ),
-                          ],
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          primary: false,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ReviewTileWidget();
-                          },
-                          itemCount: 4,
-                        ),
-                        RaisedButton(
-                          onPressed: () {},
-                          child: Text('More & Add comments'),
-                        )
-                      ],
+                                );
+                              }
+                              if (state is AuthorizersFailed) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text('Failed to load Authorizers'),
+                                      OutlineButton(
+                                        onPressed: () {
+                                          _authorizersBloc
+                                              .dispatch(LoadAuthroizers());
+                                        },
+                                        child: Text(AppLocalizations.of(context)
+                                            .retryButton),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }
+                              if (state is AuthorizerLoading) {
+                                return Center(child: ProgressBar());
+                              }
+                              if (state is AuthorizersEmpty) {
+                                return Column(
+                                  children: <Widget>[
+                                    Text(
+                                      'No Authorizers added',
+                                      style: Theme.of(context).textTheme.title,
+                                    ),
+                                    FlatButton(
+                                      onPressed: () {},
+                                      child: Text('Add now'),
+                                    )
+                                  ],
+                                );
+                              }
+                              return Container();
+                            },
+                          ),
+                          Divider(
+                            height: 1,
+                          ),
+                          Text(
+                            'Customers Reviews',
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text('12 Reviews'),
+                              RaisedButton.icon(
+                                onPressed: () {},
+                                label: Text('Add a review'),
+                                icon: Icon(FontAwesomeIcons.paperPlane),
+                              ),
+                            ],
+                          ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            primary: false,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ReviewTileWidget();
+                            },
+                            itemCount: 4,
+                          ),
+                          RaisedButton(
+                            onPressed: () {},
+                            child: Text('More & Add comments'),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              );
-          },
-        ),
+                  ],
+                );
+              }
+            }),
       ),
     );
   }

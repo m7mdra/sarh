@@ -259,11 +259,11 @@ class UserDrawerState extends State<UserDrawer> {
                                               user.image.isNotEmpty
                                           ? Image.network(user.image)
                                           : Icon(FontAwesomeIcons.user,
-                                              size: 50)),
+                                              size: 40)),
                                 ),
                               ),
                               SizedBox(
-                                width: 8,
+                                width: 5,
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -271,10 +271,7 @@ class UserDrawerState extends State<UserDrawer> {
                                 children: <Widget>[
                                   Text(
                                     user.username,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .title
-                                        .copyWith(color: Colors.white),
+                                    style: TextStyle(fontSize: 17,color: Colors.white)
                                   ),
                                   Text('Mail@Domain.com',
                                       style: Theme.of(context)

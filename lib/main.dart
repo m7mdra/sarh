@@ -14,6 +14,7 @@
 
 import 'package:Sarh/data/session.dart';
 import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
+import 'package:Sarh/page/edit_company_profile/edit_company_profile_page.dart';
 import 'package:Sarh/page/splash/bloc/session_bloc.dart';
 import 'package:Sarh/page/splash/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,7 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate
       ],
       home: BlocProvider.value(
-        child: SplashPage(),
+        child: EditCompanyProfilePage(),
         value: SessionBloc(
             DependencyProvider.provide(), DependencyProvider.provide()),
       ),

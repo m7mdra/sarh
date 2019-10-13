@@ -245,8 +245,9 @@ class CompanyGalleryItemWidget extends StatelessWidget {
         ),
         CachedNetworkImage(
           imageUrl: galleryItem.img,
-          fit: BoxFit.fitWidth,
+          fit: BoxFit.cover,
           width: MediaQuery.of(context).size.width,
+          height: 200,
           placeholderFadeInDuration: Duration(milliseconds: 200),
         ),
         SizedBox(

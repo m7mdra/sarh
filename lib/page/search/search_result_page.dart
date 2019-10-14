@@ -12,11 +12,13 @@
  *
  */
 
+import 'package:Sarh/data/community/model/favorite_company_response.dart';
 import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/sliver_header_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class SearchResultPage extends StatefulWidget {
   @override
@@ -217,17 +219,38 @@ class _SearchResultPageState extends State<SearchResultPage> {
 }
 
 class CompanyWidget extends StatelessWidget {
+  final bool showBottomActionButtons;
+  final ResponseData company;
+  final ValueChanged<ResponseData> onLike;
+  final ValueChanged<ResponseData> onComment;
+  final ValueChanged<ResponseData> onShare;
+
+  const CompanyWidget(
+      {Key key,
+      this.showBottomActionButtons = true,
+      this.company,
+      this.onLike,
+      this.onComment,
+      this.onShare})
+      : super(key: key);
+      
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Row(
       children: <Widget>[
         Container(
-          child: Image.asset(
+          child:    CachedNetworkImage(
+          imageUrl: company.company.userInfo.image.toString(),
+          fit: BoxFit.fitWidth,
+          width: MediaQuery.of(context).size.width,
+          placeholderFadeInDuration: Duration(milliseconds: 200),
+          errorWidget:  (context, url, error) => Image.asset(
             'assets/logo/logo.png',
             width: SizeConfig.blockSizeHorizontal * 30,
             height: SizeConfig.blockSizeHorizontal * 30,
           ),
+        ),
           decoration: BoxDecoration(
               border: Border.all(color: Colors.grey.withAlpha(80))),
         ),
@@ -239,7 +262,7 @@ class CompanyWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'Sentinel Constructions ',
+               company.company.userInfo.fullName,
                 overflow: TextOverflow.ellipsis,
                 softWrap: true,
                 maxLines: 2,
@@ -261,57 +284,70 @@ class CompanyWidget extends StatelessWidget {
                   SizedBox(
                     width: 4,
                   ),
-                  Text('Build and constriction'),
+                  Text(company.company.companyInfo.category.toString()),
                 ],
               ),
               SizedBox(
                 height: 4,
               ),
-              Row(
+            Row(
                 children: <Widget>[
-                  Icon(FontAwesomeIcons.solidStar, size: 15),
-                  SizedBox(
-                    width: 4,
-                  ),
                   Icon(
-                    FontAwesomeIcons.solidStar,
-                    size: 15,
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Icon(
-                    FontAwesomeIcons.solidStar,
-                    size: 15,
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Icon(
-                    FontAwesomeIcons.solidStar,
-                    size: 15,
+                    FontAwesomeIcons.phone,
                     color: Colors.grey,
-                  ),
-                  SizedBox(
-                    width: 2,
-                  ),
-                  Icon(
-                    FontAwesomeIcons.solidStar,
-                    size: 15,
-                    color: Colors.grey,
+                    size: 13,
                   ),
                   SizedBox(
                     width: 4,
                   ),
-                  Text(
-                    '+3',
-                    style: Theme.of(context).textTheme.caption,
-                  )
+                  Text(company.company.userInfo.phone.toString()),
                 ],
               ),
-              SizedBox(
-                height: 4,
-              ),
+              // Row(
+              //   children: <Widget>[
+              //     Icon(FontAwesomeIcons.solidStar, size: 15),
+              //     SizedBox(
+              //       width: 4,
+              //     ),
+              //     Icon(
+              //       FontAwesomeIcons.solidStar,
+              //       size: 15,
+              //     ),
+              //     SizedBox(
+              //       width: 4,
+              //     ),
+              //     Icon(
+              //       FontAwesomeIcons.solidStar,
+              //       size: 15  ,
+              //     ),
+              //     SizedBox(
+              //       width: 4,
+              //     ),
+              //     Icon(
+              //       FontAwesomeIcons.solidStar,
+              //       size: 15,
+              //       color: Colors.grey,
+              //     ),
+              //     SizedBox(
+              //       width: 2,
+              //     ),
+              //     Icon(
+              //       FontAwesomeIcons.solidStar,
+              //       size: 15,
+              //       color: Colors.grey,
+              //     ),
+              //     SizedBox(
+              //       width: 4,
+              //     ),
+              //     Text(
+              //       '+3',
+              //       style: Theme.of(context).textTheme.caption,
+              //     )
+              //   ],
+              // ),
+              // SizedBox(
+              //   height: 4,
+              // ),
 //              Row(
 //                children: <Widget>[
 //                  RaisedButton(

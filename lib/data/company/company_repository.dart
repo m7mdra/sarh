@@ -13,12 +13,15 @@
  */
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:Sarh/data/company/model/company_size_response.dart';
 import 'package:Sarh/data/exceptions/exceptions.dart';
 import 'package:Sarh/data/response_status.dart';
 import 'package:Sarh/page/add_company_profile/bloc/complete_register/bloc.dart';
+import 'package:Sarh/page/my_company_gallery/my_company_gallery.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 class CompanyRepository {
   final Dio _client;
@@ -110,6 +113,27 @@ class CompanyRepository {
         default:
           throw error;
       }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<ResponseStatus> uploadCompanyImage(File file,String title,String description,{context}) async {
+    try {
+      FormData formData =
+      FormData.from({
+        'img'       : new UploadFileInfo(file, 'image'),
+        'title'       : title,
+        'description' : description
+      });
+      var response = await _client.post('company_gallareys', data: formData);
+      print(response.statusCode);
+      return ResponseStatus.fromJson(response.data);
+    } on DioError catch (error) {
+      if (error.response.statusCode == HTTP_UNAUTHORIZED)
+        throw SessionExpiredException();
+      else
+        throw error;
     } catch (error) {
       throw error;
     }

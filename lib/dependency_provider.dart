@@ -31,6 +31,7 @@ import 'data/tag/tags_repository.dart';
 import 'data/token_interceptor.dart';
 
 GetIt _registrar = GetIt();
+
 // const _url = 'http://skilledtechuae-001-site5.htempurl.com/api/';
 // const _url = 'http://192.168.8.190:8000/api/';
 const _url = 'http://skilledtechuae-001-site9.htempurl.com/api/';
@@ -47,6 +48,7 @@ class DependencyProvider {
         'Content-Type': 'application/json',
       },
     );
+
     Session session = Session(sharedPreferences);
 
     Dio client = Dio(options);

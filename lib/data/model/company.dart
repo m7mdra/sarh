@@ -83,18 +83,19 @@ class Company {
         companyCovers.add(new CompanyCover.fromJson(v));
       });
     }
-    // if (json['socialMedia'] != null) {
-    //   socialMedias = new List<Null>();
-    //   json['socialMedia'].forEach((v) {
-    //     socialMedias.add(new SocialMedia.fromJson(v));
-    //   });
-    // }
-    // if (json['activity'] != null) {
-    //   activities = new List<Null>();
-    //   json['activity'].forEach((v) {
-    //     activities.add(new Activity.fromJson(v));
-    //   });
-    // }
+//    if (json['socialMedia'] != null) {
+//      socialMedias = new List<Null>();
+//      json['socialMedia'].forEach((v) {
+//        socialMedias.add(new SocialMedia.fromJson(v));
+//      });
+//    }
+//    if (json['activity'] != null) {
+//      activities = new List<Null>();
+//      json['activity'].forEach((v) {
+//        activities.add(new Activity.fromJson(v));
+//      });
+//    }
+
     projectsDone = json['projects_done'];
     createdAt = json['created_at'];
   }

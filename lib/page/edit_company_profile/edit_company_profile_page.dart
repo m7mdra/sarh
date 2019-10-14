@@ -12,7 +12,11 @@
  *
  */
 
+import 'package:Sarh/data/model/gallery_item.dart';
+import 'package:Sarh/data/session.dart';
 import 'package:Sarh/page/authorizers/authorizers_page.dart';
+import 'package:Sarh/page/company_gallery/company_gallery_page.dart';
+import 'package:Sarh/page/my_company_gallery/my_company_gallery.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -71,7 +75,10 @@ class _EditCompanyProfilePageState extends State<EditCompanyProfilePage> {
           ),
           _divder,
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyCompanyGallery()));
+            },
             leading: Icon(FontAwesomeIcons.solidImages,
                 color: Theme.of(context).accentColor),
             title: Text('Gallery'),

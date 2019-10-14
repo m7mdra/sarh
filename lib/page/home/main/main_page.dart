@@ -15,6 +15,7 @@
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/community/community_page.dart';
 import 'package:Sarh/page/company_profile/company_profile_page.dart';
+import 'package:Sarh/page/edit_company_profile/edit_company_profile_page.dart';
 import 'package:Sarh/page/home/category/category_page.dart';
 import 'package:Sarh/page/home/favorite/favorites_page.dart';
 import 'package:Sarh/page/home/main/bloc/bloc.dart';
@@ -245,8 +246,12 @@ class UserDrawerState extends State<UserDrawer> {
                     child: Column(
                       children: <Widget>[
                         InkWell(
-                          onTap: () => BlocProvider.of<HomePageBloc>(context)
-                              .dispatch(NavigateToProfile()),
+                          onTap: () =>
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => EditCompanyProfilePage())),
+//TODO::
+//                              BlocProvider.of<HomePageBloc>(context)
+//                              .dispatch(NavigateToProfile())
                           child: Row(
                             children: <Widget>[
                               Hero(
@@ -259,11 +264,11 @@ class UserDrawerState extends State<UserDrawer> {
                                               user.image.isNotEmpty
                                           ? Image.network(user.image)
                                           : Icon(FontAwesomeIcons.user,
-                                              size: 50)),
+                                              size: 40)),
                                 ),
                               ),
                               SizedBox(
-                                width: 8,
+                                width: 5,
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -271,10 +276,7 @@ class UserDrawerState extends State<UserDrawer> {
                                 children: <Widget>[
                                   Text(
                                     user.username,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .title
-                                        .copyWith(color: Colors.white),
+                                    style: TextStyle(fontSize: 17,color: Colors.white)
                                   ),
                                   Text('Mail@Domain.com',
                                       style: Theme.of(context)

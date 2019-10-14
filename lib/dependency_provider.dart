@@ -19,9 +19,8 @@ import 'package:Sarh/data/country/city_repository.dart';
 import 'package:Sarh/data/gallery/gallery_repository.dart';
 import 'package:Sarh/data/session.dart';
 import 'package:Sarh/data/user/user_repository.dart';
-import 'package:Sarh/page/login/bloc/login_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/authorizers/authorizer_repository.dart';
@@ -32,6 +31,9 @@ import 'data/tag/tags_repository.dart';
 import 'data/token_interceptor.dart';
 
 GetIt _registrar = GetIt();
+
+// const _url = 'http://skilledtechuae-001-site5.htempurl.com/api/';
+// const _url = 'http://192.168.8.190:8000/api/';
 const _url = 'http://skilledtechuae-001-site9.htempurl.com/api/';
 
 class DependencyProvider {

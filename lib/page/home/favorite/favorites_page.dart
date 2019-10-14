@@ -13,7 +13,7 @@
  */
 
 import 'package:Sarh/page/community/bloc/favorite/favorite_community_page.dart';
-import 'package:Sarh/page/community/community_page.dart';
+import 'package:Sarh/page/community/bloc/favorite_sirvices_providers/favorite_community_page.dart';
 import 'package:Sarh/page/search/search_result_page.dart';
 import 'package:flutter/material.dart';
 
@@ -61,17 +61,19 @@ class _FavoritePageState extends State<FavoritePage>
         Expanded(
           child: TabBarView(
             children: [
-              ListView.separated(
-                padding: const EdgeInsets.all(16),
-                itemBuilder: (BuildContext context, int index) {
-                  return CompanyWidget();
-                },
-                itemCount: 10,
-                separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
-                },
-              ),
+              // ListView.separated(
+              //   padding: const EdgeInsets.all(16),
+              //   itemBuilder: (BuildContext context, int index) {
+              //     return CompanyWidget();
+              //   },
+              //   itemCount: 10,
+              //   separatorBuilder: (BuildContext context, int index) {
+              //     return Divider();
+              //   },
+              // ),
 
+              FavoriteCommunityCompaniesPage()
+,
               /*** Bloc Listener ****/
 
 

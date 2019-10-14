@@ -95,6 +95,7 @@ class Company {
 //        activities.add(new Activity.fromJson(v));
 //      });
 //    }
+
     projectsDone = json['projects_done'];
     createdAt = json['created_at'];
   }

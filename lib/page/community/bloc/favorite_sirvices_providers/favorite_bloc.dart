@@ -14,7 +14,7 @@
 
 import 'package:Sarh/data/community/post_repository.dart';
 import 'package:Sarh/data/exceptions/exceptions.dart';
-import 'package:Sarh/page/community/bloc/favorite/bloc.dart';
+import './bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'bloc.dart';
 
@@ -39,10 +39,11 @@ class FavoritePostBloc extends Bloc<FavoritePostEvent, FavoriteState> {
   Stream<FavoriteState> getPosts() async* {
     yield OnLoading();
     try {
-      var response = await _postRepository.getFavoritePost();
-      print(response.message);
+      var response = await _postRepository.getFavoriteCompanies();
+
+      print(response.data.toString());
       if (response.success) {
-        var posts = response.posts;
+        var posts = response.data;
         if (posts.isNotEmpty) {
           yield OnLoaded(posts);
         } else {
@@ -58,8 +59,8 @@ class FavoritePostBloc extends Bloc<FavoritePostEvent, FavoriteState> {
     } on UnableToConnectException {
       yield FavoritePostsNetworkError();
     } catch (error) {
-      yield FavoritePostsError();
       print(error);
+      yield FavoritePostsError();
     }
   }
 }

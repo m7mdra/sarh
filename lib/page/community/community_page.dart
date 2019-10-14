@@ -301,11 +301,11 @@ class CommunityPostWidget extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  author.image != null && author.image.isNotEmpty
-                      ? Image.network(author.image)
-                      : CircleAvatar(
-                          child: Text(author.fullName.substring(0, 1)),
-                        ),
+                  // author.image != null && author.image.isNotEmpty
+                  //     ? Image.network(author.image)
+                  //     : CircleAvatar(
+                  //         child: Text(author.fullName.substring(0, 1)),
+                  //       ),
                   SizedBox(
                     width: 8,
                   ),

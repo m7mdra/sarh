@@ -12,7 +12,9 @@
  *
  */
 
-import 'package:Sarh/page/community/bloc/favorite/bloc.dart';
+import 'package:Sarh/page/search/search_result_page.dart';
+
+import './bloc.dart';
 import 'package:Sarh/page/community/community_page.dart';
 import 'package:Sarh/widget/ui_state/empty_widget.dart';
 import 'package:Sarh/widget/ui_state/network_error_widget.dart';
@@ -22,12 +24,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../dependency_provider.dart';
 
-class FavoriteCommunityPage extends StatefulWidget {
+class FavoriteCommunityCompaniesPage extends StatefulWidget {
   @override
   _FavoriteCommunityPageState createState() => _FavoriteCommunityPageState();
 }
 
-class _FavoriteCommunityPageState extends State<FavoriteCommunityPage> {
+class _FavoriteCommunityPageState extends State<FavoriteCommunityCompaniesPage> {
   FavoritePostBloc _postBloc;
 
   @override
@@ -69,21 +71,22 @@ class _FavoriteCommunityPageState extends State<FavoriteCommunityPage> {
         }
         if (state is OnLoaded) {
           var favoritePosts = state.posts;
+          print(favoritePosts);
           return RefreshIndicator(
             onRefresh: (){
               _loadPosts();
               return Future.value(null);
             },
             child: ListView.builder(
-              itemBuilder: (context, index) {
-                return CommunityPostWidget(
-                  post: favoritePosts[index],
-                );
+              itemBuilder: (context, index) {          
+               return CompanyWidget(company:favoritePosts[index] ,);
               },
               itemCount: favoritePosts.length,
             ),
           );
         }
+
+
         return Container();
       },
     );

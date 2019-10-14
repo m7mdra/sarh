@@ -12,15 +12,14 @@
  *
  */
 
-import 'package:Sarh/data/session.dart';
-import 'package:Sarh/page/add_company_profile/add_company_info_page.dart';
 import 'package:Sarh/page/splash/bloc/session_bloc.dart';
 import 'package:Sarh/page/splash/splash_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'dependency_provider.dart';
 import 'i10n/app_localizations.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   await DependencyProvider.build();

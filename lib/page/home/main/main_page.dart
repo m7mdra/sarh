@@ -15,6 +15,7 @@
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/community/community_page.dart';
 import 'package:Sarh/page/company_profile/company_profile_page.dart';
+import 'package:Sarh/page/edit_company_profile/edit_company_profile_page.dart';
 import 'package:Sarh/page/home/category/category_page.dart';
 import 'package:Sarh/page/home/favorite/favorites_page.dart';
 import 'package:Sarh/page/home/main/bloc/bloc.dart';
@@ -245,8 +246,12 @@ class UserDrawerState extends State<UserDrawer> {
                     child: Column(
                       children: <Widget>[
                         InkWell(
-                          onTap: () => BlocProvider.of<HomePageBloc>(context)
-                              .dispatch(NavigateToProfile()),
+                          onTap: () =>
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => EditCompanyProfilePage())),
+//TODO::
+//                              BlocProvider.of<HomePageBloc>(context)
+//                              .dispatch(NavigateToProfile())
                           child: Row(
                             children: <Widget>[
                               Hero(

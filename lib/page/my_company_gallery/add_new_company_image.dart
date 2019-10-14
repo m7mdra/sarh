@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:Sarh/data/company/company_repository.dart';
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/i10n/app_localizations.dart';
 import 'package:Sarh/widget/back_button_widget.dart';

@@ -20,6 +20,7 @@ import 'dart:convert';
 const KEY_TOKEN = 'token';
 const KEY_USER = 'user';
 const KEY_COMPANY = 'company';
+const KEY_COMPANY_ID = 'company_id';
 
 class Session {
   final SharedPreferences _preferences;
@@ -31,6 +32,7 @@ class Session {
     await _preferences.setString(KEY_USER, jsonEncode(user.toJson()));
     if (company != null)
       await _preferences.setString(KEY_COMPANY, jsonEncode(company.toJson()));
+      await _preferences.setInt(KEY_COMPANY_ID, company.id);
     return true;
   }
 

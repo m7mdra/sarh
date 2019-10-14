@@ -86,7 +86,7 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate
       ],
       home: BlocProvider.value(
-        child: EditCompanyProfilePage(),
+        child: SplashPage(),
         value: SessionBloc(
             DependencyProvider.provide(), DependencyProvider.provide()),
       ),

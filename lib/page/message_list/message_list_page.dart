@@ -12,17 +12,40 @@
  *
  */
 
+import 'package:Sarh/data/model/openchat.dart';
+import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/company_message/company_message_page.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 
+import 'bloc/message_list_bloc.dart';
+import 'bloc/message_list_event.dart';
+
 class MessageListPage extends StatefulWidget {
-  MessageListPage({Key key}) : super(key: key);
+
+ final MessageList messagelist;
+
+  MessageListPage({Key key,this.messagelist}) : super(key: key);
 
   _MessageListPageState createState() => _MessageListPageState();
 }
 
 class _MessageListPageState extends State<MessageListPage> {
+  MessageList messageList;
+  MessageListBloc _messageListBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    messageList = widget.messagelist;
+    _messageListBloc = MessageListBloc(DependencyProvider.provide());
+    _dispatch();
+  }
+
+  void _dispatch() => _messageListBloc.dispatch(MessageListLoaded());
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,6 +97,7 @@ class _MessageListPageState extends State<MessageListPage> {
 }
 
 class MessageListItem extends StatelessWidget {
+
   final bool newMessage;
   final VoidCallback onTap;
 

@@ -14,6 +14,7 @@
 
 import 'package:Sarh/data/activity/activity_repository.dart';
 import 'package:Sarh/data/category/category_repository.dart';
+import 'package:Sarh/data/chat/chat_repository.dart';
 import 'package:Sarh/data/client/client_repository.dart';
 import 'package:Sarh/data/country/city_repository.dart';
 import 'package:Sarh/data/gallery/gallery_repository.dart';
@@ -79,6 +80,7 @@ class DependencyProvider {
     GalleryRepository galleryRepository = GalleryRepository(client);
     PostRepository postRepository = PostRepository(client);
     TagRepository tagRepository = TagRepository(client);
+    ChatRepository chatRepository = ChatRepository(client);
 
     _registrar.registerSingleton<Dio>(client);
     _registrar.registerSingleton<Session>(session);
@@ -95,6 +97,7 @@ class DependencyProvider {
     _registrar.registerFactory<QuotationRepository>(() => quotationRepository);
     _registrar.registerFactory<ActivityRepository>(() => activityRepository);
     _registrar.registerFactory<CompanyRepository>(() => companyRepository);
+    _registrar.registerFactory<ChatRepository>(() => chatRepository);
   }
 
   static T provide<T>() {

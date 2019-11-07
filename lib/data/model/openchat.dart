@@ -16,7 +16,7 @@ class MessageList {
   int id;
   String fullName;
   String image;
-  LastMessage lastMessage;
+  String lastMessage;
   int newMessagesCount;
 
   MessageList({
@@ -31,7 +31,7 @@ class MessageList {
     id = json['id'];
     fullName = json['full_name'];
     image = json['image'];
-    lastMessage = json['lastMessage'];
+    lastMessage = json['lastMessage']['message'];
     newMessagesCount = json['newMessagesCount'];
   }
 

@@ -15,9 +15,14 @@
 import 'package:Sarh/data/model/openchat.dart';
 import 'package:Sarh/dependency_provider.dart';
 import 'package:Sarh/page/company_message/company_message_page.dart';
+import 'package:Sarh/page/message_list/bloc/message_list_state.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
+import 'package:Sarh/widget/ui_state/empty_widget.dart';
+import 'package:Sarh/widget/ui_state/general_error_widget.dart';
+import 'package:Sarh/widget/ui_state/network_error_widget.dart';
+import 'package:Sarh/widget/ui_state/progress_bar.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/message_list_bloc.dart';
 import 'bloc/message_list_event.dart';
 
@@ -58,66 +63,97 @@ class _MessageListPageState extends State<MessageListPage> {
         ),
         leading: BackButtonNoLabel(Colors.white),
       ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-            child: TextField(
-                decoration: InputDecoration.collapsed(
-                        hintText: 'Search ...',
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide.none))
-                    .copyWith(
-              contentPadding: const EdgeInsets.all(9),
-            )),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return MessageListItem(
-                  newMessage: index == 0,
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return CompanyMessagePage();
-                    }));
-                  },
-                );
-              },
-              itemCount: 10,
-              shrinkWrap: false,
-            ),
-          )
-        ],
-      ),
+      body: BlocBuilder(
+        bloc: _messageListBloc,
+        builder: (context, state) {
+          print(state);
+            if (state is ListLoading) {
+            return Center(child: ProgressBar());
+            }
+            if (state is ListNetworkError) {
+            return Center(
+            child:
+            NetworkErrorWidget(onRetry: () => _dispatch()));
+            }
+            if (state is ListError) {
+            return Center(
+            child:
+            GeneralErrorWidget(onRetry: () => _dispatch()));
+            }
+            if (state is ListEmpty) {
+            return Center(
+            child: EmptyWidget(),
+            );
+            }
+            if (state is ListLoaded) {
+            List listMessages = state.chats;
+            return Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                  child: TextField(
+                      decoration: InputDecoration.collapsed(
+                          hintText: 'Search ...',
+                          filled: true,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide.none))
+                          .copyWith(
+                        contentPadding: const EdgeInsets.all(9),
+                      )),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: false,
+                    itemBuilder: (BuildContext context, int index) {
+                      return MessageListItem(
+                        messageListItem: listMessages[index],
+                      );
+                    },
+                    itemCount: listMessages.length,
+                  ),
+                )
+              ],
+            );
+          }
+          return Container();
+        }),
+      /*
+
+      */
     );
   }
 }
 
 class MessageListItem extends StatelessWidget {
 
-  final bool newMessage;
-  final VoidCallback onTap;
+  final MessageList messageListItem;
 
-  const MessageListItem({Key key, this.newMessage, this.onTap})
-      : super(key: key);
+  const MessageListItem({Key key, this.messageListItem}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    bool newMessage = messageListItem.newMessagesCount > 0 ? true : false;
+
     return ListTile(
-      onTap: onTap,
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) {
+              return CompanyMessagePage();
+            }));
+      },
       selected: newMessage,
       leading: CircleAvatar(
         radius: 25,
-        backgroundImage: AssetImage('assets/background/stock_person.jpg'),
+
+        backgroundImage: NetworkImage(messageListItem.image),
       ),
       dense: true,
-      title: Text('Proivder name'),
+      title: Text(messageListItem.fullName,style: TextStyle(fontSize: 15),),
       contentPadding: const EdgeInsets.only(left: 4, right: 4),
       subtitle: Text(
-        'Message message message messageMessage message message message',
+        messageListItem.lastMessage,
         style: TextStyle(
             fontWeight: newMessage ? FontWeight.bold : FontWeight.normal),
         maxLines: 1,

@@ -25,10 +25,15 @@ class MessageListBloc extends Bloc<MessageListEvent,MessageListState>{
         var messageListResponse =
             await _chatRepository.getChats();
         if (messageListResponse.success) {
+          print("Loaded Chats");
           var messageListCounts = messageListResponse.data;
+          print(messageListResponse.data);
           if (messageListCounts.isNotEmpty) {
+            print("Loaded Not Empty");
             yield ListLoaded(messageListCounts);
           } else {
+            print("Loaded Empty");
+
             yield ListEmpty();
           }
         } else {

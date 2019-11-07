@@ -18,17 +18,20 @@ class ChatResponse {
 bool success;
 List<MessageList> data;
 String message;
+var vData;
 
 ChatResponse({this.success, this.data, this.message});
 
 ChatResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
+//    vData   = json['data'];
     if (json['data'] != null) {
       data = new List<MessageList>();
       json['data'].forEach((v) {
-        data.add(new MessageList.fromJson(json));
+        data.add(new MessageList.fromJson(Map<String, dynamic>.from(v)));
       });
     }
+    print(data);
     message = json['message'];
   }
 

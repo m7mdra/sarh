@@ -17,6 +17,7 @@ class MessageList {
   String fullName;
   String image;
   String lastMessage;
+  int createdAt;
   int newMessagesCount;
 
   MessageList({
@@ -24,6 +25,7 @@ class MessageList {
     this.fullName,
     this.image,
     this.lastMessage,
+    this.createdAt,
     this.newMessagesCount,
   });
 
@@ -32,6 +34,7 @@ class MessageList {
     fullName = json['full_name'];
     image = json['image'];
     lastMessage = json['lastMessage']['message'];
+    createdAt = json['lastMessage']['created_at'];
     newMessagesCount = json['newMessagesCount'];
   }
 
@@ -41,6 +44,7 @@ class MessageList {
     data['full_name'] = this.fullName;
     data['image'] = this.image;
     data['lastMessage'] = this.lastMessage;
+    data['created_at'] = this.createdAt;
     data['newMessagesCount'] = this.newMessagesCount;
     return data;
   }
@@ -65,7 +69,7 @@ class LastMessage {
   LastMessage.fromJson(Map<String, dynamic> json){
     id = json['id'];
     message = json['message'];
-    createdAt = json['createdAt'];
+    createdAt = json['created_at'];
   }
 
   Map<String, dynamic> toJson() {

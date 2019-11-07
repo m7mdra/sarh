@@ -23,8 +23,11 @@ import 'package:Sarh/widget/ui_state/network_error_widget.dart';
 import 'package:Sarh/widget/ui_state/progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'bloc/message_list_bloc.dart';
 import 'bloc/message_list_event.dart';
+import 'package:time_formatter/time_formatter.dart';
+
 
 class MessageListPage extends StatefulWidget {
 
@@ -131,10 +134,39 @@ class MessageListItem extends StatelessWidget {
 
   const MessageListItem({Key key, this.messageListItem}) : super(key: key);
 
+  String readTimestamp(int timestamp) {
+    var now = new DateTime.now();
+    var format = new DateFormat('HH:mm a');
+    var date = new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    var diff = now.difference(date);
+    var time = '';
+
+    if (diff.inSeconds <= 0 || diff.inSeconds > 0 && diff.inMinutes == 0 || diff.inMinutes > 0 && diff.inHours == 0 || diff.inHours > 0 && diff.inDays == 0) {
+      time = format.format(date);
+    } else if (diff.inDays > 0 && diff.inDays < 7) {
+      if (diff.inDays == 1) {
+        time = diff.inDays.toString() + ' Day Ago';
+      } else {
+        time = diff.inDays.toString() + ' Days Ago';
+      }
+    } else {
+      if (diff.inDays == 7) {
+        time = (diff.inDays / 7).floor().toString() + ' Week Ago';
+      } else {
+
+        time = (diff.inDays / 7).floor().toString() + ' Weeks Ago';
+      }
+    }
+
+    return time;
+  }
+
   @override
   Widget build(BuildContext context) {
 
     bool newMessage = messageListItem.newMessagesCount > 0 ? true : false;
+
+    var time = readTimestamp(messageListItem.createdAt);
 
     return ListTile(
       onTap: () {
@@ -163,7 +195,7 @@ class MessageListItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            '8:25am',
+            time.toString(),
             style: Theme.of(context).textTheme.caption,
           ),
           SizedBox(

@@ -14,51 +14,69 @@
 
 import 'dart:math';
 
+import 'package:Sarh/data/model/chat_responses/messages.dart';
+import 'package:Sarh/data/session.dart';
+import 'package:Sarh/page/company_message/bloc/bloc.dart';
 import 'package:Sarh/page/create_quote/create_quote_page.dart';
 import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
+import 'package:Sarh/widget/ui_state/empty_widget.dart';
+import 'package:Sarh/widget/ui_state/general_error_widget.dart';
+import 'package:Sarh/widget/ui_state/network_error_widget.dart';
+import 'package:Sarh/widget/ui_state/progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+
+import '../../dependency_provider.dart';
+
 
 class CompanyMessagePage extends StatefulWidget {
   @override
   _CompanyMessagePageState createState() => _CompanyMessagePageState();
 }
 
-class Message {
-  final String message;
-  final bool isYou;
-  final String date;
-
-  Message(this.message, this.isYou, this.date);
-
-  @override
-  String toString() {
-    return "$date: $message";
-  }
-}
+//class Message {
+//  final String message;
+//  final bool isYou;
+//  final String date;
+//
+//  Message(this.message, this.isYou, this.date);
+//
+//  @override
+//  String toString() {
+//    return "$date: $message";
+//  }
+//}
 
 class _CompanyMessagePageState extends State<CompanyMessagePage> {
   TextEditingController _chatController;
-  List<Message> messages;
+  CompanyMessagesBloc _messageListBloc;
+  Session session;
+
 
   @override
   void initState() {
     super.initState();
+    _messageListBloc = CompanyMessagesBloc(DependencyProvider.provide());
+    _dispatch();
 
     _chatController = TextEditingController();
-    messages = List.generate(4, (index) {
-      return index % 2 == 0
-          ? Message(
-              '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem industry's standard dummy text ever since the 1500stext ever since the''',
-              true,
-              '${Random().nextInt(60)} min ago')
-          : Message(
-              '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. ''',
-              false,
-              '${Random().nextInt(60)} min ago');
-    });
+//    messages = List.generate(4, (index) {
+//      return index % 2 == 0
+//          ? Message(
+//              '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem industry's standard dummy text ever since the 1500stext ever since the''',
+//              true,
+//              '${Random().nextInt(60)} min ago')
+//          : Message(
+//              '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. ''',
+//              false,
+//              '${Random().nextInt(60)} min ago');
+//    });
   }
+
+  void _dispatch() => _messageListBloc.dispatch(LoadCompanyMessages());
 
   @override
   Widget build(BuildContext context) {
@@ -86,60 +104,116 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
         leading: BackButtonNoLabel(Colors.white),
       ),
       body: SafeArea(
-          child: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(8),
-              reverse: false,
-              itemBuilder: (context, index) {
-                var message = messages[index];
-                return message.isYou
-                    ? _sentMessage(message)
-                    : _receivedMessage(message);
-              },
-              itemCount: messages.length,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Card(
-                    child: TextField(
-                      controller: _chatController,
-                      keyboardType: TextInputType.multiline,
-                      textInputAction: TextInputAction.newline,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                          hintText: 'Type here...',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.zero,
-                              borderSide: BorderSide.none),
-                          contentPadding: const EdgeInsets.all(10)),
-                    ),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.black12),
-                  child: IconButton(
-                      icon: Icon(FontAwesomeIcons.solidPaperPlane),
-                      onPressed: () {
-                        setState(() {
-                          messages.add(Message(
-                              _chatController.value.text, true, 'Just now'));
-                          _chatController.clear();
-                        });
-                      }),
-                )
-              ],
-            ),
-          ),
-        ],
-      )),
+          child: BlocBuilder(
+              bloc: _messageListBloc,
+              builder: (context, state) {
+                print(state);
+                if (state is OnLoading) {
+                  return Center(child: ProgressBar());
+                }
+                if (state is CompanyMessagesNetworkError) {
+                  return Center(
+                      child:
+                      NetworkErrorWidget(onRetry: () => _dispatch()));
+                }
+                if (state is CompanyMessagesError) {
+                  return Center(
+                      child:
+                      GeneralErrorWidget(onRetry: () => _dispatch()));
+                }
+                if (state is CompanyMessagesEmpty) {
+                  return Center(
+                    child: EmptyWidget(),
+                  );
+                }
+                if (state is OnLoaded) {
+                  List messages = state.messages;
+                  List quotation = state.quotations;
+                  return Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(8),
+                          reverse: false,
+                          itemBuilder: (context, index) {
+                            Message message = messages[index];
+                            return message.accountSender.id != 62
+                                ? _sentMessage(message)
+                                : _receivedMessage(message);
+                          },
+                          itemCount: messages.length,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Card(
+                                child: TextField(
+                                  controller: _chatController,
+                                  keyboardType: TextInputType.multiline,
+                                  textInputAction: TextInputAction.newline,
+                                  maxLines: null,
+                                  decoration: InputDecoration(
+                                      hintText: 'Type here...',
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.zero,
+                                          borderSide: BorderSide.none),
+                                      contentPadding: const EdgeInsets.all(10)),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle, color: Colors.black12),
+                              child: IconButton(
+                                  icon: Icon(FontAwesomeIcons.solidPaperPlane),
+//                                  onPressed: () {
+//                                    setState(() {
+//                                      messages.add(Message(
+//                                          _chatController.value.text, true, 'Just now'));
+//                                      _chatController.clear();
+//                                    });
+//                                  }
+                                  ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return Container();
+              }),),
     );
+  }
+
+  String readTimestamp(int timestamp) {
+    var now = new DateTime.now();
+    var format = new DateFormat('HH:mm a');
+    var date = new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    var diff = now.difference(date);
+    var time = '';
+
+    if (diff.inSeconds <= 0 || diff.inSeconds > 0 && diff.inMinutes == 0 || diff.inMinutes > 0 && diff.inHours == 0 || diff.inHours > 0 && diff.inDays == 0) {
+      time = format.format(date);
+    } else if (diff.inDays > 0 && diff.inDays < 7) {
+      if (diff.inDays == 1) {
+        time = diff.inDays.toString() + ' Day Ago';
+      } else {
+        time = diff.inDays.toString() + ' Days Ago';
+      }
+    } else {
+      if (diff.inDays == 7) {
+        time = (diff.inDays / 7).floor().toString() + ' Week Ago';
+      } else {
+
+        time = (diff.inDays / 7).floor().toString() + ' Weeks Ago';
+      }
+    }
+
+    return time;
   }
 
   Widget _sentMessage(Message message) {
@@ -173,14 +247,14 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
             ),
             CircleAvatar(
               radius: 25,
-              backgroundImage: AssetImage('assets/background/stock_person.jpg'),
+              backgroundImage: NetworkImage(message.accountSender.image),
             ),
           ],
         ),
         Padding(
-          padding: const EdgeInsetsDirectional.only(start: 64),
+          padding: const EdgeInsetsDirectional.only(start: 54,top: 5),
           child: Text(
-            message.date,
+            readTimestamp(message.createdAt),
             style: Theme.of(context).textTheme.caption,
           ),
         )
@@ -198,7 +272,7 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
           children: <Widget>[
             CircleAvatar(
               radius: 25,
-              backgroundImage: AssetImage('assets/background/stock_woman.jpg'),
+              backgroundImage: NetworkImage(message.accountReceiver.image),
             ),
             Container(
               margin:
@@ -229,9 +303,9 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
           ],
         ),
         Padding(
-          padding: const EdgeInsetsDirectional.only(end: 64),
+          padding: const EdgeInsetsDirectional.only(end: 54),
           child: Text(
-            message.date,
+            readTimestamp(message.createdAt),
             style: Theme.of(context).textTheme.caption,
           ),
         )
@@ -266,3 +340,6 @@ class MessageBubble extends StatelessWidget {
     );
   }
 }
+
+
+

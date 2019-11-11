@@ -27,3 +27,10 @@ class ProfileLoadedFromNetwork extends UserProfileState {
 
   ProfileLoadedFromNetwork(this.user);
 }
+
+class LogoutLoading extends UserProfileState{}
+
+class LogoutSuccess extends UserProfileState{}
+
+class LogoutFailed extends UserProfileState{}
+

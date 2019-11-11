@@ -12,7 +12,9 @@
  *
  */
 
+import 'package:Sarh/data/user/user_repository.dart';
 import 'package:Sarh/dependency_provider.dart';
+import 'package:Sarh/i10n/app_localizations.dart';
 import 'package:Sarh/page/community/community_page.dart';
 import 'package:Sarh/page/company_profile/company_profile_page.dart';
 import 'package:Sarh/page/edit_company_profile/edit_company_profile_page.dart';
@@ -21,6 +23,7 @@ import 'package:Sarh/page/home/favorite/favorites_page.dart';
 import 'package:Sarh/page/home/main/bloc/bloc.dart';
 import 'package:Sarh/page/home/main/bloc/home_page_bloc.dart';
 import 'package:Sarh/page/home/updates_page.dart';
+import 'package:Sarh/page/login/login_page.dart';
 import 'package:Sarh/page/message_list/message_list_page.dart';
 import 'package:Sarh/page/profile/bloc/user_profile_bloc.dart';
 import 'package:Sarh/page/profile/bloc/user_profile_event.dart';
@@ -31,10 +34,13 @@ import 'package:Sarh/page/request_quote/request_quote_screen.dart';
 import 'package:Sarh/page/search/search_page.dart';
 import 'package:Sarh/page/settings/settings_page.dart';
 import 'package:Sarh/widget/fab_bottom_appbar.dart';
+import 'package:Sarh/widget/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 import '../home/home_page.dart';
 class MainPage extends StatefulWidget {
@@ -207,6 +213,7 @@ class UserDrawer extends StatefulWidget {
   })  : _scaffoldKey = scaffoldKey,
         super(key: key);
 
+
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
@@ -215,20 +222,26 @@ class UserDrawer extends StatefulWidget {
 
 class UserDrawerState extends State<UserDrawer> {
   UserProfileBloc _userProfileBloc;
+  SharedPreferences sharedPreferences;
 
   @override
-  void initState() {
+   initState() {
     super.initState();
     _userProfileBloc = UserProfileBloc(DependencyProvider.provide());
     _userProfileBloc.dispatch(LoadProfile());
+
   }
 @override
-  void dispose() {
+  void dispose(){
     super.dispose();
     _userProfileBloc.dispose();
+
   }
   @override
   Widget build(BuildContext context) {
+//    setState(()  async {
+//      sharedPreferences = await SharedPreferences.getInstance();
+//    });
     return Drawer(
       child: Container(
         color: Theme.of(context).accentColor,
@@ -237,12 +250,13 @@ class UserDrawerState extends State<UserDrawer> {
             BlocBuilder(
               bloc: _userProfileBloc,
               builder: (context, state) {
+                print(state.toString());
                 if (state is ProfileLoaded) {
                   var user = state.user;
 
                   return Padding(
                     padding: EdgeInsets.only(
-                        top: 32, left: 16, right: 16, bottom: 16),
+                        top: 32, left: 6, right: 6, bottom: 16),
                     child: Column(
                       children: <Widget>[
                         InkWell(
@@ -278,7 +292,7 @@ class UserDrawerState extends State<UserDrawer> {
                                     user.username,
                                     style: TextStyle(fontSize: 17,color: Colors.white)
                                   ),
-                                  Text('Mail@Domain.com',
+                                  Text(user.phone.toString(),
                                       style: Theme.of(context)
                                           .textTheme
                                           .body1
@@ -300,69 +314,99 @@ class UserDrawerState extends State<UserDrawer> {
                         Divider(
                           color: Colors.white,
                         ),
+                        ListTile(
+                          onTap: _navigateToQuotesPage,
+                          leading: Icon(
+                            FontAwesomeIcons.solidFileAlt,
+                            color: Colors.white,
+                          ),
+                          title: Text('Quotations',
+                              style: Theme.of(context).textTheme.title.copyWith(
+                                  color: Colors.white, fontWeight: FontWeight.normal)),
+                        ),
+                        ListTile(
+                          dense: true,
+                          leading: Icon(
+                            FontAwesomeIcons.users,
+                            color: Colors.white,
+                          ),
+                          onTap: _navigateToCommunityPage,
+                          title: Text('Community',
+                              style: Theme.of(context).textTheme.title.copyWith(
+                                  color: Colors.white, fontWeight: FontWeight.normal)),
+                        ),
+                        ListTile(
+                          onTap: _navigatedToSettings,
+                          leading: Icon(
+                            FontAwesomeIcons.cog,
+                            color: Colors.white,
+                          ),
+                          title: Text('Settings',
+                              style: Theme.of(context).textTheme.title.copyWith(
+                                  color: Colors.white, fontWeight: FontWeight.normal)),
+                        ),
+                        Divider(
+                          color: Colors.white,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            RaisedButton(
+                              padding: const EdgeInsets.only(
+                                  left: 32, right: 32, top: 8, bottom: 8),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(32)),
+                              child: Text('Logout',
+                                  style: Theme.of(context).textTheme.title.copyWith(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.normal)),
+                              onPressed: () async {
+                                _userProfileBloc.dispatch(Logout());
+                              },
+                              color: Colors.white,
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   );
                 }
+//                if(state is LogoutLoading){
+//                  showDialog(
+//                      context: context,
+//                      barrierDismissible: false,
+//                      builder: (context) => ProgressDialog(
+//                        message: AppLocalizations.of(context)
+//                            .logoutLoadingDialogMessage,
+//                      ));
+//                }
+                if (state is LogoutSuccess) {
+                    print('LogoutSuccess');
+                      print('LogoutSuccess 1');
+                      _navigateToLoginPage();
+                  }
+                if(state is LogoutFailed) {
+                  setState(() {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text('Failed to logout. try again'),
+                      action: _retryLogout,
+                    ));
+                  });
+                }
                 return Container();
               },
             ),
-            ListTile(
-              onTap: _navigateToQuotesPage,
-              leading: Icon(
-                FontAwesomeIcons.solidFileAlt,
-                color: Colors.white,
-              ),
-              title: Text('Quotations',
-                  style: Theme.of(context).textTheme.title.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.normal)),
-            ),
-            ListTile(
-              dense: true,
-              leading: Icon(
-                FontAwesomeIcons.users,
-                color: Colors.white,
-              ),
-              onTap: _navigateToCommunityPage,
-              title: Text('Community',
-                  style: Theme.of(context).textTheme.title.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.normal)),
-            ),
-            ListTile(
-              onTap: _navigatedToSettings,
-              leading: Icon(
-                FontAwesomeIcons.cog,
-                color: Colors.white,
-              ),
-              title: Text('Settings',
-                  style: Theme.of(context).textTheme.title.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.normal)),
-            ),
-            Divider(
-              color: Colors.white,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton(
-                  padding: const EdgeInsets.only(
-                      left: 32, right: 32, top: 8, bottom: 8),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32)),
-                  child: Text('Logout',
-                      style: Theme.of(context).textTheme.title.copyWith(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.normal)),
-                  onPressed: () {},
-                  color: Colors.white,
-                ),
-              ],
-            )
+
           ],
         ),
       ),
     );
   }
+  SnackBarAction get _retryLogout => SnackBarAction(
+    onPressed: () => _userProfileBloc.dispatch(Logout()),
+    label: 'Retry',
+  );
+
 
   void _navigateToQuotesPage() {
     Navigator.pop(context);
@@ -396,6 +440,14 @@ class UserDrawerState extends State<UserDrawer> {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return CommunityPage();
     }));
+  }
+
+  Future _navigateToLoginPage() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.clear();
+    Navigator.pop(context);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
   }
 }
 

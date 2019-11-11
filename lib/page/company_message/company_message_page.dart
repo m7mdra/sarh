@@ -15,9 +15,11 @@
 import 'dart:math';
 
 import 'package:Sarh/data/model/chat_responses/messages.dart';
+import 'package:Sarh/data/model/openchat.dart';
 import 'package:Sarh/data/session.dart';
 import 'package:Sarh/page/company_message/bloc/bloc.dart';
 import 'package:Sarh/page/create_quote/create_quote_page.dart';
+import 'package:Sarh/page/message_list/message_list_page.dart';
 import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/ui_state/empty_widget.dart';
@@ -33,8 +35,12 @@ import '../../dependency_provider.dart';
 
 
 class CompanyMessagePage extends StatefulWidget {
+  MessageList messageListItem;
+
+  CompanyMessagePage({this.messageListItem});
+
   @override
-  _CompanyMessagePageState createState() => _CompanyMessagePageState();
+  _CompanyMessagePageState createState() => _CompanyMessagePageState(messageListItem);
 }
 
 //class Message {
@@ -54,6 +60,12 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
   TextEditingController _chatController;
   CompanyMessagesBloc _messageListBloc;
   Session session;
+
+  MessageList messageListItem;
+  List messages;
+
+
+  _CompanyMessagePageState(this.messageListItem);
 
 
   @override
@@ -76,10 +88,11 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
 //    });
   }
 
-  void _dispatch() => _messageListBloc.dispatch(LoadCompanyMessages());
+  void _dispatch() => _messageListBloc.dispatch(LoadCompanyMessages(messageListItem.id));
 
   @override
   Widget build(BuildContext context) {
+
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
@@ -98,7 +111,7 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
         elevation: 2,
         centerTitle: true,
         title: Text(
-          'Mohamed Sed',
+          messageListItem.fullName,
           style: TextStyle(),
         ),
         leading: BackButtonNoLabel(Colors.white),
@@ -127,7 +140,7 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
                   );
                 }
                 if (state is OnLoaded) {
-                  List messages = state.messages;
+                  messages = state.messages;
                   List quotation = state.quotations;
                   return Column(
                     children: <Widget>[
@@ -169,13 +182,36 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
                                   shape: BoxShape.circle, color: Colors.black12),
                               child: IconButton(
                                   icon: Icon(FontAwesomeIcons.solidPaperPlane),
-//                                  onPressed: () {
-//                                    setState(() {
-//                                      messages.add(Message(
-//                                          _chatController.value.text, true, 'Just now'));
-//                                      _chatController.clear();
-//                                    });
-//                                  }
+                                  onPressed: () {
+                                    var message = Message(
+                                        id: 1,
+                                        message: _chatController.text.trim(),
+                                        accountReceiver: null,
+                                        accountSender: null,
+                                        messageAttachments: [],
+                                        quotatioRequest: null,
+                                        quotationReply: null,
+                                        seenAt: null,
+                                        createdAt:1212
+                                    );
+                                    print(message.id);
+                                    print(message.message);
+                                    print(message.accountReceiver.toString());
+                                    print(message.accountSender.toString());
+                                    print(message.messageAttachments.toString());
+                                    print(message.quotatioRequest.toString());
+//                                    print(message.quotationReply);
+                                    print(message.seenAt.toString());
+                                    print(message.createdAt.toString());
+
+                                    setState(() {
+                                      messages.add(message);
+                                    });
+
+//                                    _messageListBloc.dispatch(AddNewMessage(_chatController.text.trim(), messageListItem.id, []));
+                                    _chatController.clear();
+
+                                  }
                                   ),
                             )
                           ],
@@ -184,10 +220,14 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
                     ],
                   );
                 }
+                if(state is NewMessageAdded){
+
+                }
                 return Container();
               }),),
     );
   }
+
 
   String readTimestamp(int timestamp) {
     var now = new DateTime.now();

@@ -15,6 +15,10 @@ class OnLoaded extends CompanyMessagesState {
 
 }
 
+class NewMessageAdded extends CompanyMessagesState{}
+
+class NewMessageFailed extends CompanyMessagesState{}
+
 class CompanyMessagesNetworkError extends CompanyMessagesState {}
 
 class CompanyMessagesError extends CompanyMessagesState {}

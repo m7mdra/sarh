@@ -68,6 +68,9 @@ class AppLocalizations {
   String get loginLoadingDialogMessage =>
       Intl.message('Please wait while attempting to log you in.');
 
+  String get logoutLoadingDialogMessage =>
+      Intl.message('Please wait while attempting to logout.');
+
   String get noNetworkError => Intl.message('No active internet connection');
 
   String get retryButton => Intl.message('Retry');

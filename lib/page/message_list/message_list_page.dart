@@ -172,7 +172,7 @@ class MessageListItem extends StatelessWidget {
       onTap: () {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) {
-              return CompanyMessagePage();
+              return CompanyMessagePage(messageListItem:messageListItem);
             }));
       },
       selected: newMessage,

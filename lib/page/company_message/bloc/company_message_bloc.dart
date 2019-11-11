@@ -27,7 +27,6 @@ class CompanyMessagesBloc extends Bloc<CompanyMessagesEvent, CompanyMessagesStat
 
   final ChatRepository _chatRepository;
   Session session;
-  SharedPreferences _preferences ;
 
   CompanyMessagesBloc(this._chatRepository,{this.session});
 
@@ -38,24 +37,13 @@ class CompanyMessagesBloc extends Bloc<CompanyMessagesEvent, CompanyMessagesStat
   @override
   Stream<CompanyMessagesState> mapEventToState(
       CompanyMessagesEvent event) async* {
-    _preferences = await SharedPreferences.getInstance();
-
-    var token = _preferences.get('token');
-    prefix0.print("DATA USER");
-    print(token);
-    var userId = _preferences.get('user_id');
-    prefix0.print("DATA USER");
-    print(token);
-    print(userId);
-
 
     if (event is LoadCompanyMessages) {
       prefix0.print('TOKEN');
-//      print(session.token);
       yield OnLoading();
       try {
         var _messagesResponse =
-        await _chatRepository.getMessagesWith(token, userId);
+        await _chatRepository.getMessagesWith(event.userId);
         prefix0.print('SUCCESS');
         print(_messagesResponse.success);
         if (_messagesResponse.success) {
@@ -63,9 +51,30 @@ class CompanyMessagesBloc extends Bloc<CompanyMessagesEvent, CompanyMessagesStat
           print(_messagesResponse.data.messages.length);
           prefix0.print('QUOTATIONS');
           print(_messagesResponse.data.quotations.length);
-
           yield OnLoaded(_messagesResponse.data.messages,_messagesResponse.data.quotations);
+        } else {
+          yield CompanyMessagesError();
+        }
+      } on UnableToConnectException {
+        yield CompanyMessagesNetworkError();
+      } on TimeoutException {
+        yield CompanyMessagesNetworkError();
+      } on SessionExpiredException {
+        yield CompanyMessagesSessionExpired();
+      } catch (error) {
+        yield CompanyMessagesError();
+      }
+    }
+    else if (event is AddNewMessage) {
+      try {
+        var _addMessageResponse =
+        await _chatRepository.addNewMessage(event.message, event.to, event.attachments);
+        prefix0.print('RESPONSE');
+        print(_addMessageResponse);
+        if (_addMessageResponse['success']) {
+          prefix0.print('MESSAGES');
 
+          yield NewMessageAdded();
         } else {
           yield CompanyMessagesError();
         }

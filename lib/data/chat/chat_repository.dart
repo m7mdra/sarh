@@ -44,13 +44,51 @@ class ChatRepository{
     }
   }
 
-  Future<MessagesResponse> getMessagesWith(var token,var userId) async {
+  Future<MessagesResponse> getMessagesWith(var userId) async {
     print('getMessagesWith');
     try {
-      var response = await _client.get('messages',queryParameters: {'token' : token,'user_id':userId});
+      var response = await _client.get('messages',queryParameters: {'user_id':userId});
       prefix0.print('RESPONCSE');
       print(response);
       return MessagesResponse.fromJson(response.data);
+    } on DioError catch (error) {
+      switch (error.type) {
+        case DioErrorType.CONNECT_TIMEOUT:
+        case DioErrorType.SEND_TIMEOUT:
+        case DioErrorType.RECEIVE_TIMEOUT:
+          throw TimeoutException();
+          break;
+        case DioErrorType.RESPONSE:
+          if (error.response.statusCode == HTTP_UNAUTHORIZED)
+            throw SessionExpiredException();
+          else
+            throw error;
+          break;
+        case DioErrorType.CANCEL:
+          throw error;
+          break;
+        case DioErrorType.DEFAULT:
+          throw UnableToConnectException();
+          break;
+        default:
+          throw error;
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future addNewMessage(var message,var to,var attachments) async {
+    print('getMessagesWith');
+    try {
+      var data = new FormData();
+      data.add('message', message);
+      data.add('account_receiver', to);
+      data.add('attachments[]', attachments);
+      var response = await _client.post('messages',data: data);
+      prefix0.print('RESPONCSE');
+      print(response);
+      return response.data;
     } on DioError catch (error) {
       switch (error.type) {
         case DioErrorType.CONNECT_TIMEOUT:

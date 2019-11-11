@@ -24,8 +24,8 @@ class AuthenticationResponse {
 
   AuthenticationResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
-    message = json['Message'];
+    data = json['data'] != null && json['data'] != "" ? new Data.fromJson(json['data']) : null;
+    message = json['message'];
   }
 
   Map<String, dynamic> toJson() {

@@ -12,6 +12,8 @@
  *
  */
 
+import 'dart:core' as prefix0;
+import 'dart:core';
 import 'dart:math';
 
 import 'package:Sarh/data/model/chat_responses/messages.dart';
@@ -20,6 +22,7 @@ import 'package:Sarh/data/session.dart';
 import 'package:Sarh/page/company_message/bloc/bloc.dart';
 import 'package:Sarh/page/create_quote/create_quote_page.dart';
 import 'package:Sarh/page/message_list/message_list_page.dart';
+import 'package:Sarh/pusher_service.dart';
 import 'package:Sarh/size_config.dart';
 import 'package:Sarh/widget/back_button_widget.dart';
 import 'package:Sarh/widget/ui_state/empty_widget.dart';
@@ -30,6 +33,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../dependency_provider.dart';
 
@@ -43,18 +47,6 @@ class CompanyMessagePage extends StatefulWidget {
   _CompanyMessagePageState createState() => _CompanyMessagePageState(messageListItem);
 }
 
-//class Message {
-//  final String message;
-//  final bool isYou;
-//  final String date;
-//
-//  Message(this.message, this.isYou, this.date);
-//
-//  @override
-//  String toString() {
-//    return "$date: $message";
-//  }
-//}
 
 class _CompanyMessagePageState extends State<CompanyMessagePage> {
   TextEditingController _chatController;
@@ -63,29 +55,39 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
 
   MessageList messageListItem;
   List messages;
+  SharedPreferences sharedPreferences;
+  var userId;
+
+  PusherService pusherService;
 
 
   _CompanyMessagePageState(this.messageListItem);
 
+  getUserInfo()async{
+    sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      userId = sharedPreferences.get('user_id');
+      pusherService = PusherService();
+      pusherService.firePusher('channel-'+userId.toString(), 'event');
+    });
+  }
+
 
   @override
   void initState() {
-    super.initState();
+    getUserInfo();
     _messageListBloc = CompanyMessagesBloc(DependencyProvider.provide());
     _dispatch();
-
     _chatController = TextEditingController();
-//    messages = List.generate(4, (index) {
-//      return index % 2 == 0
-//          ? Message(
-//              '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem industry's standard dummy text ever since the 1500stext ever since the''',
-//              true,
-//              '${Random().nextInt(60)} min ago')
-//          : Message(
-//              '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. ''',
-//              false,
-//              '${Random().nextInt(60)} min ago');
-//    });
+
+    super.initState();
+
+  }
+
+  @override
+  void dispose() {
+    pusherService.unbindEvent('event');
+    super.dispose();
   }
 
   void _dispatch() => _messageListBloc.dispatch(LoadCompanyMessages(messageListItem.id));
@@ -150,7 +152,7 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
                           reverse: false,
                           itemBuilder: (context, index) {
                             Message message = messages[index];
-                            return message.accountSender.id != 62
+                            return message.accountSender.id != userId
                                 ? _sentMessage(message)
                                 : _receivedMessage(message);
                           },
@@ -183,32 +185,11 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
                               child: IconButton(
                                   icon: Icon(FontAwesomeIcons.solidPaperPlane),
                                   onPressed: () {
-                                    var message = Message(
-                                        id: 1,
-                                        message: _chatController.text.trim(),
-                                        accountReceiver: null,
-                                        accountSender: null,
-                                        messageAttachments: [],
-                                        quotatioRequest: null,
-                                        quotationReply: null,
-                                        seenAt: null,
-                                        createdAt:1212
-                                    );
-                                    print(message.id);
-                                    print(message.message);
-                                    print(message.accountReceiver.toString());
-                                    print(message.accountSender.toString());
-                                    print(message.messageAttachments.toString());
-                                    print(message.quotatioRequest.toString());
-//                                    print(message.quotationReply);
-                                    print(message.seenAt.toString());
-                                    print(message.createdAt.toString());
+//                                    setState(() {
+//                                      messages.add(message);
+//                                    });
 
-                                    setState(() {
-                                      messages.add(message);
-                                    });
-
-//                                    _messageListBloc.dispatch(AddNewMessage(_chatController.text.trim(), messageListItem.id, []));
+                                    _messageListBloc.dispatch(AddNewMessage(_chatController.text.trim(), messageListItem.id, []));
                                     _chatController.clear();
 
                                   }
@@ -221,10 +202,92 @@ class _CompanyMessagePageState extends State<CompanyMessagePage> {
                   );
                 }
                 if(state is NewMessageAdded){
+                  print(state.message);
+                  prefix0.print("ERROR DATA FROM PUSHER");
+                  print('BEFORE');
+//                  return StreamBuilder(
+//                    stream: pusherService.eventStream,
+//                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+//                      if (!snapshot.hasData) {
+//                        return CircularProgressIndicator();
+//                      }
+//                      return Container(
+//                        child: Text(snapshot.data),
+//                      );
+//                    },
+//                  );
+                  return Container(
+                    child: BlocListener(
+                    bloc: _messageListBloc,
+                    listener: (BuildContext context , state){
+                      if(state is NewMessageAdded){
+                        setState(() {
+                          messages.add(state.message);
+                        });
+                      }
+                    },
+                      child: Column(
+                        children: <Widget>[
+                          Expanded(
+                            child: ListView.builder(
+                              padding: const EdgeInsets.all(8),
+                              reverse: false,
+                              itemBuilder: (context, index) {
+                                return state.message.accountSender.id != userId
+                                    ? _sentMessage(state.message)
+                                    : _receivedMessage(state.message);
+                              },
+                              itemCount: messages.length,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Card(
+                                    child: TextField(
+                                      controller: _chatController,
+                                      keyboardType: TextInputType.multiline,
+                                      textInputAction: TextInputAction.newline,
+                                      maxLines: null,
+                                      decoration: InputDecoration(
+                                          hintText: 'Type here...',
+                                          border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.zero,
+                                              borderSide: BorderSide.none),
+                                          contentPadding: const EdgeInsets.all(10)),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle, color: Colors.black12),
+                                  child: IconButton(
+                                      icon: Icon(FontAwesomeIcons.solidPaperPlane),
+                                      onPressed: () {
+//                                    setState(() {
+//                                      messages.add(message);
+//                                    });
 
+                                        _messageListBloc.dispatch(AddNewMessage(_chatController.text.trim(), messageListItem.id, []));
+                                        _chatController.clear();
+
+                                      }
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                  ),
+                  );
                 }
                 return Container();
-              }),),
+              }
+              ),
+      ),
     );
   }
 

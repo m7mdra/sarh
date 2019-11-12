@@ -17,6 +17,7 @@ import 'dart:core';
 
 import 'package:Sarh/data/chat/chat_repository.dart';
 import 'package:Sarh/data/exceptions/exceptions.dart';
+import 'package:Sarh/data/model/chat_responses/messages.dart';
 import 'package:Sarh/data/session.dart';
 import 'package:bloc/bloc.dart';
 import 'bloc.dart';
@@ -73,8 +74,7 @@ class CompanyMessagesBloc extends Bloc<CompanyMessagesEvent, CompanyMessagesStat
         print(_addMessageResponse);
         if (_addMessageResponse['success']) {
           prefix0.print('MESSAGES');
-
-          yield NewMessageAdded();
+          yield NewMessageAdded(Message.fromJson(_addMessageResponse['data']));
         } else {
           yield CompanyMessagesError();
         }

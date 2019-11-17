@@ -5,6 +5,7 @@ import 'dart:core';
 import 'package:Sarh/data/chat/model/chat_responce.dart';
 import 'package:Sarh/data/exceptions/exceptions.dart';
 import 'package:Sarh/data/model/chat_responses/chat.dart';
+import 'package:Sarh/data/model/chat_responses/messages.dart';
 import 'package:dio/dio.dart';
 
 class ChatRepository{
@@ -78,13 +79,13 @@ class ChatRepository{
     }
   }
 
-  Future addNewMessage(var message,var to,var attachments) async {
+  Future addNewMessage(Message message) async {
     print('getMessagesWith');
     try {
       var data = new FormData();
-      data.add('message', message);
-      data.add('account_receiver', to);
-      data.add('attachments[]', attachments);
+      data.add('message', message.message);
+      data.add('account_receiver', message.accountReceiver.id);
+      data.add('attachments[]', message.messageAttachments);
       var response = await _client.post('messages',data: data);
       prefix0.print('RESPONCSE');
       print(response);

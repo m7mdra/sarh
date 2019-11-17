@@ -14,6 +14,7 @@
 
 import 'dart:core' as prefix0;
 import 'dart:core';
+import 'dart:math';
 
 import 'package:Sarh/data/chat/chat_repository.dart';
 import 'package:Sarh/data/exceptions/exceptions.dart';
@@ -33,7 +34,7 @@ class CompanyMessagesBloc extends Bloc<CompanyMessagesEvent, CompanyMessagesStat
 
   @override
   // TODO: implement initialState
-  CompanyMessagesState get initialState => CompanyMessagesState();
+  CompanyMessagesState get initialState => OnLoading();
 
   @override
   Stream<CompanyMessagesState> mapEventToState(
@@ -66,15 +67,19 @@ class CompanyMessagesBloc extends Bloc<CompanyMessagesEvent, CompanyMessagesStat
         yield CompanyMessagesError();
       }
     }
+    else if(event is MessageAddToList){
+      yield MessageAddedToList(event.message);
+    }
     else if (event is AddNewMessage) {
       try {
         var _addMessageResponse =
-        await _chatRepository.addNewMessage(event.message, event.to, event.attachments);
+        await _chatRepository.addNewMessage(event.message);
         prefix0.print('RESPONSE');
         print(_addMessageResponse);
         if (_addMessageResponse['success']) {
           prefix0.print('MESSAGES');
-          yield NewMessageAdded(Message.fromJson(_addMessageResponse['data']));
+          yield CompanyMessagesState();
+//          yield NewMessageAdded(Message.fromJson(_addMessageResponse['data']));
         } else {
           yield CompanyMessagesError();
         }

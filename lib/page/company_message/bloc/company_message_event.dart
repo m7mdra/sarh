@@ -1,5 +1,7 @@
 
 
+import 'package:Sarh/data/model/chat_responses/messages.dart';
+
 class CompanyMessagesEvent{}
 
 class LoadCompanyMessages extends CompanyMessagesEvent{
@@ -8,9 +10,14 @@ class LoadCompanyMessages extends CompanyMessagesEvent{
 }
 
 class AddNewMessage extends CompanyMessagesEvent{
-  String message;
-  int to;
-  List<dynamic> attachments;
+  Message message;
 
-  AddNewMessage(this.message,this.to,this.attachments);
+
+  AddNewMessage(this.message);
+}
+
+class MessageAddToList extends CompanyMessagesEvent{
+  Message message;
+
+  MessageAddToList(this.message);
 }

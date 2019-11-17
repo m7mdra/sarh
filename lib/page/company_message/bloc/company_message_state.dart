@@ -21,6 +21,12 @@ class NewMessageAdded extends CompanyMessagesState{
   NewMessageAdded(this.message);
 }
 
+class MessageAddedToList extends CompanyMessagesState{
+  Message message;
+
+  MessageAddedToList(this.message);
+}
+
 class NewMessageFailed extends CompanyMessagesState{}
 
 class CompanyMessagesNetworkError extends CompanyMessagesState {}
